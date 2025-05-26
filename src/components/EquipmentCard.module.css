@@ -1,0 +1,171 @@
+/* src/components/EquipmentCard/EquipmentCard.module.css (ПОЛНЫЙ, ЧИСТЫЙ КОД) */
+
+/* Убедитесь, что переменные определены глобально или здесь */
+/* :root {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+  --text-color-dark: #111827;
+  --text-color-base: #374151;
+  --accent-color: #f97316;
+  --accent-color-light: #FFF7ED;
+  --accent-color-dark: #ea580c;
+  --border-color: #e5e7eb;
+  --bg-light-gray: #f9fafb;
+} */
+
+
+.cardLinkWrapper {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+  transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+}
+.cardLinkWrapper:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-color: #f0f0f0;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s ease;
+}
+.cardLinkWrapper:hover .image {
+  transform: scale(1.08);
+}
+
+.statusBadge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    z-index: 2;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: var(--font-roboto, 'Roboto', sans-serif);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+/* Цвета для статусов */
+.inStock, .в-наличии {
+  background-color: rgba(22, 163, 74, 0.85);
+}
+.onOrder, .под-заказ {
+  background-color: rgba(251, 191, 36, 0.9);
+  color: #713f12;
+}
+.soldOut {
+  background-color: rgba(239, 68, 68, 0.85);
+}
+.defaultStatus {
+  background-color: rgba(107, 114, 128, 0.85);
+}
+
+
+.content {
+  padding: 1rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.type {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color-dark, #111827);
+  line-height: 1.4;
+  margin-bottom: 0.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2; /* Стандартное свойство */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: calc(1.4em * 2);
+}
+
+.description {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.9rem;
+  color: var(--text-color-base, #374151);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3; /* Стандартное свойство */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardFooter {
+    display: flex;
+    justify-content: flex-end; /* Кнопка справа */
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+.detailsButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  background-color: var(--accent-color, #f97316);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.detailsButton svg {
+    width: 1rem;
+    height: 1rem;
+}
+.cardLinkWrapper:hover .detailsButton {
+    background-color: var(--accent-color-dark, #ea580c);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: scale(1.03);
+}
+.detailsButton:hover { /* Для hover на самой кнопке */
+   transform: scale(1.05);
+}

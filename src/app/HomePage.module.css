@@ -1,0 +1,379 @@
+/* src/app/HomePage.module.css (Полный код с исправленным hover эффектом карточки) */
+
+/* ===== Переменные (убедитесь, что они доступны) ===== */
+/* :root {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+  --text-color-dark: #111827;
+  --text-color-base: #374151;
+  --text-color-light: #f8fafc;
+  --accent-color: #f97316;
+  --accent-color-dark: #ea580c;
+  --accent-color-light: #FFF7ED;
+  --bg-light-gray: #f9fafb;
+} */
+
+/* ===== Общие стили секций ===== */
+.section {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  position: relative;
+  overflow: hidden; /* Добавлено здесь для дочерних секций */
+}
+@media (min-width: 768px) {
+  .section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.sectionWhite {
+  background-color: #ffffff;
+}
+.sectionGray {
+  background-color: var(--bg-light-gray, #f9fafb);
+}
+
+.sectionContainer {
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  width: 100%;
+}
+
+.sectionTitle {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 3.5rem;
+  text-align: center;
+  color: var(--text-color-dark, #111827);
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+@media(min-width: 768px) {
+    .sectionTitle {
+        font-size: 2.5rem;
+    }
+}
+.sectionTitleHighlight {
+    color: var(--accent-color, #f97316);
+}
+.sectionTitle::after { /* Подчеркивание заголовка */
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--accent-color, #f97316);
+  border-radius: 2px;
+}
+
+
+/* ===== Hero Section ===== */
+.heroSection {
+  position: relative;
+  height: 85vh;
+  min-height: 550px;
+  max-height: 850px;
+  background-image: url('/images/hero-background.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed; /* Параллакс эффект */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color-light, #f8fafc);
+  text-align: center;
+  isolation: isolate; /* Создаем новый контекст наложения для псевдоэлемента */
+}
+/* Оверлей для затемнения фона */
+.heroSection::before {
+    content: '';
+    position: absolute;
+    inset: 0; /* Растягиваем на весь родительский блок */
+    background: linear-gradient(to top, rgba(17, 24, 39, 0.85) 0%, rgba(17, 24, 39, 0.5) 60%, rgba(17, 24, 39, 0.2) 100%);
+    z-index: 1; /* Под контентом */
+}
+/* .heroOverlay { display: none; } - Можно удалить, не используется */
+
+.heroContent {
+  position: relative; /* Поверх оверлея */
+  z-index: 2;
+  max-width: 850px;
+  padding: 0 1.5rem;
+}
+
+.heroTitle {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+@media (min-width: 768px) { .heroTitle { font-size: 4.25rem; } }
+
+.heroTitleHighlight { color: var(--accent-color, #f97316); }
+
+.heroSubtitle {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.95;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+@media (min-width: 768px) { .heroSubtitle { font-size: 1.25rem; } }
+
+.heroButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent-color, #f97316);
+  color: #ffffff;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+.heroButton:hover {
+  background-color: var(--accent-color-dark, #ea580c);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+.heroButtonIcon { width: 1.25rem; height: 1.25rem; }
+
+
+/* ===== SVG Разделители ===== */
+.shapeDivider, .shapeDividerAngle {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg); /* Волна должна быть перевернута */
+}
+.shapeDivider svg, .shapeDividerAngle svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 80px;
+}
+.shapeDivider .shapeFill { fill: var(--bg-light-gray, #f9fafb); } /* Фон следующей секции */
+
+.shapeDividerAngle {
+     transform: none; /* Угол не переворачиваем */
+     margin-top: -1px; /* Небольшое перекрытие */
+}
+.shapeDividerAngle svg { height: 50px; } /* Высота скоса */
+.shapeDividerAngle .shapeFillAngle { fill: #ffffff; } /* Фон следующей секции */
+
+
+/* ===== Секция Преимущества ===== */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+}
+@media (min-width: 640px) { .featuresGrid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; } }
+@media (min-width: 1024px) { .featuresGrid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+
+.featureItem {
+  background-color: transparent; /* Без фона */
+  padding: 1.5rem 0.5rem;
+  border-radius: 0;
+  text-align: center;
+  box-shadow: none; /* Без тени */
+  transition: transform 0.25s ease-out;
+  border-bottom: 2px solid transparent; /* Линия снизу для hover */
+}
+.featureItem:hover {
+  transform: translateY(-4px); /* Легкий подъем */
+   border-bottom-color: var(--accent-color-light, #FFF7ED); /* Появление линии */
+}
+
+.featureIconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent; /* Без фона */
+  color: var(--accent-color, #f97316); /* Цвет иконки */
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  margin-bottom: 1.25rem;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+  box-shadow: none;
+}
+
+.featureIcon { width: 2.5rem; height: 2.5rem; }
+
+.featureTitle {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  color: var(--text-color-dark, #111827);
+}
+
+.featureText {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.95rem;
+  color: var(--text-color-base, #374151);
+  line-height: 1.6;
+}
+
+
+/* ===== Секция Техника ===== */
+.equipmentGrid {
+  display: grid;
+  /* grid-template-columns: repeat(1, 1fr); - Можно убрать, auto-fill сделает 1 колонку, если нужно */
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); /* Адаптивная сетка */
+  gap: 2rem;
+}
+/* Убираем медиа-запрос, т.к. auto-fill сам адаптируется */
+/* @media (min-width: 768px) { ... } */
+
+/* --- КАРТОЧКА КАТЕГОРИИ С ИСПРАВЛЕННЫМ HOVER --- */
+.equipmentCard {
+  background-color: #ffffff; /* Белый фон карточки */
+  border-radius: 12px;
+  overflow: hidden; /* <-- ВАЖНО: Обрезаем выходящее */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* Плавность для всей карточки */
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+.equipmentCard:hover {
+  transform: translateY(-6px); /* Подъем карточки */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1); /* Усиление тени */
+}
+
+.equipmentImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10; /* Соотношение сторон изображения */
+  background-color: #e5e7eb; /* Фон-заглушка */
+  overflow: hidden; /* <-- ВАЖНО: Обрезаем изображение */
+}
+
+/* Стили для тега img, который рендерит next/image */
+.equipmentImageWrapper img {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Плавный зум */
+    /* object-fit: cover; должен быть задан в style пропсе Image */
+    width: 100%; /* Гарантируем размер */
+    height: 100%;
+}
+/* Эффект зума для img при наведении на КАРТОЧКУ */
+.equipmentCard:hover .equipmentImageWrapper img {
+    transform: scale(1.08); /* Зум изображения */
+}
+
+.equipmentImageOverlay {
+  position: absolute;
+  inset: 0; /* Растягиваем на весь wrapper */
+  background: linear-gradient(to top, rgba(17, 24, 39, 0.75) 0%, rgba(17, 24, 39, 0) 60%); /* Градиент снизу */
+  z-index: 1; /* Под текстом */
+  transition: opacity 0.3s ease; /* Плавность для hover эффекта */
+  pointer-events: none; /* Не мешает взаимодействию */
+}
+/* Можно сделать оверлей чуть заметнее при наведении */
+.equipmentCard:hover .equipmentImageOverlay {
+  opacity: 0.9;
+}
+
+.equipmentTitleOverImage {
+    position: absolute;
+    bottom: 1rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 2; /* Поверх оверлея */
+    font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-color-light, #f8fafc);
+    line-height: 1.3;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    /* Убрали transition отсюда */
+}
+
+.equipmentCardContent {
+  padding: 1.25rem 1.5rem 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff; /* Фон для контентной части */
+}
+
+.equipmentDescription {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.9rem; /* Чуть меньше */
+  color: var(--text-color-base, #374151);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  flex-grow: 1; /* Занимает место до кнопки */
+}
+
+.equipmentButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: transparent;
+  color: var(--accent-orange, #f97316);
+  padding: 0.5rem 0; /* Только вертикальный, чтобы подчеркивание было по ширине */
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 0;
+  text-decoration: none;
+  transition: color 0.2s ease; /* Убрали transform */
+  margin-top: auto; /* Прижимает кнопку к низу */
+  align-self: flex-start; /* Не растягивать */
+  border: none;
+  position: relative;
+}
+/* Подчеркивание для кнопки */
+.equipmentButton::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0; /* Линия под текстом */
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color-light, #FFF7ED); /* Светлый фон линии */
+    transform: scaleX(0); /* Скрыта */
+    transform-origin: left;
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Анимируем и цвет фона */
+}
+.equipmentButton:hover {
+  color: var(--accent-orange-dark, #ea580c);
+  /* transform: none; - Убрано */
+}
+.equipmentButton:hover::after {
+     transform: scaleX(1); /* Показываем линию */
+     background-color: var(--accent-orange, #f97316); /* Линия становится яркой */
+}
+
+.equipmentButton svg {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.2s ease;
+}
+.equipmentButton:hover svg {
+    transform: translateX(3px); /* Сдвиг иконки */
+}
+/* --- Конец стилей Секции Техника --- */

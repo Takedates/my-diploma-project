@@ -1,0 +1,170 @@
+/* src/app/news/[slug]/singlePost.module.css (Удалены пустые правила) */
+
+/* УДАЛЕН пустой/закомментированный блок :root */
+
+/* --- Общий контейнер статьи --- */
+.articleContainer {
+  max-width: 850px;
+  margin: 3rem auto 6rem auto;
+  padding: 0 1.5rem;
+}
+
+/* --- Контейнер для ошибок --- */
+.messageContainer {
+    max-width: 800px;
+    margin: 3rem auto 6rem auto;
+    padding: 2.5rem;
+    text-align: center;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    color: #991b1b;
+}
+.messageContainer h1 {
+    font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #b91c1c;
+}
+.messageContainer p {
+    margin-bottom: 2rem;
+    color: #b91c1c;
+    opacity: 0.9;
+}
+
+/* --- Шапка статьи --- */
+.articleHeader {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  text-align: left;
+}
+
+.title {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-color-dark, #111827);
+  margin-bottom: 0.75rem;
+}
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.75rem;
+  }
+}
+
+.date {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.9rem;
+  color: #6B7280;
+}
+
+
+/* --- Изображение --- */
+.imageWrapper {
+  margin-bottom: 3rem;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* --- Контент Статьи (Portable Text) --- */
+.bodyContent {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: #374151;
+}
+/* Базовые стили для тегов внутри */
+.bodyContent > *:first-child { margin-top: 0; }
+.bodyContent h2 {
+    font-family: var(--font-montserrat);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-color-dark);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+.bodyContent h3 {
+    font-family: var(--font-montserrat);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-color-dark);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+.bodyContent a {
+    color: var(--accent-color, #f97316);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.bodyContent a:hover {
+    color: var(--accent-color-dark, #ea580c);
+}
+.bodyContent ul, .bodyContent ol {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+}
+.bodyContent blockquote {
+    border-left: 3px solid var(--accent-color, #f97316);
+    padding: 0.5rem 1.25rem;
+    margin: 2rem 0;
+    background-color: var(--bg-light-gray, #f9fafb);
+    color: #4B5563;
+    font-style: italic;
+}
+.bodyContent blockquote p:last-child { margin-bottom: 0; }
+.bodyContent img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 2.5rem auto;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Стиль для сообщения об отсутствии контента */
+.noContentMessage {
+    color: #6B7280;
+    font-style: italic;
+    text-align: center;
+    padding: 3rem 0;
+    font-size: 1.1rem;
+}
+
+
+/* --- Ссылка "Назад" --- */
+.backLinkWrapper {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, #e5e7eb);
+  text-align: left;
+}
+
+.backLink {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  color: #4B5563;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  transition: color 0.2s;
+}
+.backLink:hover {
+  color: var(--accent-color, #F97316);
+}
+
+/* УБЕДИТЕСЬ, ЧТО НЕТ ДРУГИХ ПУСТЫХ ПРАВИЛ В КОНЦЕ ФАЙЛА */

@@ -1,0 +1,99 @@
+/* src/app/login/login.module.css */
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(80vh - 100px); /* Примерная высота, чтобы было по центру */
+  padding: 2rem 1rem;
+}
+
+.loginBox {
+  background-color: white;
+  padding: 2.5rem; /* p-10 */
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+  width: 100%;
+  max-width: 400px; /* Максимальная ширина формы */
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-montserrat);
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 700;
+  margin-bottom: 2rem; /* mb-8 */
+  color: #1F2937; /* gray-800 */
+}
+
+.formGroup {
+  margin-bottom: 1.25rem; /* mb-5 */
+  text-align: left; /* Выравниваем лейблы по левому краю */
+}
+
+.label {
+  display: block;
+  font-family: var(--font-roboto);
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500;
+  color: #374151; /* gray-700 */
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #D1D5DB; /* gray-300 */
+  border-radius: 0.375rem;
+  font-family: var(--font-roboto);
+  font-size: 1rem;
+  color: #111827;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input:focus {
+  outline: none;
+  border-color: #F97316;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.3);
+}
+
+.errorMessage {
+  color: #DC2626; /* red-600 */
+  background-color: #FEE2E2; /* red-100 */
+  border: 1px solid #FCA5A5; /* red-300 */
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-roboto);
+  font-size: 0.9rem;
+  text-align: left; /* Выравниваем текст ошибки */
+}
+
+.button {
+  width: 100%; /* Кнопка на всю ширину */
+  display: inline-block;
+  background-color: #F97316;
+  color: white;
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s, opacity 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.5rem; /* Небольшой отступ сверху */
+}
+.button:hover {
+  background-color: #EA580C;
+  transform: translateY(-1px);
+}
+.button:active {
+   transform: translateY(0px);
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

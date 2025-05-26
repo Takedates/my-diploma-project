@@ -1,0 +1,83 @@
+/* src/app/globals.css */
+
+/* Tailwind директивы В САМОМ НАЧАЛЕ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Глобальный сброс и box-sizing --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* Убираем стандартные рамки */
+  border-width: 0;
+  border-style: solid;
+  border-color: theme('borderColor.DEFAULT', currentColor);
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  /* ЗАПРЕЩЕНО: overflow, overflow-x, overflow-y */
+  -webkit-tap-highlight-color: transparent; /* Убираем подсветку при тапе на мобильных */
+}
+
+body {
+  min-height: 100%;
+  line-height: 1.6; /* Базовая высота строки */
+  /* Шрифты и цвета применяются через Tailwind классы в layout.tsx */
+  /* ЗАПРЕЩЕНО: overflow, overflow-x, overflow-y */
+}
+
+/* Убираем стили для #__next, так как flex применен к body */
+
+/* --- Пользовательские переменные (если нужны помимо Tailwind) --- */
+:root {
+  /* Переменные шрифтов теперь управляются через классы в layout.tsx */
+  /* --font-montserrat: ...; */
+  /* --font-roboto: ...; */
+
+  /* Можно оставить основные цвета для CSS Modules, если они там используются */
+  --header-bg: theme('colors.gray.800', #1f2937); /* Пример получения цвета из Tailwind */
+  --footer-bg: theme('colors.gray.900', #111827);
+  --body-bg: theme('colors.gray.100', #f9fafb);
+  --section-gray-bg: theme('colors.gray.50', #f3f4f6);
+  --text-color-dark: theme('colors.gray.900', #111827);
+  --text-color-base: theme('colors.gray.700', #374151);
+  --text-color-secondary: theme('colors.gray.500', #6b7280);
+  --text-color-light: theme('colors.white', #ffffff);
+  --accent-orange: theme('colors.orange.500', #f97316);
+  --accent-orange-dark: theme('colors.orange.600', #ea580c);
+  --accent-yellow: theme('colors.amber.500', #f59e0b);
+  --border-color: theme('colors.gray.300', #d1d5db);
+  --accent-color-light: theme('colors.orange.500/20', rgba(249, 115, 22, 0.2)); /* Пример прозрачности Tailwind */
+}
+
+/* --- Другие глобальные стили --- */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Можно добавить стили для плавного скролла к якорям */
+/* html:focus-within { */
+/*  scroll-behavior: smooth; */
+/* } */
+
+/* Стили для кастомного скроллбара (опционально) */
+/* ::-webkit-scrollbar { */
+/*   width: 8px; */
+/* } */
+/* ::-webkit-scrollbar-track { */
+/*   background: #f1f1f1; */
+/* } */
+/* ::-webkit-scrollbar-thumb { */
+/*   background: #888; */
+/*   border-radius: 4px; */
+/* } */
+/* ::-webkit-scrollbar-thumb:hover { */
+/*   background: #555; */
+/* } */

@@ -1,0 +1,70 @@
+/* src/components/Footer.module.css */
+
+.footer {
+  background-color: var(--footer-bg, #1f2937); /* Темно-серый фон (gray-800) - Используем переменную, если есть */
+  color: #9ca3af; /* Светло-серый текст (gray-400) */
+  padding: 2rem 1.5rem; /* Сделаем отступы чуть больше */
+  margin-top: auto; /* Прижимает футер к низу */
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.875rem; /* text-sm */
+}
+
+/* Используем этот класс как основной контейнер */
+.footerContent {
+  max-width: 1140px; /* Или ваша стандартная ширина контейнера */
+  margin: 0 auto;
+  text-align: center; /* Центрируем текст */
+}
+
+.footerContent p {
+  margin-bottom: 0.5rem; /* Базовый отступ для параграфов в футере */
+}
+.footerContent p:last-child {
+  margin-bottom: 0;
+}
+
+.copyrightAndTerms {
+  font-size: 0.875rem; /* text-sm */
+}
+
+/* СТИЛЬ ДЛЯ ССЫЛКИ "Все права защищены" */
+.footerLink {
+  color: #d1d5db; /* Чуть светлее основного текста (gray-300) */
+  text-decoration: underline;
+  text-decoration-color: #4b5563; /* Серое подчеркивание (gray-600) */
+  text-underline-offset: 2px; /* Небольшой отступ подчеркивания */
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: #ffffff; /* Белый при наведении */
+  text-decoration-color: var(--accent-orange, #f97316); /* Акцентное подчеркивание */
+}
+
+/* СТИЛИ ДЛЯ СТРОКИ РАЗРАБОТЧИКА */
+.developerCredit {
+    margin-top: 0.75rem; /* Немного увеличим отступ сверху */
+    font-size: 0.8rem;
+    opacity: 0.8; /* Чуть заметнее */
+}
+
+/* СТИЛИ ДЛЯ ССЫЛКИ РАЗРАБОТЧИКА (ваши стили) */
+.developerLink {
+  /* display: inline-block; */ /* Убрал, так как <a> по умолчанию inline */
+  font-size: inherit; /* Наследует размер от .developerCredit */
+  color: #6b7280; /* Тусклый цвет (gray-500) */
+  text-decoration: none;
+  transition: color 0.3s ease-in-out, text-decoration 0.2s ease-in-out; /* Добавил text-decoration в transition */
+}
+
+.developerLink:hover {
+  color: var(--accent-orange, #f97316); /* Становится оранжевой при наведении */
+  text-decoration: underline; /* Добавляем подчеркивание при наведении */
+}
+/* --- КОНЕЦ СТИЛЕЙ ДЛЯ ССЫЛКИ РАЗРАБОТЧИКА --- */
+
+/* Убрал старый .container и .copyright, так как используем .footerContent и .copyrightAndTerms */
+/*
+.container { ... }
+.copyright { ... }
+*/

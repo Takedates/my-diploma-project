@@ -1,0 +1,212 @@
+/* src/app/catalog/catalog.module.css (Полный код с исправлениями и улучшениями) */
+
+/* ===== Переменные (пример) ===== */
+/* Убедитесь, что они определены глобально или здесь */
+/* :root {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+  --text-color-dark: #111827;
+  --text-color-base: #374151;
+  --accent-color: #f97316;
+  --accent-color-light: #FFF7ED;
+  --accent-color-dark: #ea580c;
+  --border-color: #e5e7eb;
+  --bg-light-gray: #f9fafb;
+} */
+
+/* ===== Общий контейнер страницы ===== */
+.catalogPageContainer {
+  max-width: 1200px;
+  margin: 2rem auto 4rem auto;
+  padding: 0 1.5rem;
+}
+
+/* ===== Заголовок страницы ===== */
+.pageHeader {
+    text-align: left;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.pageTitle {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-color-dark, #111827);
+  margin-bottom: 0.5rem;
+  display: inline-block; /* Для корректной работы подчеркивания */
+}
+@media (min-width: 768px) {
+    .pageTitle { font-size: 2.5rem; }
+}
+.titleHighlight {
+    color: var(--accent-color, #f97316);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.3rem;
+}
+.titleHighlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-color, #f97316);
+    border-radius: 1px;
+    transform: scaleX(0.8);
+    opacity: 0.8;
+}
+
+.pageSubtitle {
+    font-family: var(--font-roboto, 'Roboto', sans-serif);
+    font-size: 1rem;
+    color: var(--text-color-base, #374151);
+    margin-top: 0.5rem;
+}
+
+/* ===== Блок фильтров ===== */
+.filtersContainer {
+  background-color: #ffffff;
+  padding: 1.5rem; /* Уменьшаем паддинги для компактности */
+  border-radius: 8px;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.05); /* Немного другая тень */
+  border: 1px solid var(--border-color, #e5e7eb);
+}
+
+.filterGroup {
+  margin-bottom: 1.25rem;
+}
+.filterGroup:last-of-type {
+    margin-bottom: 0; /* Убираем отступ, если это последняя группа перед кнопкой сброса */
+}
+.filterGroup:has(+ .resetButton) { /* Убираем отступ, если СЛЕДУЮЩИЙ элемент - кнопка сброса */
+    margin-bottom: 1.25rem;
+}
+.filterGroup:last-child:not(:has(+ .resetButton)) { /* Если последняя и нет кнопки сброса */
+    margin-bottom: 0;
+}
+
+
+.filterLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-color-base, #374151);
+  margin-bottom: 0.6rem;
+}
+.filterLabel svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--text-color-base, #4b5563);
+}
+
+.filterButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.filterButton {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  background-color: #f3f4f6; /* Светло-серый фон для неактивных */
+  color: var(--text-color-base, #374151);
+  border: 1px solid transparent; /* Без видимой рамки по умолчанию */
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+.filterButton:hover {
+  background-color: #e5e7eb; /* Темнее серый */
+  transform: translateY(-1px);
+}
+
+.activeFilter { /* Активная кнопка фильтра */
+  background-color: var(--accent-color, #f97316);
+  color: white;
+  border-color: var(--accent-color, #f97316);
+  font-weight: 600;
+}
+.activeFilter:hover {
+  background-color: var(--accent-color-dark, #ea580c);
+  border-color: var(--accent-color-dark, #ea580c);
+  transform: translateY(0px);
+}
+
+.resetButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  background-color: transparent;
+  color: var(--accent-color, #f97316);
+  border: 1px solid var(--accent-color-light, #fed7aa);
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.resetButton svg {
+    width: 1rem;
+    height: 1rem;
+}
+.resetButton:hover {
+  background-color: var(--accent-color-light, #FFF7ED);
+  color: var(--accent-color-dark, #ea580c);
+}
+
+/* ===== Сетка Каталога ===== */
+.equipmentGrid {
+  display: grid;
+  /* Адаптивная сетка: минимум 280px, максимум 1fr */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.75rem; /* Увеличим немного отступ */
+}
+@media (min-width: 1024px) {
+  .equipmentGrid {
+    gap: 2rem; /* Больше отступ на больших экранах */
+  }
+}
+
+/* ===== Индикаторы и Сообщения ===== */
+.loadingIndicator,
+.errorIndicator,
+.noResults {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 1rem;
+  color: var(--text-color-base, #4b5563);
+}
+.loadingIndicator { /* Можно добавить анимацию спиннера */
+  min-height: 200px; /* Чтобы страница не прыгала */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.errorIndicator {
+  color: #dc2626;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 1.5rem; /* Увеличим отступы */
+}
+.noResults {
+  grid-column: 1 / -1; /* Занимает всю ширину грида, если он уже отображается */
+  padding: 4rem 1rem; /* Больше отступы */
+}
+.noResults p {
+    margin-bottom: 0.75rem; /* Больше отступ между строками */
+    line-height: 1.6;
+}

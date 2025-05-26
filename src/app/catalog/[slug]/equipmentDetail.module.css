@@ -1,0 +1,183 @@
+/* src/app/catalog/[slug]/equipmentDetail.module.css (ПОЛНЫЙ КОД С ДОП. УЛУЧШЕНИЯМИ) */
+
+.detailContainer {
+  padding: 1rem 0 3rem 0; /* Увеличили нижний отступ */
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  margin-top: 1.5rem; /* Увеличили отступ сверху */
+  padding: 2.5rem; /* Увеличили внутренние отступы */
+}
+@media (max-width: 768px) {
+  .detailContainer { padding: 1.5rem; }
+}
+
+
+.breadcrumbs {
+  font-family: var(--font-roboto);
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-bottom: 1.5rem;
+}
+.breadcrumbs a { color: #F97316; text-decoration: none; }
+.breadcrumbs a:hover { text-decoration: underline; }
+.breadcrumbs span { color: #1F2937; font-weight: 500; }
+
+
+.title {
+  font-family: var(--font-montserrat);
+  font-size: 2.25rem; /* Чуть больше */
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: #111827;
+  line-height: 1.3;
+}
+@media (min-width: 768px) { .title { font-size: 2.75rem; } } /* Еще больше на десктопе */
+
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem; /* Увеличиваем отступ */
+  margin-bottom: 3.5rem; /* Увеличиваем отступ */
+}
+@media (min-width: 768px) { .mainContent { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .mainContent { grid-template-columns: 3fr 2fr; gap: 4rem;} }
+
+
+/* --- Галерея --- */
+.gallery { }
+
+.mainImageWrapper { /* Обертка для анимации */
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-radius: 0.5rem; /* Более заметное скругление */
+    border: 1px solid #e5e7eb; /* Рамка */
+}
+
+.mainImage {
+   display: block;
+   width: 100%;
+   height: 100%;
+   max-height: 600px; /* Ограничение высоты */
+   object-fit: contain; /* Вписываем фото */
+   background-color: #ffffff; /* Белый фон на случай contain */
+}
+
+.mainImagePlaceholder {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 600px;
+  background-color: #f3f4f6;
+  display: flex; align-items: center; justify-content: center;
+  color: #9ca3af; border-radius: 0.5rem; margin-bottom: 1rem;
+  font-family: var(--font-roboto);
+}
+.thumbnailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Делаем миниатюры чуть меньше */
+  gap: 0.75rem;
+}
+.thumbnailWrapper {
+  border: 2px solid #e5e7eb; /* Серая рамка по умолчанию */
+  border-radius: 0.375rem; /* Мягче скругление */
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; /* Добавили transform в transition */
+  aspect-ratio: 3 / 2;
+  background-color: white; /* Фон для миниатюр */
+}
+.thumbnailWrapper:hover {
+   border-color: #fbbf24; /* Желтая рамка при наведении */
+   transform: scale(1.05); /* --- НОВОЕ: легкое увеличение при наведении --- */
+}
+.thumbnailImage {
+   display: block; width: 100%; height: 100%; object-fit: cover;
+}
+.activeThumbnail { /* Стиль для активной миниатюры */
+  border-color: #F97316;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.5);
+}
+
+
+/* --- Основная Информация --- */
+.mainInfo {
+  background-color: #F9FAFB;
+  padding: 2rem; /* Увеличиваем паддинг */
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.sectionTitle {
+  font-family: var(--font-montserrat);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.specsTable {
+  width: 100%; border-collapse: collapse; font-family: var(--font-roboto);
+  font-size: 1rem; margin-bottom: 2rem;
+}
+.specsTable th, .specsTable td { padding: 0.8rem 0; text-align: left; border-bottom: 1px dashed #e5e7eb; vertical-align: top; }
+.specsTable tr:last-child th, .specsTable tr:last-child td { border-bottom: none; }
+.specsTable th { font-weight: 600; color: #374151; width: 45%; padding-right: 1rem; } /* Добавляем отступ справа */
+.specsTable td { color: #1f2937; font-weight: 500; }
+/* --- НОВОЕ: Чередующийся фон для строк таблицы --- */
+.specsTable tbody tr:nth-child(odd) {
+    background-color: rgba(243, 244, 246, 0.5); /* Очень легкий серый фон для нечетных строк */
+}
+
+
+/* --- Статус наличия --- */
+.statusAvailable, .statusUnavailable {
+   font-family: var(--font-roboto); font-weight: 600; margin-bottom: 2rem; /* Увеличиваем отступ */
+   padding: 0.35rem 0.85rem; border-radius: 0.25rem; display: inline-flex;
+   align-items: center; gap: 0.35rem; font-size: 0.95rem; /* Увеличиваем шрифт */
+}
+.statusAvailable { color: #15803d; background-color: #DCFCE7; }
+.statusUnavailable { color: #4B5563; background-color: #F3F4F6; }
+
+
+/* --- Кнопка запроса --- */
+.requestButton {
+  display: block; /* Делаем блочной */
+  width: 100%; /* На всю ширину */
+  text-align: center; /* Центрируем текст */
+  background-color: #F97316; color: white; font-family: var(--font-roboto);
+  font-weight: 700; padding: 0.85rem 1.75rem; border-radius: 0.375rem;
+  transition: background-color 0.3s, transform 0.1s; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em;
+  border: none; cursor: pointer; font-size: 1rem; /* Увеличиваем шрифт */
+}
+.requestButton:hover { background-color: #EA580C; transform: translateY(-1px); }
+
+
+/* --- Секция Описания --- */
+.descriptionSection { margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid #e5e7eb; }
+.descriptionContent { font-family: var(--font-roboto); font-size: 1rem; line-height: 1.8; color: #374151; }
+.descriptionContent p { margin-bottom: 1.25rem; }
+.descriptionContent h2 { font-family: var(--font-montserrat); font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; color: #111827; padding-bottom: 0.25rem; border-bottom: 1px solid #e5e7eb; }
+.descriptionContent h3 { font-family: var(--font-montserrat); font-size: 1.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; color: #111827; }
+.descriptionContent a { color: #F97316; text-decoration: underline; transition: color 0.2s; }
+.descriptionContent a:hover { color: #EA580C; }
+.descriptionContent ul, .descriptionContent ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+.descriptionContent li { margin-bottom: 0.5rem; }
+.descriptionContent blockquote { border-left: 4px solid #F97316; padding-left: 1rem; margin-left: 0; margin-right: 0; margin-bottom: 1.25rem; font-style: italic; color: #4B5563; }
+.descriptionContent figure { margin: 2rem 0; }
+.descriptionContent figure img { max-width: 100%; height: auto; border-radius: 0.375rem; }
+
+/* --- Ссылка Назад --- */
+.backLinkWrapper { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; text-align: center; }
+.backLink { font-family: var(--font-roboto); color: #4B5563; text-decoration: none; font-weight: 500; transition: color 0.2s; font-size: 0.95rem; }
+.backLink:hover { color: #F97316; }
+
+/* Загрузка/Ошибка */
+/* Этот стиль больше не используется для основного контента, т.к. page.tsx возвращает null при загрузке, но может быть полезен для других индикаторов */
+.loading { padding: 3rem; text-align: center; color: #6B7280; font-family: var(--font-roboto); font-style: italic;}

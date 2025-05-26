@@ -1,0 +1,106 @@
+/* src/components/ui/Modal/Modal.module.css */
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Полупрозрачный темный фон */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Выше большинства элементов */
+    padding: 1rem; /* Отступы на случай маленьких экранов */
+    overflow-y: auto; /* Прокрутка, если контент не влезает */
+  }
+  
+  .modalContent {
+    background-color: white;
+    border-radius: 0.5rem; /* Скругление */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Тень */
+    max-width: 550px; /* Максимальная ширина */
+    width: 100%;
+    max-height: 90vh; /* Максимальная высота */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Скрываем вылезающий контент */
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb; /* Разделитель */
+  }
+  
+  .title {
+    font-family: var(--font-montserrat);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #6b7280;
+    transition: color 0.2s;
+    line-height: 1; /* Убрать лишнюю высоту */
+  }
+  .closeButton:hover {
+    color: #1f2937;
+  }
+  .closeButton svg {
+    width: 1.5rem; /* Размер иконки */
+    height: 1.5rem;
+  }
+  
+  
+  .body {
+    padding: 1.5rem;
+    overflow-y: auto; /* Позволяет прокручивать только тело модалки */
+    flex-grow: 1; /* Занимает оставшееся место */
+  }
+  
+  /* Стили для полей формы (будут в EquipmentRequestForm.module.css, но можно базовые тут) */
+  .body label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-roboto);
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.875rem;
+  }
+  
+  .body input[type="text"],
+  .body input[type="email"],
+  .body input[type="tel"],
+  .body textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-family: var(--font-roboto);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .body input[type="text"]:focus,
+  .body input[type="email"]:focus,
+  .body input[type="tel"]:focus,
+  .body textarea:focus {
+    outline: none;
+    border-color: #F97316;
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.3);
+  }
+  
+  .body textarea {
+    min-height: 100px;
+    resize: vertical;
+  }

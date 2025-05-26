@@ -1,0 +1,270 @@
+/* src/app/contacts/contacts.module.css */
+
+.contactsContainer {
+  max-width: 1140px;
+  margin: 3rem auto 6rem auto;
+  padding: 0 1.5rem;
+}
+
+.pageHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.pageTitle {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: var(--text-color-dark, #111827);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+@media (min-width: 768px) {
+  .pageTitle { font-size: 3.25rem; }
+}
+
+.pageSubtitle {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 1.15rem;
+  color: var(--text-color-base, #374151);
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+@media (min-width: 1024px) {
+  .contentGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    gap: 4rem;
+  }
+}
+
+/* --- Блок Контактной Информации --- */
+.contactInfo {
+  padding-bottom: 2rem;
+}
+
+.infoTitle {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-color-dark, #111827);
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--accent-color, #f97316);
+  display: inline-block;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 1rem;
+  color: var(--text-color-base, #374151);
+  line-height: 1.7;
+}
+.infoItem:last-child {
+  margin-bottom: 0;
+}
+
+.infoIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--accent-color, #f97316);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.infoItem a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.infoItem a:hover {
+  color: var(--accent-color, #f97316);
+  border-bottom-color: var(--accent-color-light, #fed7aa);
+}
+.infoItem strong {
+ font-weight: 600;
+ color: var(--text-color-dark, #111827);
+ display: block;
+ margin-bottom: 0.2rem;
+}
+
+
+/* --- Стили для формы --- */
+.formTitle {
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-color-dark, #111827);
+  margin-bottom: 2.5rem;
+}
+
+.contactForm {
+ background-color: #ffffff;
+ padding: 2.5rem;
+ border-radius: 12px;
+ box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formLabel {
+  display: block;
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-color-base, #374151);
+  margin-bottom: 0.6rem;
+}
+
+.formInput,
+.formTextarea {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 8px;
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 1rem;
+  color: var(--text-color-dark, #111827);
+  background-color: #ffffff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: var(--accent-color, #f97316);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 3px var(--accent-color-light, rgba(249, 115, 22, 0.2));
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+/* --- НОВЫЕ И ДОПОЛНЕННЫЕ СТИЛИ --- */
+
+.formHint {
+    font-size: 0.8rem;
+    color: var(--text-secondary, #666);
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.formGroupCheckbox {
+  display: flex;
+  align-items: flex-start; /* Выравнивание по верху */
+  margin-top: 0.5rem; /* Отступ сверху перед чекбоксом */
+  margin-bottom: 1.5rem; /* Отступ снизу */
+  gap: 0.5rem; /* Расстояние между чекбоксом и текстом */
+}
+
+.formCheckbox {
+  margin-top: 0.2em; /* Небольшой сдвиг вниз для лучшего выравнивания с текстом */
+  flex-shrink: 0; /* Чтобы чекбокс не сжимался */
+  width: 1em; /* Примерный размер */
+  height: 1em;
+  cursor: pointer;
+}
+.formCheckbox:disabled {
+  cursor: not-allowed;
+}
+
+.checkboxLabel {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #555);
+  line-height: 1.5;
+  cursor: pointer; /* Чтобы вся метка была кликабельна */
+}
+
+.privacyLink {
+  color: var(--accent-color, #f97316); /* Используйте ваш акцентный цвет */
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.privacyLink:hover {
+  color: var(--accent-color-dark, #ea580c); /* Более темный оттенок при наведении */
+}
+
+
+/* Стили сообщений */
+.errorMessage,
+.successMessage {
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.5rem; /* Отступ снизу перед кнопкой/сноской */
+  border-radius: 8px; /* Сделаем как у инпутов */
+  font-size: 0.95rem;
+  text-align: left; /* Выравнивание по левому краю */
+  border: 1px solid transparent;
+}
+
+.errorMessage {
+  background-color: #fee2e2; /* red-100 */
+  color: #991b1b; /* red-800 */
+  border-color: #fecaca; /* red-200 */
+}
+.successMessage {
+  background-color: #dcfce7; /* green-100 */
+  color: #166534; /* green-800 */
+  border-color: #bbf7d0; /* green-200 */
+}
+
+/* Обертка для кнопки и сноски */
+.formActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 0.5rem; /* Уменьшим отступ, т.к. сообщение теперь выше */
+}
+
+.submitButton {
+  display: inline-block;
+  background-color: var(--accent-color, #f97316);
+  color: #ffffff;
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-weight: 600;
+  padding: 0.85rem 2.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s, opacity 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.25);
+  align-self: flex-start; /* Чтобы кнопка не растягивалась */
+}
+.submitButton:hover:not(:disabled) {
+  background-color: var(--accent-color-dark, #ea580c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(249, 115, 22, 0.3);
+}
+.submitButton:active:not(:disabled) {
+ transform: translateY(0px);
+ box-shadow: 0 3px 8px rgba(249, 115, 22, 0.2);
+}
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Сноска про обязательные поля */
+.requiredNote {
+  font-size: 0.8rem;
+  color: var(--text-secondary, #666);
+}
+/* --- Конец новых и дополненных стилей --- */
