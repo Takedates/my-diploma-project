@@ -1,87 +1,174 @@
-/* src/components/Header.module.css (Полный код) */
+/* src/components/Header.module.css */
 
-/* Убедитесь, что переменные шрифтов определены глобально */
-/* :root {
-  --font-montserrat: 'Montserrat', sans-serif;
-  --font-roboto: 'Roboto', sans-serif;
-} */
+/* Определение акцентного цвета, если он не определен глобально */
+/* Если :root уже есть в globals.css с --accent-color, эту часть можно не дублировать */
+:root {
+  --accent-color: #F97316; /* Оранжевый акцентный цвет по умолчанию */
+}
 
 .header {
-  /* --- Позиционирование и фон --- */
-  position: sticky; /* Делаем "липким" */
-  top: 0;          /* Прилипает к верху */
-  left: 0;         /* Выравнивание по левому краю */
-  width: 100%;     /* Занимает всю ширину */
-  z-index: 50;     /* Поверх другого контента */
-  background-color: #1F2937; /* Темно-серый (gray-800) */
-  color: white;    /* Цвет текста по умолчанию */
-  padding: 1rem 0; /* Вертикальные отступы (было 0.75rem) */
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* Тень */
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Высокий z-index, чтобы хедер был поверх всего */
+  background-color: #1F2937; /* Темно-серый (Tailwind gray-800) */
+  color: white;
+  padding: 0.75rem 0; /* Немного уменьшил вертикальный padding для компактности */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease; /* Плавный переход для возможных будущих эффектов */
 }
 
 .nav {
-  /* --- Контейнер для контента хедера --- */
-  max-width: 1280px; /* Максимальная ширина контента (xl) */
-  margin-left: auto; /* Центрирование */
+  max-width: 1280px; /* Tailwind: xl */
+  margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem; /* Боковые отступы */
-  padding-right: 1rem;
-  display: flex; /* Используем Flexbox для выравнивания */
-  justify-content: space-between; /* Лого слева, ссылки справа */
-  align-items: center; /* Выравнивание по вертикали */
+  padding-left: 1rem;  /* Tailwind: px-4 */
+  padding-right: 1rem; /* Tailwind: px-4 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem; /* Фиксированная высота для хедера, можно настроить */
 }
 
 .logoLink {
-  /* --- Стили для логотипа/названия компании --- */
-  font-family: var(--font-montserrat, 'Montserrat', sans-serif); /* Шрифт Montserrat */
-  font-size: 1.5rem; /* Размер шрифта (text-2xl) */
-  font-weight: 800; /* Очень жирный */
-  color: white; /* Цвет текста */
-  text-decoration: none; /* Убираем подчеркивание */
-  transition: opacity 0.3s ease; /* Плавный переход для hover */
-  white-space: nowrap; /* Запрещаем перенос строки */
+  font-family: var(--font-montserrat, 'Montserrat', sans-serif);
+  font-size: 1.375rem; /* Чуть меньше для баланса (между text-xl и text-2xl) */
+  font-weight: 700; /* Жирный */
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  padding: 0.5rem 0; /* Добавим немного padding для кликабельной области */
 }
 .logoLink:hover {
-  opacity: 0.8; /* Небольшая прозрачность при наведении */
+  opacity: 0.85;
 }
 
-.navLinks {
-  /* --- Контейнер для навигационных ссылок --- */
-  display: flex; /* Выстраиваем ссылки в ряд */
-  align-items: center; /* Выравниваем по центру */
-  gap: 2rem; /* Расстояние между ссылками (space-x-8) */
+.desktopNavLinks {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* Tailwind: space-x-6. Можно 2rem, если нужно больше */
 }
 
 .navLink {
-  /* --- Стили для отдельных навигационных ссылок --- */
-  font-family: var(--font-roboto, 'Roboto', sans-serif); /* Шрифт Roboto */
-  font-size: 1rem; /* Размер шрифта (text-base) */
-  font-weight: 500; /* Средняя жирность (medium) */
-  color: #D1D5DB; /* Светло-серый цвет (gray-300) */
-  text-decoration: none; /* Убираем подчеркивание */
-  position: relative; /* Для позиционирования псевдоэлемента */
-  padding-bottom: 0.35rem; /* Отступ снизу для линии */
-  transition: color 0.3s ease-in-out; /* Плавный переход цвета */
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 0.95rem; /* Немного меньше для компактности (близко к text-sm/text-base) */
+  font-weight: 500;
+  color: #D1D5DB; /* Tailwind: gray-300 */
+  text-decoration: none;
+  position: relative;
+  padding: 0.5rem 0.25rem; /* Добавим немного padding для кликабельной области */
+  transition: color 0.2s ease-in-out;
+  white-space: nowrap;
 }
 
-/* Псевдоэлемент для создания линии под ссылкой */
 .navLink::after {
   content: '';
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2px; /* Толщина линии */
-  background-color: var(--accent-color, #F97316); /* Оранжевый акцентный цвет */
-  transform: scaleX(0); /* Скрыта по умолчанию */
-  transform-origin: left; /* Анимация слева направо */
-  transition: transform 0.3s ease-in-out; /* Плавный переход */
+  width: 0%;
+  height: 2px;
+  bottom: 0; /* Линия прямо под текстом */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--accent-color);
+  transition: width 0.3s ease-in-out;
 }
 
-/* Эффекты при наведении на ссылку */
 .navLink:hover {
-  color: white; /* Текст становится белым */
+  color: white;
 }
-.navLink:hover::after {
-  transform: scaleX(1); /* Линия появляется */
+
+.navLink:hover::after,
+.navLinkActive::after { /* Для активной ссылки */
+  width: calc(100% - 0.5rem); /* Чтобы линия была чуть короче самого текста */
 }
+
+.navLinkActive { /* Класс для активной ссылки */
+  color: white;
+}
+
+/* --- Стили для мобильного меню --- */
+.mobileMenuButton {
+  display: none; /* Скрыт на десктопах по умолчанию */
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem; /* Увеличим область нажатия */
+  z-index: 1051; /* Выше, чем мобильное меню, чтобы всегда был кликабельным */
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  stroke-width: 2;
+}
+
+.mobileNav {
+  display: flex; /* Будет в DOM только когда isMobileMenuOpen === true */
+  flex-direction: column;
+  position: absolute;
+  top: 100%; /* Сразу под высотой хедера */
+  left: 0;
+  right: 0;
+  background-color: #111827; /* Еще темнее (gray-900) для контраста */
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border-top: 1px solid #374151; /* Разделитель (gray-700) */
+  /* Стили для анимации Framer Motion будут применены инлайн или через variants */
+}
+
+.mobileNavLink {
+  font-family: var(--font-roboto, 'Roboto', sans-serif);
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 500;
+  color: #D1D5DB; /* gray-300 */
+  text-decoration: none;
+  padding: 1rem 1.5rem; /* Увеличенные отступы */
+  text-align: left;
+  width: 100%;
+  border-bottom: 1px solid #374151; /* gray-700 */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.mobileNavLink:last-child {
+  border-bottom: none;
+}
+
+.mobileNavLink:hover,
+.navLinkActiveMobile { /* Для активной мобильной ссылки */
+  background-color: #374151; /* gray-700 */
+  color: white;
+}
+
+/* --- Медиа-запрос для мобильных устройств --- */
+/* Точка останова 768px (Tailwind: md) */
+@media (max-width: 768px) {
+  .desktopNavLinks {
+    display: none;
+  }
+  .mobileMenuButton {
+    display: block;
+  }
+  /* Если мобильное меню рендерится условно, дополнительных стилей для его показа здесь не нужно */
+  /* .mobileNav будет отображаться, когда isMobileMenuOpen === true в React */
+}
+
+/* Опционально: стили для стрелочки в кнопке EquipmentCard */
+.arrowIcon {
+  width: 1em; /* Размер относительно шрифта родителя */
+  height: 1em;
+  margin-left: 0.25em;
+  vertical-align: middle; /* Выравнивание по центру текста */
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Опционально: если кнопка "Подробнее" должна как-то анимировать стрелку при наведении на карточку */
+/* Это потребует стилизации .cardLinkWrapper:hover .arrowIcon */
+/* Например:
+.cardLinkWrapper:hover .detailsButton .arrowIcon {
+  transform: translateX(3px);
+}
+*/
