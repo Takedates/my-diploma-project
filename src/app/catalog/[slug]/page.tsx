@@ -40,10 +40,9 @@ interface FullEquipmentData {
   isAvailable?: boolean;
 }
 
+// ВРЕМЕННО ДЛЯ ДИАГНОСТИКИ
 interface PageProps {
-  params: {
-    slug: string;
-  };
+  params: any;
 }
 
 // --- GROQ ЗАПРОС ---
@@ -60,10 +59,9 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
   isAvailable
 }`;
 
-// УБИРАЕМ generateStaticParams ОТСЮДА
-
 export default function EquipmentDetailPage({ params }: PageProps) {
-  const { slug } = params;
+  // Безопасное извлечение slug, так как params теперь any
+  const slug = params?.slug as string | undefined;
 
   const [equipment, setEquipment] = useState<FullEquipmentData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -90,6 +88,7 @@ export default function EquipmentDetailPage({ params }: PageProps) {
       setSelectedImageUrl(null);
 
       try {
+        // console.log(`[EquipmentDetailPage] Fetching data for slug: ${slug}`); // Убрал для чистоты, если не нужен для отладки
         const data = await sanityClient.fetch<FullEquipmentData | null>(equipmentDetailQuery, { slug });
         if (data) {
           setEquipment(data);
@@ -105,6 +104,7 @@ export default function EquipmentDetailPage({ params }: PageProps) {
           setSelectedImageUrl('/images/placeholder-detail.jpg');
         }
       } catch (err: unknown) {
+        // console.error("[EquipmentDetailPage] Ошибка загрузки данных техники:", err); // Убрал для чистоты
         if (err instanceof Error) {
             setError(`Не удалось загрузить информацию о технике: ${err.message}`);
         } else {
@@ -116,7 +116,12 @@ export default function EquipmentDetailPage({ params }: PageProps) {
       }
     };
 
-    fetchEquipmentData();
+    if (slug) { // Вызываем fetchEquipmentData только если slug существует
+      fetchEquipmentData();
+    } else {
+      setError("Идентификатор техники не был предоставлен для загрузки данных.");
+      setLoading(false);
+    }
   }, [slug]);
 
   const handleThumbnailClick = (imageAsset?: SanityImageSource) => {
@@ -131,13 +136,20 @@ export default function EquipmentDetailPage({ params }: PageProps) {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  // Обновленная логика отображения состояний
+  if (!slug && !loading) { // Если slug не определен и загрузка не идет (или завершилась ошибкой из-за отсутствия slug)
+      return <div className={styles.errorMessage}>{error || "Ошибка: Идентификатор техники не определен."}</div>;
+  }
+
   if (loading) {
     return <div className={styles.loadingMessage}>Загрузка информации о технике...</div>;
   }
-  if (error) {
+
+  if (error) { // Если была ошибка при загрузке (даже если slug был)
     return <div className={styles.errorMessage}>{error}</div>;
   }
-  if (!equipment) {
+
+  if (!equipment) { // Если нет ошибки, но и данных нет (например, техника не найдена, но slug был корректен)
     return <div className={styles.infoMessage}>Информация о технике не найдена или временно недоступна.</div>;
   }
 
@@ -147,7 +159,6 @@ export default function EquipmentDetailPage({ params }: PageProps) {
   const categoryTitle = equipment.category?.title ?? 'Каталог';
 
   return (
-    // ... остальной JSX без изменений ...
     <>
       <div className={styles.detailContainer}>
         <nav className={styles.breadcrumbs}>
