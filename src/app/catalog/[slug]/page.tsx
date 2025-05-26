@@ -1,17 +1,16 @@
 // src/app/catalog/[slug]/page.tsx
 'use client';
 
-import React, { useState, useEffect, use } from 'react'; // Добавлен 'use'
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PortableText, PortableTextBlock } from '@portabletext/react'; // Убедитесь, что PortableTextBlock импортирован, если используется в FullEquipmentData
+import { PortableText, PortableTextBlock } from '@portabletext/react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Предполагаемые импорты - проверьте пути!
 import { sanityClient, urlFor, SanityImageSource } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
-import Modal from '@/components/ui/Modal/Modal'; // Проверьте путь
-import EquipmentRequestForm from '@/components/EquipmentRequestForm/EquipmentRequestForm'; // Проверьте путь
+import Modal from '@/components/ui/Modal/Modal';
+import EquipmentRequestForm from '@/components/EquipmentRequestForm/EquipmentRequestForm';
 
 import styles from './equipmentDetail.module.css';
 
@@ -36,7 +35,7 @@ interface FullEquipmentData {
   brand?: { name?: string };
   mainImage?: { asset?: SanityImageSource; alt?: string };
   gallery?: GalleryImage[];
-  description?: PortableTextBlock[]; // Тип для Portable Text
+  description?: PortableTextBlock[];
   specifications?: Specification[];
   isAvailable?: boolean;
 }
@@ -48,7 +47,7 @@ interface PageParams {
 
 // Тип для пропсов компонента страницы
 interface PageProps {
-  params: PageParams | Promise<PageParams>; // params может быть промисом
+  params: PageParams;
 }
 
 // --- GROQ ЗАПРОС ---
@@ -65,9 +64,9 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
   isAvailable
 }`;
 
+export default function EquipmentDetailPage({ params }: PageProps) {
+  const { slug } = params;
 
-// --- Внутренний компонент для отображения деталей ---
-function EquipmentDetailsContent({ slug }: { slug: string }) {
   const [equipment, setEquipment] = useState<FullEquipmentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -89,11 +88,11 @@ function EquipmentDetailsContent({ slug }: { slug: string }) {
 
       setLoading(true);
       setError(null);
-      setEquipment(null); // Сбрасываем предыдущие данные
-      setSelectedImageUrl(null); // Сбрасываем изображение
+      setEquipment(null);
+      setSelectedImageUrl(null);
 
       try {
-        console.log(`[EquipmentDetailsContent] Fetching data for slug: ${slug}`);
+        console.log(`[EquipmentDetailPage] Fetching data for slug: ${slug}`);
         const data = await sanityClient.fetch<FullEquipmentData | null>(equipmentDetailQuery, { slug });
         if (data) {
           setEquipment(data);
@@ -102,14 +101,14 @@ function EquipmentDetailsContent({ slug }: { slug: string }) {
           } else if (data.gallery && data.gallery.length > 0 && data.gallery[0].asset) {
             setSelectedImageUrl(urlFor(data.gallery[0].asset)?.width(900).height(600).auto('format').url() ?? '/images/placeholder-detail.jpg');
           } else {
-            setSelectedImageUrl('/images/placeholder-detail.jpg'); // Плейсхолдер по умолчанию
+            setSelectedImageUrl('/images/placeholder-detail.jpg');
           }
         } else {
           setError(`Техника с адресом "${slug}" не найдена.`);
           setSelectedImageUrl('/images/placeholder-detail.jpg');
         }
       } catch (err: unknown) {
-        console.error("[EquipmentDetailsContent] Ошибка загрузки данных техники:", err);
+        console.error("[EquipmentDetailPage] Ошибка загрузки данных техники:", err);
         if (err instanceof Error) {
             setError(`Не удалось загрузить информацию о технике: ${err.message}`);
         } else {
@@ -122,7 +121,7 @@ function EquipmentDetailsContent({ slug }: { slug: string }) {
     };
 
     fetchEquipmentData();
-  }, [slug]); // Перезагрузка данных при изменении slug
+  }, [slug]);
 
   const handleThumbnailClick = (imageAsset?: SanityImageSource) => {
     if (imageAsset) {
@@ -143,12 +142,9 @@ function EquipmentDetailsContent({ slug }: { slug: string }) {
     return <div className={styles.errorMessage}>{error}</div>;
   }
   if (!equipment) {
-    // Эта ситуация покрывается error, если данные не найдены, или loading.
-    // Но можно оставить для случая, если fetchEquipmentData завершился без ошибки, но data все равно null.
     return <div className={styles.infoMessage}>Информация о технике не найдена или временно недоступна.</div>;
   }
 
-  // Хлебные крошки
   const categoryLink = equipment.category?.slug?.current
     ? `/catalog?category=${equipment.category.slug.current}`
     : "/catalog";
@@ -288,16 +284,4 @@ function EquipmentDetailsContent({ slug }: { slug: string }) {
       </Modal>
     </>
   );
-}
-
-// --- Компонент страницы (обертка), использующий React.use() ---
-export default function EquipmentDetailPageWrapper({ params }: PageProps) {
-  // Используем React.use() для "разворачивания" params, если это промис
-  // Next.js предполагает, что 'params' может быть промисом в Server Components
-  // или в клиентских компонентах, которые могут быть отрендерены на сервере.
-  // 'use' гарантирует, что мы работаем с разрешенным значением.
-  const resolvedParams = use(params as Promise<PageParams>); // Явное приведение типа, если TypeScript жалуется
-
-  // Теперь resolvedParams это объект { slug: string }
-  return <EquipmentDetailsContent slug={resolvedParams.slug} />;
 }
