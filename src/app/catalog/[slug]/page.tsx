@@ -1,20 +1,10 @@
 // src/app/catalog/[slug]/page.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { PortableText, PortableTextBlock } from '@portabletext/react';
-import { motion, AnimatePresence } from 'framer-motion';
-
-import { sanityClient, urlFor, SanityImageSource } from '@/lib/sanityClient';
-import { groq } from 'next-sanity';
-import Modal from '@/components/ui/Modal/Modal';
-import EquipmentRequestForm from '@/components/EquipmentRequestForm/EquipmentRequestForm';
-
-import styles from './equipmentDetail.module.css';
+// ... все твои импорты ...
 
 // --- ТИПЫ ---
+// ... твои интерфейсы FullEquipmentData и т.д. остаются ...
 interface GalleryImage {
   _key: string;
   asset?: SanityImageSource;
@@ -40,9 +30,12 @@ interface FullEquipmentData {
   isAvailable?: boolean;
 }
 
-// ВРЕМЕННО ДЛЯ ДИАГНОСТИКИ
+
+// ВОЗВРАЩАЕМ КОНКРЕТНЫЙ ТИП ДЛЯ PROPS
 interface PageProps {
-  params: any;
+  params: {
+    slug: string; // Ожидаем, что slug всегда будет строкой
+  };
 }
 
 // --- GROQ ЗАПРОС ---
@@ -60,8 +53,13 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
 }`;
 
 export default function EquipmentDetailPage({ params }: PageProps) {
-  // Безопасное извлечение slug, так как params теперь any
-  const slug = params?.slug as string | undefined;
+  const { slug } = params; // Прямое получение slug, он должен быть string
+
+  // ... остальной код твоего компонента остается таким же, как в предыдущем полном варианте ...
+  // (useState, useEffect, handleThumbnailClick, openModal, closeModal, JSX)
+  // ВАЖНО: Убедись, что внутри useEffect и в других местах, где используется slug,
+  // нет проблем, если вдруг slug окажется undefined (хотя с таким типом это маловероятно).
+  // Проверка if (!slug) в начале useEffect все еще полезна.
 
   const [equipment, setEquipment] = useState<FullEquipmentData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -88,7 +86,6 @@ export default function EquipmentDetailPage({ params }: PageProps) {
       setSelectedImageUrl(null);
 
       try {
-        // console.log(`[EquipmentDetailPage] Fetching data for slug: ${slug}`); // Убрал для чистоты, если не нужен для отладки
         const data = await sanityClient.fetch<FullEquipmentData | null>(equipmentDetailQuery, { slug });
         if (data) {
           setEquipment(data);
@@ -104,7 +101,6 @@ export default function EquipmentDetailPage({ params }: PageProps) {
           setSelectedImageUrl('/images/placeholder-detail.jpg');
         }
       } catch (err: unknown) {
-        // console.error("[EquipmentDetailPage] Ошибка загрузки данных техники:", err); // Убрал для чистоты
         if (err instanceof Error) {
             setError(`Не удалось загрузить информацию о технике: ${err.message}`);
         } else {
@@ -116,12 +112,7 @@ export default function EquipmentDetailPage({ params }: PageProps) {
       }
     };
 
-    if (slug) { // Вызываем fetchEquipmentData только если slug существует
-      fetchEquipmentData();
-    } else {
-      setError("Идентификатор техники не был предоставлен для загрузки данных.");
-      setLoading(false);
-    }
+    fetchEquipmentData();
   }, [slug]);
 
   const handleThumbnailClick = (imageAsset?: SanityImageSource) => {
@@ -136,20 +127,13 @@ export default function EquipmentDetailPage({ params }: PageProps) {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  // Обновленная логика отображения состояний
-  if (!slug && !loading) { // Если slug не определен и загрузка не идет (или завершилась ошибкой из-за отсутствия slug)
-      return <div className={styles.errorMessage}>{error || "Ошибка: Идентификатор техники не определен."}</div>;
-  }
-
   if (loading) {
     return <div className={styles.loadingMessage}>Загрузка информации о технике...</div>;
   }
-
-  if (error) { // Если была ошибка при загрузке (даже если slug был)
+  if (error) {
     return <div className={styles.errorMessage}>{error}</div>;
   }
-
-  if (!equipment) { // Если нет ошибки, но и данных нет (например, техника не найдена, но slug был корректен)
+  if (!equipment) {
     return <div className={styles.infoMessage}>Информация о технике не найдена или временно недоступна.</div>;
   }
 
