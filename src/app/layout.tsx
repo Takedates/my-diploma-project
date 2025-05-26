@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 'use client'; // Необходимо для usePathname и анимаций на клиенте
 
-import React from 'react'; // Убрали 'use', он не нужен для этого варианта
+import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Montserrat, Roboto } from "next/font/google";
@@ -46,16 +46,24 @@ const pageTransition = {
   duration: 0.5
 };
 
-// Metadata лучше определять статически в файле page.tsx или layout.tsx верхнего уровня,
-// так как этот layout клиентский. Оставим это пустым или закомментированным.
-// export const metadata = { ... };
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
     <html lang="ru" className={`${montserrat.variable} ${roboto.variable}`}>
-      {/* Используем Tailwind классы для структуры и базовых стилей */}
+      <head>
+        {/* 
+          Добавляем метатег viewport для контроля масштабирования.
+          width=device-width: устанавливает ширину области просмотра равной ширине экрана устройства.
+          initial-scale=1: устанавливает начальный масштаб.
+          maximum-scale=1: запрещает пользователю увеличивать масштаб сверх начального.
+          user-scalable=no: дополнительно запрещает масштабирование пользователем (более строгий вариант).
+        */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        {/* Вы можете добавить сюда и другие метатеги, например, для SEO, если они не генерируются Next.js metadata API */}
+        {/* <title>ООО "Бизнес-Партнер"</title> */}
+        {/* <meta name="description" content="Продажа качественной спецтехники от ООО Бизнес-Партнер" /> */}
+      </head>
       <body className="font-sans flex flex-col min-h-screen bg-gray-100 text-gray-800">
 
         <Header /> {/* Хедер вне зоны анимации */}
