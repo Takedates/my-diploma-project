@@ -1,16 +1,16 @@
 // src/app/catalog/[slug]/page.tsx
-'use client';
+'use client'; // Оставляем, так как внутренняя логика клиентская
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PortableText, PortableTextBlock } from '@portabletext/react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { sanityClient, urlFor, SanityImageSource } from '@/lib/sanityClient'; // Предполагаемый путь
+import { sanityClient, urlFor, SanityImageSource } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
-import Modal from '@/components/ui/Modal/Modal'; // Предполагаемый путь
-import EquipmentRequestForm from '@/components/EquipmentRequestForm/EquipmentRequestForm'; // Предполагаемый путь
+import Modal from '@/components/ui/Modal/Modal';
+import EquipmentRequestForm from '@/components/EquipmentRequestForm/EquipmentRequestForm';
 
 import styles from './equipmentDetail.module.css';
 
@@ -40,10 +40,13 @@ interface FullEquipmentData {
   isAvailable?: boolean;
 }
 
+interface ResolvedPageParams {
+  slug: string;
+}
+
+// Заставляем params быть промисом, чтобы угодить сборщику
 interface PageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<ResolvedPageParams>;
 }
 
 // --- GROQ ЗАПРОС ---
@@ -60,9 +63,10 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
   isAvailable
 }`;
 
-export default function EquipmentDetailPage({ params }: PageProps) {
-  const { slug } = params;
 
+// Внутренний компонент для отображения, он всегда получает разрешенный slug
+function EquipmentContent({ slug }: { slug: string }) {
+  // ... (вся твоя логика useState, useEffect, JSX из предыдущего полного кода)
   const [equipment, setEquipment] = useState<FullEquipmentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,8 +75,8 @@ export default function EquipmentDetailPage({ params }: PageProps) {
 
   useEffect(() => {
     const fetchEquipmentData = async () => {
-      if (!slug || typeof slug !== 'string' || slug.trim() === '') {
-        setError("Идентификатор техники (slug) некорректен или отсутствует.");
+      if (!slug) {
+        setError("Идентификатор техники (slug) отсутствует.");
         setLoading(false);
         return;
       }
@@ -277,4 +281,16 @@ export default function EquipmentDetailPage({ params }: PageProps) {
       </Modal>
     </>
   );
+}
+
+// Компонент-обертка страницы, который ИСПОЛЬЗУЕТ React.use()
+export default function EquipmentDetailPageWrapper({ params }: PageProps) {
+  // Теперь params ОБЯЗАТЕЛЬНО Promise<ResolvedPageParams> согласно типу PageProps
+  const resolvedParams = use(params);
+
+  if (!resolvedParams?.slug) {
+    return <div>Ошибка: Идентификатор техники не определен после разрешения промиса.</div>;
+  }
+
+  return <EquipmentContent slug={resolvedParams.slug} />;
 }
