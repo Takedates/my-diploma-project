@@ -1,7 +1,7 @@
 // src/app/catalog/[slug]/page.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react'; // Убрали 'use' и 'Suspense' из импорта React
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PortableText, PortableTextBlock } from '@portabletext/react';
@@ -40,10 +40,9 @@ interface FullEquipmentData {
   isAvailable?: boolean;
 }
 
-// Тип для пропсов компонента страницы - МАКСИМАЛЬНО УПРОЩЕН
 interface PageProps {
   params: {
-    slug: string; // Ожидаем, что slug всегда будет строкой для клиентского компонента
+    slug: string;
   };
 }
 
@@ -61,9 +60,25 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
   isAvailable
 }`;
 
-// Основной компонент страницы
+// Функция для генерации статических параметров (может помочь сборщику)
+export async function generateStaticParams() {
+  // Вариант 1: Если хочешь пред-рендерить страницы
+  // try {
+  //   const slugsQuery = groq`*[_type == "equipment" && defined(slug.current)][].slug.current`;
+  //   const slugs: string[] | null = await sanityClient.fetch(slugsQuery);
+  //   return slugs ? slugs.map((slug) => ({ slug })) : [];
+  // } catch (error) {
+  //   console.error("Failed to fetch slugs for generateStaticParams:", error);
+  //   return [];
+  // }
+
+  // Вариант 2: Если не хочешь пред-рендерить или не можешь получить все slug'и
+  return [];
+}
+
+
 export default function EquipmentDetailPage({ params }: PageProps) {
-  const { slug } = params; // Прямое получение slug, он должен быть string
+  const { slug } = params;
 
   const [equipment, setEquipment] = useState<FullEquipmentData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -73,7 +88,6 @@ export default function EquipmentDetailPage({ params }: PageProps) {
 
   useEffect(() => {
     const fetchEquipmentData = async () => {
-      // Хотя тип slug теперь string, проверка на пустую строку или непредвиденные значения все равно полезна
       if (!slug || typeof slug !== 'string' || slug.trim() === '') {
         setError("Идентификатор техники (slug) некорректен или отсутствует.");
         setLoading(false);
@@ -91,7 +105,6 @@ export default function EquipmentDetailPage({ params }: PageProps) {
       setSelectedImageUrl(null);
 
       try {
-        console.log(`[EquipmentDetailPage] Fetching data for slug: ${slug}`);
         const data = await sanityClient.fetch<FullEquipmentData | null>(equipmentDetailQuery, { slug });
         if (data) {
           setEquipment(data);
@@ -107,7 +120,6 @@ export default function EquipmentDetailPage({ params }: PageProps) {
           setSelectedImageUrl('/images/placeholder-detail.jpg');
         }
       } catch (err: unknown) {
-        console.error("[EquipmentDetailPage] Ошибка загрузки данных техники:", err);
         if (err instanceof Error) {
             setError(`Не удалось загрузить информацию о технике: ${err.message}`);
         } else {
@@ -141,7 +153,6 @@ export default function EquipmentDetailPage({ params }: PageProps) {
     return <div className={styles.errorMessage}>{error}</div>;
   }
   if (!equipment) {
-    // Эта проверка важна, если fetchEquipmentData мог завершиться без ошибки, но не установить equipment
     return <div className={styles.infoMessage}>Информация о технике не найдена или временно недоступна.</div>;
   }
 
