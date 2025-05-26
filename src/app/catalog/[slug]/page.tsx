@@ -1,10 +1,20 @@
 // src/app/catalog/[slug]/page.tsx
 'use client';
 
-// ... все твои импорты ...
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { PortableText, PortableTextBlock } from '@portabletext/react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+import { sanityClient, urlFor, SanityImageSource } from '@/lib/sanityClient'; // Предполагаемый путь
+import { groq } from 'next-sanity';
+import Modal from '@/components/ui/Modal/Modal'; // Предполагаемый путь
+import EquipmentRequestForm from '@/components/EquipmentRequestForm/EquipmentRequestForm'; // Предполагаемый путь
+
+import styles from './equipmentDetail.module.css';
 
 // --- ТИПЫ ---
-// ... твои интерфейсы FullEquipmentData и т.д. остаются ...
 interface GalleryImage {
   _key: string;
   asset?: SanityImageSource;
@@ -30,11 +40,9 @@ interface FullEquipmentData {
   isAvailable?: boolean;
 }
 
-
-// ВОЗВРАЩАЕМ КОНКРЕТНЫЙ ТИП ДЛЯ PROPS
 interface PageProps {
   params: {
-    slug: string; // Ожидаем, что slug всегда будет строкой
+    slug: string;
   };
 }
 
@@ -53,13 +61,7 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
 }`;
 
 export default function EquipmentDetailPage({ params }: PageProps) {
-  const { slug } = params; // Прямое получение slug, он должен быть string
-
-  // ... остальной код твоего компонента остается таким же, как в предыдущем полном варианте ...
-  // (useState, useEffect, handleThumbnailClick, openModal, closeModal, JSX)
-  // ВАЖНО: Убедись, что внутри useEffect и в других местах, где используется slug,
-  // нет проблем, если вдруг slug окажется undefined (хотя с таким типом это маловероятно).
-  // Проверка if (!slug) в начале useEffect все еще полезна.
+  const { slug } = params;
 
   const [equipment, setEquipment] = useState<FullEquipmentData | null>(null);
   const [loading, setLoading] = useState(true);
