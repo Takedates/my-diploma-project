@@ -1,7 +1,7 @@
 // src/app/catalog/[slug]/page.tsx
 'use client';
 
-import React, { useState, useEffect, use, Suspense } from 'react';
+import React, { useState, useEffect } from 'react'; // Убрали 'use' и 'Suspense' из импорта React
 import Link from 'next/link';
 import Image from 'next/image';
 import { PortableText, PortableTextBlock } from '@portabletext/react';
@@ -40,12 +40,11 @@ interface FullEquipmentData {
   isAvailable?: boolean;
 }
 
-interface ResolvedPageParams {
-  slug: string;
-}
-
+// Тип для пропсов компонента страницы - МАКСИМАЛЬНО УПРОЩЕН
 interface PageProps {
-  params: Promise<ResolvedPageParams> | ResolvedPageParams;
+  params: {
+    slug: string; // Ожидаем, что slug всегда будет строкой для клиентского компонента
+  };
 }
 
 // --- GROQ ЗАПРОС ---
@@ -62,7 +61,10 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
   isAvailable
 }`;
 
-function EquipmentContent({ slug }: { slug: string }) {
+// Основной компонент страницы
+export default function EquipmentDetailPage({ params }: PageProps) {
+  const { slug } = params; // Прямое получение slug, он должен быть string
+
   const [equipment, setEquipment] = useState<FullEquipmentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,8 +73,9 @@ function EquipmentContent({ slug }: { slug: string }) {
 
   useEffect(() => {
     const fetchEquipmentData = async () => {
-      if (!slug) {
-        setError("Идентификатор техники (slug) отсутствует.");
+      // Хотя тип slug теперь string, проверка на пустую строку или непредвиденные значения все равно полезна
+      if (!slug || typeof slug !== 'string' || slug.trim() === '') {
+        setError("Идентификатор техники (slug) некорректен или отсутствует.");
         setLoading(false);
         return;
       }
@@ -88,6 +91,7 @@ function EquipmentContent({ slug }: { slug: string }) {
       setSelectedImageUrl(null);
 
       try {
+        console.log(`[EquipmentDetailPage] Fetching data for slug: ${slug}`);
         const data = await sanityClient.fetch<FullEquipmentData | null>(equipmentDetailQuery, { slug });
         if (data) {
           setEquipment(data);
@@ -103,6 +107,7 @@ function EquipmentContent({ slug }: { slug: string }) {
           setSelectedImageUrl('/images/placeholder-detail.jpg');
         }
       } catch (err: unknown) {
+        console.error("[EquipmentDetailPage] Ошибка загрузки данных техники:", err);
         if (err instanceof Error) {
             setError(`Не удалось загрузить информацию о технике: ${err.message}`);
         } else {
@@ -136,6 +141,7 @@ function EquipmentContent({ slug }: { slug: string }) {
     return <div className={styles.errorMessage}>{error}</div>;
   }
   if (!equipment) {
+    // Эта проверка важна, если fetchEquipmentData мог завершиться без ошибки, но не установить equipment
     return <div className={styles.infoMessage}>Информация о технике не найдена или временно недоступна.</div>;
   }
 
@@ -277,31 +283,4 @@ function EquipmentContent({ slug }: { slug: string }) {
       </Modal>
     </>
   );
-}
-
-// Компонент-обертка страницы
-export default function EquipmentDetailPageWrapper({ params }: PageProps) {
-  // Проверяем, является ли params промисом, более безопасным для TypeScript способом
-  if (params && typeof (params as Promise<ResolvedPageParams>)?.then === 'function') {
-    // Это промис, используем use() и Suspense
-    function ParamsResolver() {
-        const resolvedParams = use(params as Promise<ResolvedPageParams>);
-        if (!resolvedParams?.slug) {
-            return <div>Ошибка: Идентификатор техники не определен (промис не разрешился корректно).</div>;
-        }
-        return <EquipmentContent slug={resolvedParams.slug} />;
-    }
-    return (
-        <Suspense fallback={<div className={styles.loadingMessage}>Загрузка параметров страницы...</div>}>
-            <ParamsResolver />
-        </Suspense>
-    );
-  } else {
-    // Это уже объект, params не является промисом
-    const resolvedParams = params as ResolvedPageParams;
-    if (!resolvedParams?.slug) {
-        return <div>Ошибка: Идентификатор техники не определен.</div>;
-    }
-    return <EquipmentContent slug={resolvedParams.slug} />;
-  }
 }
