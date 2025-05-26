@@ -60,22 +60,7 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
   isAvailable
 }`;
 
-// Функция для генерации статических параметров (может помочь сборщику)
-export async function generateStaticParams() {
-  // Вариант 1: Если хочешь пред-рендерить страницы
-  // try {
-  //   const slugsQuery = groq`*[_type == "equipment" && defined(slug.current)][].slug.current`;
-  //   const slugs: string[] | null = await sanityClient.fetch(slugsQuery);
-  //   return slugs ? slugs.map((slug) => ({ slug })) : [];
-  // } catch (error) {
-  //   console.error("Failed to fetch slugs for generateStaticParams:", error);
-  //   return [];
-  // }
-
-  // Вариант 2: Если не хочешь пред-рендерить или не можешь получить все slug'и
-  return [];
-}
-
+// УБИРАЕМ generateStaticParams ОТСЮДА
 
 export default function EquipmentDetailPage({ params }: PageProps) {
   const { slug } = params;
@@ -162,6 +147,7 @@ export default function EquipmentDetailPage({ params }: PageProps) {
   const categoryTitle = equipment.category?.title ?? 'Каталог';
 
   return (
+    // ... остальной JSX без изменений ...
     <>
       <div className={styles.detailContainer}>
         <nav className={styles.breadcrumbs}>
