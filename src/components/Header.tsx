@@ -17,12 +17,14 @@ const Header = () => {
   };
 
   // Закрывать мобильное меню при изменении URL (переходе на другую страницу)
-  // и если оно было открыто
+  // ИСПРАВЛЕНО: isMobileMenuOpen убран из массива зависимостей, чтобы избежать двойного срабатывания
   useEffect(() => {
+    // Этот эффект должен срабатывать только когда изменяется pathname,
+    // и если меню в этот момент открыто, он его закрывает.
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
-  }, [pathname, isMobileMenuOpen]); // ИСПРАВЛЕН МАССИВ ЗАВИСИМОСТЕЙ
+  }, [pathname]); // isMobileMenuOpen УБРАН отсюда
 
   const mobileMenuVariants = {
     hidden: {
@@ -62,7 +64,7 @@ const Header = () => {
 
         <button
           className={styles.mobileMenuButton}
-          onClick={toggleMobileMenu}
+          onClick={toggleMobileMenu} // Используем toggleMobileMenu для самой кнопки
           aria-expanded={isMobileMenuOpen}
           aria-label={isMobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
           aria-controls="mobile-menu-list"
@@ -86,7 +88,12 @@ const Header = () => {
             variants={mobileMenuVariants}
           >
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={`${styles.mobileNavLink} ${pathname === link.href ? styles.navLinkActiveMobile : ''}`} onClick={toggleMobileMenu}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`${styles.mobileNavLink} ${pathname === link.href ? styles.navLinkActiveMobile : ''}`}
+                onClick={() => setIsMobileMenuOpen(false)} // ИСПРАВЛЕНО: Прямое закрытие меню при клике на ссылку
+              >
                 {link.label}
               </Link>
             ))}
