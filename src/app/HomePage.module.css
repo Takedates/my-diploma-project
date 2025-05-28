@@ -1,4 +1,4 @@
-/* src/app/HomePage.module.css (Полный код с исправленным hover эффектом карточки) */
+/* src/app/HomePage.module.css (ВАРИАНТ, КОТОРЫЙ ТЫ ПРИСЫЛАЛ) */
 
 /* ===== Переменные (убедитесь, что они доступны) ===== */
 /* :root {
@@ -160,7 +160,7 @@
 .shapeDivider, .shapeDividerAngle {
     position: relative;
     width: 100%;
-    overflow: hidden;
+    overflow: hidden; /* Это было добавлено в одной из версий, если изначально не было - убери */
     line-height: 0;
     transform: rotate(180deg); /* Волна должна быть перевернута */
 }
@@ -168,7 +168,7 @@
     position: relative;
     display: block;
     width: calc(100% + 1.3px);
-    height: 80px;
+    height: 80px; /* Убедись, что здесь было твое исходное значение или то, которое работало */
 }
 .shapeDivider .shapeFill { fill: var(--bg-light-gray, #f9fafb); } /* Фон следующей секции */
 
@@ -176,7 +176,7 @@
      transform: none; /* Угол не переворачиваем */
      margin-top: -1px; /* Небольшое перекрытие */
 }
-.shapeDividerAngle svg { height: 50px; } /* Высота скоса */
+.shapeDividerAngle svg { height: 50px; } /* Высота скоса - Убедись, что здесь было твое исходное значение */
 .shapeDividerAngle .shapeFillAngle { fill: #ffffff; } /* Фон следующей секции */
 
 
@@ -240,58 +240,50 @@
 /* ===== Секция Техника ===== */
 .equipmentGrid {
   display: grid;
-  /* grid-template-columns: repeat(1, 1fr); - Можно убрать, auto-fill сделает 1 колонку, если нужно */
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); /* Адаптивная сетка */
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); 
   gap: 2rem;
 }
-/* Убираем медиа-запрос, т.к. auto-fill сам адаптируется */
-/* @media (min-width: 768px) { ... } */
 
-/* --- КАРТОЧКА КАТЕГОРИИ С ИСПРАВЛЕННЫМ HOVER --- */
 .equipmentCard {
-  background-color: #ffffff; /* Белый фон карточки */
+  background-color: #ffffff; 
   border-radius: 12px;
-  overflow: hidden; /* <-- ВАЖНО: Обрезаем выходящее */
+  overflow: hidden; 
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
-  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* Плавность для всей карточки */
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; 
   display: flex;
   flex-direction: column;
   text-decoration: none;
 }
 .equipmentCard:hover {
-  transform: translateY(-6px); /* Подъем карточки */
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1); /* Усиление тени */
+  transform: translateY(-6px); 
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1); 
 }
 
 .equipmentImageWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10; /* Соотношение сторон изображения */
-  background-color: #e5e7eb; /* Фон-заглушка */
-  overflow: hidden; /* <-- ВАЖНО: Обрезаем изображение */
+  aspect-ratio: 16 / 10; 
+  background-color: #e5e7eb; 
+  overflow: hidden; 
 }
 
-/* Стили для тега img, который рендерит next/image */
 .equipmentImageWrapper img {
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; /* Плавный зум */
-    /* object-fit: cover; должен быть задан в style пропсе Image */
-    width: 100%; /* Гарантируем размер */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; 
+    width: 100%; 
     height: 100%;
 }
-/* Эффект зума для img при наведении на КАРТОЧКУ */
 .equipmentCard:hover .equipmentImageWrapper img {
-    transform: scale(1.08); /* Зум изображения */
+    transform: scale(1.08); 
 }
 
 .equipmentImageOverlay {
   position: absolute;
-  inset: 0; /* Растягиваем на весь wrapper */
-  background: linear-gradient(to top, rgba(17, 24, 39, 0.75) 0%, rgba(17, 24, 39, 0) 60%); /* Градиент снизу */
-  z-index: 1; /* Под текстом */
-  transition: opacity 0.3s ease; /* Плавность для hover эффекта */
-  pointer-events: none; /* Не мешает взаимодействию */
+  inset: 0; 
+  background: linear-gradient(to top, rgba(17, 24, 39, 0.75) 0%, rgba(17, 24, 39, 0) 60%); 
+  z-index: 1; 
+  transition: opacity 0.3s ease; 
+  pointer-events: none; 
 }
-/* Можно сделать оверлей чуть заметнее при наведении */
 .equipmentCard:hover .equipmentImageOverlay {
   opacity: 0.9;
 }
@@ -301,14 +293,13 @@
     bottom: 1rem;
     left: 1.5rem;
     right: 1.5rem;
-    z-index: 2; /* Поверх оверлея */
+    z-index: 2; 
     font-family: var(--font-montserrat, 'Montserrat', sans-serif);
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-color-light, #f8fafc);
     line-height: 1.3;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-    /* Убрали transition отсюда */
 }
 
 .equipmentCardContent {
@@ -316,16 +307,16 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff; /* Фон для контентной части */
+  background-color: #ffffff; 
 }
 
 .equipmentDescription {
   font-family: var(--font-roboto, 'Roboto', sans-serif);
-  font-size: 0.9rem; /* Чуть меньше */
+  font-size: 0.9rem; 
   color: var(--text-color-base, #374151);
   line-height: 1.6;
   margin-bottom: 1.25rem;
-  flex-grow: 1; /* Занимает место до кнопки */
+  flex-grow: 1; 
 }
 
 .equipmentButton {
@@ -333,39 +324,37 @@
   align-items: center;
   gap: 0.4rem;
   background-color: transparent;
-  color: var(--accent-orange, #f97316);
-  padding: 0.5rem 0; /* Только вертикальный, чтобы подчеркивание было по ширине */
+  color: var(--accent-orange, #f97316); /* Использовал переменную, если она у вас есть, иначе просто #f97316 */
+  padding: 0.5rem 0; 
   font-family: var(--font-montserrat, 'Montserrat', sans-serif);
   font-size: 0.9rem;
   font-weight: 600;
   border-radius: 0;
   text-decoration: none;
-  transition: color 0.2s ease; /* Убрали transform */
-  margin-top: auto; /* Прижимает кнопку к низу */
-  align-self: flex-start; /* Не растягивать */
+  transition: color 0.2s ease; 
+  margin-top: auto; 
+  align-self: flex-start; 
   border: none;
   position: relative;
 }
-/* Подчеркивание для кнопки */
 .equipmentButton::after {
     content: '';
     position: absolute;
     left: 0;
-    bottom: 0; /* Линия под текстом */
+    bottom: 0; 
     width: 100%;
     height: 2px;
-    background-color: var(--accent-color-light, #FFF7ED); /* Светлый фон линии */
-    transform: scaleX(0); /* Скрыта */
+    background-color: var(--accent-color-light, #FFF7ED); 
+    transform: scaleX(0); 
     transform-origin: left;
-    transition: transform 0.3s ease, background-color 0.3s ease; /* Анимируем и цвет фона */
+    transition: transform 0.3s ease, background-color 0.3s ease; 
 }
 .equipmentButton:hover {
-  color: var(--accent-orange-dark, #ea580c);
-  /* transform: none; - Убрано */
+  color: var(--accent-orange-dark, #ea580c); /* Использовал переменную, если она у вас есть, иначе просто #ea580c */
 }
 .equipmentButton:hover::after {
-     transform: scaleX(1); /* Показываем линию */
-     background-color: var(--accent-orange, #f97316); /* Линия становится яркой */
+     transform: scaleX(1); 
+     background-color: var(--accent-orange, #f97316); /* Использовал переменную */
 }
 
 .equipmentButton svg {
@@ -374,6 +363,5 @@
     transition: transform 0.2s ease;
 }
 .equipmentButton:hover svg {
-    transform: translateX(3px); /* Сдвиг иконки */
+    transform: translateX(3px); 
 }
-/* --- Конец стилей Секции Техника --- */

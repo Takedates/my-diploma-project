@@ -5,7 +5,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import styles from './HomePage.module.css';
+import styles from './HomePage.module.css'; // Убедитесь, что этот импорт правильный
 
 // --- Иконки ---
 import {
@@ -14,27 +14,29 @@ import {
   WrenchScrewdriverIcon,
   UserGroupIcon,
   ArrowRightIcon
+  // Если вы использовали ChevronDownIcon, раскомментируйте:
+  // ChevronDownIcon 
 } from '@heroicons/react/24/outline';
 // --------------------------
 
-// --- Данные для категорий техники (С ИСПРАВЛЕННЫМ РАСШИРЕНИЕМ) ---
+// --- Данные для категорий техники ---
 const equipmentCategories = [
   {
     name: 'Самосвалы',
-    type: 'dump-truck',
-    imageUrl: '/images/placeholder-dump-truck.jpg', // Расширение .jpg - верно
+    type: 'dump-truck', // Это значение будет передано в URL как ?type=dump-truck
+    imageUrl: '/images/placeholder-dump-truck.jpg',
     description: 'Надежные самосвалы для перевозки грузов.',
   },
   {
     name: 'Гусеничные экскаваторы',
-    type: 'tracked-excavator',
-    imageUrl: '/images/placeholder-tracked.jpeg', // !!! ИСПРАВЛЕНО на .jpeg !!!
+    type: 'tracked-excavator', // Это значение будет передано в URL
+    imageUrl: '/images/placeholder-tracked.jpeg',
     description: 'Мощные машины для сложных грунтов.',
   },
   {
     name: 'Погрузчики',
-    type: 'loader',
-    imageUrl: '/images/placeholder-loader.jpg', // Проверьте наличие этого файла и его расширение
+    type: 'loader', // Это значение будет передано в URL
+    imageUrl: '/images/placeholder-loader.jpg',
     description: 'Универсальная техника для погрузки.',
   },
 ];
@@ -94,9 +96,14 @@ export default function HomePage() {
             </Link>
           </motion.div>
         </div>
-        {/* Индикатор скролла можно вернуть, если нужен
-        <motion.div className={styles.scrollIndicator} ... >
-          <ChevronDownIcon />
+        {/* Если вы хотите вернуть индикатор скролла:
+        <motion.div 
+            className={styles.scrollIndicator}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.5, repeat: Infinity, repeatType: "reverse", ease:"easeInOut" }}
+        >
+          <ChevronDownIcon className="h-8 w-8" />
         </motion.div>
         */}
       </section>
@@ -188,24 +195,24 @@ export default function HomePage() {
                     key={category.type}
                     className={styles.equipmentCard}
                     variants={fadeInUp}
-                    whileHover="hover"
-                    initial="rest"
+                    whileHover="hover" // Убедитесь, что у вас есть анимация "hover" в variants или стилях
+                    initial="rest"    // И "rest"
                  >
                     <div className={styles.equipmentImageWrapper}>
                         <Image
-                            src={category.imageUrl} // Использует обновленные пути
+                            src={category.imageUrl}
                             alt={category.name}
                             fill
                             style={{ objectFit: 'cover' }}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            // Добавим onError для отладки, если картинки все еще не грузятся
-                            onError={(e) => console.error(`Ошибка загрузки изображения: ${category.imageUrl}`, e)}
+                            onError={(e) => console.error(`Ошибка загрузки изображения для ${category.name}: ${category.imageUrl}`, e.currentTarget.currentSrc)}
                          />
                          <div className={styles.equipmentImageOverlay}></div>
                           <motion.h3
                             className={styles.equipmentTitleOverImage}
-                             variants={{ rest: { y: 0 }, hover: { y: -5 } }}
-                             transition={{ duration: 0.2, ease: "easeOut" }}
+                            // Если у вас есть variants для hover/rest для этого элемента, они должны быть здесь
+                            // variants={{ rest: { y: 0 }, hover: { y: -5 } }}
+                            // transition={{ duration: 0.2, ease: "easeOut" }}
                           >
                             {category.name}
                           </motion.h3>
@@ -213,11 +220,11 @@ export default function HomePage() {
                     <div className={styles.equipmentCardContent}>
                         <p className={styles.equipmentDescription}>{category.description}</p>
                         <Link
-                            href={`/catalog?type=${category.type}`} // Убедитесь, что type (slug) верный
+                            href={`/catalog?type=${category.type}`} // Ссылка для перехода с фильтром
                             className={styles.equipmentButton}
                         >
                             Смотреть модели
-                            <ArrowRightIcon />
+                            <ArrowRightIcon /> {/* Убедитесь, что у этой иконки есть стили или она очень маленькая */}
                         </Link>
                     </div>
                 </motion.div>

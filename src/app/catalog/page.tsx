@@ -1,24 +1,22 @@
-// src/app/catalog/page.tsx (Полный код БЕЗ ВНЕШНИХ АНИМАЦИЙ FRAMER MOTION)
+// src/app/catalog/page.tsx
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
-import styles from './catalog.module.css';
-import EquipmentCard from '@/components/EquipmentCard'; // Убедитесь, что этот путь правильный
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
+import styles from './catalog.module.css'; // Убедитесь, что этот файл существует и содержит ВАШИ стили для каталога
+import EquipmentCard from '@/components/EquipmentCard';
 import { sanityClient } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
-// Убраны импорты framer-motion
-// import { motion, AnimatePresence } from 'framer-motion';
-import type { EquipmentCardData, EquipmentItemSanity } from '@/types/equipment'; // Убедитесь, что путь к типам верный
+import type { EquipmentCardData, EquipmentItemSanity } from '@/types/equipment';
 import { FunnelIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 
-// Запрос GROQ (убедитесь, что поля существуют в вашей схеме)
 const equipmentQuery = groq`*[_type == "equipment" && defined(slug.current)] | order(name asc) {
   _id,
   name,
   slug,
-  category, // Имя поля в Sanity
+  category,
   brand,
-  excerpt,  // Имя поля в Sanity
+  excerpt,
   mainImage {
     asset,
     alt
@@ -26,7 +24,6 @@ const equipmentQuery = groq`*[_type == "equipment" && defined(slug.current)] | o
   status
 }`;
 
-// Отображаемые имена категорий
 const categoryDisplayNames: Record<string, string> = {
   'wheeled-excavator': 'Колесные экскаваторы',
   'tracked-excavator': 'Гусеничные экскаваторы',
@@ -34,109 +31,169 @@ const categoryDisplayNames: Record<string, string> = {
   'dump-truck': 'Самосвалы',
 };
 
-// Анимации были здесь, но удалены для теста
-// const staggerContainer = { ... };
-// const baseFadeInUp = { ... };
-
 export default function CatalogPage() {
+  const searchParams = useSearchParams();
   const [allEquipmentSanityItems, setAllEquipmentSanityItems] = useState<EquipmentItemSanity[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<string>('all');
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+  const initialTypeFromUrl = searchParams.get('type');
+  const [selectedType, setSelectedType] = useState<string>(initialTypeFromUrl || 'all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
 
-  useEffect(() => {
-    const fetchEquipment = async () => {
-      if (!sanityClient) { setError("Клиент Sanity не инициализирован."); setLoading(false); return; }
-      setLoading(true); setError(null);
-      try {
-        const sanityData: EquipmentItemSanity[] = await sanityClient.fetch(equipmentQuery);
-        setAllEquipmentSanityItems(sanityData);
-      } catch (errFromCatch: unknown) {
-        console.error("Ошибка загрузки техники из Sanity:", errFromCatch);
-        const message = errFromCatch instanceof Error ? errFromCatch.message : "Неизвестная ошибка.";
-        setError(`Не удалось загрузить каталог техники: ${message}`);
-      } finally { setLoading(false); }
-    };
-    fetchEquipment();
+  const fetchEquipment = useCallback(async () => {
+    if (!sanityClient) {
+      setFetchError("Клиент Sanity не инициализирован.");
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    setFetchError(null);
+    try {
+      // console.log("Fetching equipment data..."); // Оставим закомментированным пока
+      const sanityData: EquipmentItemSanity[] = await sanityClient.fetch(equipmentQuery);
+      // console.log("Equipment data fetched:", sanityData.length, "items");
+      setAllEquipmentSanityItems(sanityData);
+    } catch (errFromCatch: unknown) {
+      console.error("Ошибка загрузки техники из Sanity:", errFromCatch);
+      const message = errFromCatch instanceof Error ? errFromCatch.message : "Неизвестная ошибка.";
+      setFetchError(`Не удалось загрузить каталог техники: ${message}`);
+    } finally {
+      setIsLoading(false);
+      // console.log("Fetching finished, isLoading:", false);
+    }
   }, []);
 
-  // Маппинг данных Sanity в тип EquipmentCardData
+  useEffect(() => {
+    fetchEquipment();
+  }, [fetchEquipment]);
+
   const allItemsForCard: EquipmentCardData[] = useMemo(() => {
-      return allEquipmentSanityItems.map(item => ({
-          id: item._id,
-          name: item.name ?? 'Без названия',
-          category: item.category ? categoryDisplayNames[item.category] ?? item.category : 'Без категории',
-          categoryValue: item.category ?? 'all',
-          brand: item.brand ?? 'Unknown',
-          image: item.mainImage ?? null,
-          link: item.slug?.current ? `/catalog/${item.slug.current}` : '#',
-          excerpt: item.excerpt ?? undefined,
-          status: item.status ?? undefined,
-      }));
+    return allEquipmentSanityItems.map(item => ({
+      id: item._id,
+      name: item.name ?? 'Без названия',
+      category: item.category ? categoryDisplayNames[item.category] ?? item.category : 'Без категории',
+      categoryValue: item.category ?? 'all',
+      brand: item.brand ?? 'Unknown',
+      image: item.mainImage ?? null,
+      link: item.slug?.current ? `/catalog/${item.slug.current}` : '#',
+      excerpt: item.excerpt ?? undefined,
+      status: item.status ?? undefined,
+    }));
   }, [allEquipmentSanityItems]);
 
-  // Генерация фильтров
-  const availableBrands = useMemo(() => { const brands = new Set(allItemsForCard.map(item => item.brand).filter((b): b is string => !!b && b !== 'Unknown')); return ['all', ...Array.from(brands).sort()]; }, [allItemsForCard]);
-  const availableTypes = useMemo(() => { const typesSet = new Set(allItemsForCard.map(item => item.categoryValue).filter((v): v is string => !!v)); const typesArray = Array.from(typesSet); const displayTypes = typesArray.filter(value => value !== 'all').map(value => ({ value: value, title: categoryDisplayNames[value] ?? value })).sort((a, b) => a.title.localeCompare(b.title)); return [{ value: 'all', title: 'Все типы' }, ...displayTypes]; }, [allItemsForCard]);
+  const availableBrands = useMemo(() => {
+    const brands = new Set(allItemsForCard.map(item => item.brand).filter((b): b is string => !!b && b !== 'Unknown'));
+    return ['all', ...Array.from(brands).sort()];
+  }, [allItemsForCard]);
 
-  // Логика фильтрации
-  const filteredItems = useMemo(() => { return allItemsForCard.filter(item => (selectedType === 'all' || item.categoryValue === selectedType) && (selectedBrand === 'all' || item.brand === selectedBrand)); }, [selectedType, selectedBrand, allItemsForCard]);
-  const resetFilters = () => { setSelectedType('all'); setSelectedBrand('all'); };
+  const availableTypes = useMemo(() => {
+    const typesSet = new Set(allItemsForCard.map(item => item.categoryValue).filter((v): v is string => !!v));
+    const typesArray = Array.from(typesSet);
+    const displayTypes = typesArray
+      .filter(value => value !== 'all' && value !== '')
+      .map(value => ({ value: value, title: categoryDisplayNames[value] ?? value }))
+      .sort((a, b) => a.title.localeCompare(b.title));
+    return [{ value: 'all', title: 'Все типы' }, ...displayTypes];
+  }, [allItemsForCard]);
+
+  const filteredItems = useMemo(() => {
+    // console.log("Filtering items. SelectedType:", selectedType, "SelectedBrand:", selectedBrand);
+    return allItemsForCard.filter(item =>
+      (selectedType === 'all' || item.categoryValue === selectedType) &&
+      (selectedBrand === 'all' || item.brand === selectedBrand)
+    );
+  }, [selectedType, selectedBrand, allItemsForCard]);
+
+  const resetFilters = () => {
+    setSelectedType('all');
+    setSelectedBrand('all');
+  };
+
   const areFiltersActive = selectedType !== 'all' || selectedBrand !== 'all';
 
+  if (isLoading) {
+    return (
+      <div className={styles.catalogPageContainer}>
+        <div className={styles.pageHeader}>
+          <h1 className={styles.pageTitle}>Каталог <span className={styles.titleHighlight}>спецтехники</span></h1>
+          <p className={styles.pageSubtitle}>Выберите необходимую технику из нашего широкого ассортимента.</p>
+        </div>
+        <div className={styles.loadingIndicator}></div>
+      </div>
+    );
+  }
+
+  if (fetchError) {
+    return (
+      <div className={styles.catalogPageContainer}>
+        <div className={styles.pageHeader}>
+          <h1 className={styles.pageTitle}>Каталог <span className={styles.titleHighlight}>спецтехники</span></h1>
+          <p className={styles.pageSubtitle}>Выберите необходимую технику из нашего широкого ассортимента.</p>
+        </div>
+        <p className={styles.errorIndicator}>{fetchError}</p>
+      </div>
+    );
+  }
+
   return (
-    // Используем обычный div вместо motion.div
     <div className={styles.catalogPageContainer}>
-      {/* Заголовок без анимации */}
       <div className={styles.pageHeader}>
         <h1 className={styles.pageTitle}>Каталог <span className={styles.titleHighlight}>спецтехники</span></h1>
         <p className={styles.pageSubtitle}>Выберите необходимую технику из нашего широкого ассортимента.</p>
       </div>
 
-      {error && <p className={styles.errorIndicator}>{error}</p>}
-
-      {/* Блок Фильтров без анимации */}
-      {!loading && !error && (
-        // Используем обычный div вместо motion.div
-        <div className={styles.filtersContainer}>
-            <div className={styles.filterGroup}>
-                <label htmlFor="type-filter" className={styles.filterLabel}><FunnelIcon /> Тип техники:</label>
-                <div className={styles.filterButtons}>
-                    {availableTypes.map(type => ( <button key={type.value} id="type-filter" onClick={() => setSelectedType(type.value)} className={`${styles.filterButton} ${selectedType === type.value ? styles.activeFilter : ''}`}> {type.title} </button> ))}
-                </div>
-            </div>
-            <div className={styles.filterGroup}>
-                <label htmlFor="brand-filter" className={styles.filterLabel}><FunnelIcon /> Производитель:</label>
-                <div className={styles.filterButtons}>
-                    {availableBrands.map(brand => ( <button key={brand} id="brand-filter" onClick={() => setSelectedBrand(brand)} className={`${styles.filterButton} ${selectedBrand === brand ? styles.activeFilter : ''}`}> {brand === 'all' ? 'Все бренды' : brand} </button>))}
-                </div>
-            </div>
-            {areFiltersActive && ( <button onClick={resetFilters} className={styles.resetButton}><ArrowPathIcon /> Сбросить фильтры</button> )}
-        </div>
-      )}
-
-      {/* Индикатор загрузки */}
-      {loading && <div className={styles.loadingIndicator}></div>}
-
-      {/* Сетка каталога без анимации */}
-      {!loading && !error && (
-          // Используем обычный div вместо motion.div и убираем AnimatePresence
-          <div className={styles.equipmentGrid}>
-            {filteredItems.length > 0 ? (
-                // Внутри компонента EquipmentCard могут быть свои анимации, они остаются
-                filteredItems.map((itemData) => (
-                  <EquipmentCard key={itemData.id} item={itemData} />
-                ))
-              ) : (
-                 <div className={styles.noResults}>
-                    <p>По вашему запросу техника не найдена.</p>
-                    <p>Попробуйте изменить фильтры или сбросить их.</p>
-                 </div>
-              )
-            }
+      <div className={styles.filtersContainer}>
+          <div className={styles.filterGroup}>
+              {/* ВАЖНО: Здесь вы должны использовать свой класс из catalog.module.css для иконки, если он есть,
+                  или оставить так, если Tailwind должен был их стилизовать,
+                  или использовать инлайн-стили, как мы пробовали */}
+              <label className={styles.filterLabel}><FunnelIcon className={styles.filterIcon} /> Тип техники:</label>
+              <div className={styles.filterButtons}>
+                  {availableTypes.map(type => (
+                    <button
+                      key={type.value}
+                      onClick={() => setSelectedType(type.value)}
+                      className={`${styles.filterButton} ${selectedType === type.value ? styles.activeFilter : ''}`}
+                    >
+                      {type.title}
+                    </button>
+                  ))}
+              </div>
           </div>
-      )}
+          <div className={styles.filterGroup}>
+              <label className={styles.filterLabel}><FunnelIcon className={styles.filterIcon} /> Производитель:</label>
+              <div className={styles.filterButtons}>
+                  {availableBrands.map(brand => (
+                    <button
+                      key={brand}
+                      onClick={() => setSelectedBrand(brand)}
+                      className={`${styles.filterButton} ${selectedBrand === brand ? styles.activeFilter : ''}`}
+                    >
+                      {brand === 'all' ? 'Все бренды' : brand}
+                    </button>
+                  ))}
+              </div>
+          </div>
+          {areFiltersActive && (
+            <button onClick={resetFilters} className={styles.resetButton}>
+              <ArrowPathIcon className={styles.resetIcon} /> Сбросить фильтры
+            </button>
+          )}
+      </div>
+
+      <div className={styles.equipmentGrid}>
+        {filteredItems.length > 0 ? (
+            filteredItems.map((itemData) => (
+              <EquipmentCard key={itemData.id} item={itemData} />
+            ))
+          ) : (
+             <div className={styles.noResults}>
+                <p>По вашему запросу техника не найдена.</p>
+                <p>Попробуйте изменить фильтры или сбросить их.</p>
+             </div>
+          )
+        }
+      </div>
     </div>
   );
 }
