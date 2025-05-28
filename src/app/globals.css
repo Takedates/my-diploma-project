@@ -21,27 +21,23 @@
 html {
   scroll-behavior: smooth;
   height: 100%;
-  /* ЗАПРЕЩЕНО: overflow, overflow-x, overflow-y */
   -webkit-tap-highlight-color: transparent; /* Убираем подсветку при тапе на мобильных */
 }
 
 body {
   min-height: 100%;
   line-height: 1.6; /* Базовая высота строки */
-  /* Шрифты и цвета применяются через Tailwind классы в layout.tsx */
-  /* ЗАПРЕЩЕНО: overflow, overflow-x, overflow-y */
+  /* Шрифты и цвета применяются через Tailwind классы в layout.tsx или напрямую через CSS переменные */
 }
 
-/* Убираем стили для #__next, так как flex применен к body */
-
-/* --- Пользовательские переменные (если нужны помимо Tailwind) --- */
+/* --- Пользовательские переменные --- */
 :root {
-  /* Переменные шрифтов теперь управляются через классы в layout.tsx */
-  /* --font-montserrat: ...; */
-  /* --font-roboto: ...; */
+  /* Переменные шрифтов (если не управляются исключительно через Tailwind классы в layout.tsx) */
+  /* --font-montserrat: 'Montserrat', sans-serif; */ /* Пример */
+  /* --font-roboto: 'Roboto', sans-serif; */       /* Пример */
 
-  /* Можно оставить основные цвета для CSS Modules, если они там используются */
-  --header-bg: theme('colors.gray.800', #1f2937); /* Пример получения цвета из Tailwind */
+  /* Основные цвета для использования в CSS и CSS Modules */
+  --header-bg: theme('colors.gray.800', #1f2937);
   --footer-bg: theme('colors.gray.900', #111827);
   --body-bg: theme('colors.gray.100', #f9fafb);
   --section-gray-bg: theme('colors.gray.50', #f3f4f6);
@@ -49,11 +45,19 @@ body {
   --text-color-base: theme('colors.gray.700', #374151);
   --text-color-secondary: theme('colors.gray.500', #6b7280);
   --text-color-light: theme('colors.white', #ffffff);
+  
   --accent-orange: theme('colors.orange.500', #f97316);
   --accent-orange-dark: theme('colors.orange.600', #ea580c);
   --accent-yellow: theme('colors.amber.500', #f59e0b);
+  
   --border-color: theme('colors.gray.300', #d1d5db);
-  --accent-color-light: theme('colors.orange.500/20', rgba(249, 115, 22, 0.2)); /* Пример прозрачности Tailwind */
+  
+  --accent-color-light: theme('colors.orange.500/20', rgba(249, 115, 22, 0.2));
+
+  /* Акцентный цвет, используемый в Header.module.css и других местах */
+  --accent-color: var(--accent-orange); /* Ссылаемся на уже определенный --accent-orange */
+  /* Или, если хотите жестко задать: */
+  /* --accent-color: #F97316; */
 }
 
 /* --- Другие глобальные стили --- */
@@ -62,22 +66,24 @@ img, picture, video, canvas, svg {
   max-width: 100%;
 }
 
-/* Можно добавить стили для плавного скролла к якорям */
-/* html:focus-within { */
-/*  scroll-behavior: smooth; */
-/* } */
+/* Можно добавить стили для плавного скролла к якорям, если html:focus-within не используется */
+/* html {
+  scroll-behavior: smooth;
+} */
 
 /* Стили для кастомного скроллбара (опционально) */
-/* ::-webkit-scrollbar { */
-/*   width: 8px; */
-/* } */
-/* ::-webkit-scrollbar-track { */
-/*   background: #f1f1f1; */
-/* } */
-/* ::-webkit-scrollbar-thumb { */
-/*   background: #888; */
-/*   border-radius: 4px; */
-/* } */
-/* ::-webkit-scrollbar-thumb:hover { */
-/*   background: #555; */
-/* } */
+/* 
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+*/

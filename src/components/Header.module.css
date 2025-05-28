@@ -1,10 +1,9 @@
 /* src/components/Header.module.css */
 
-/* Определение акцентного цвета, если он не определен глобально */
-/* Если :root уже есть в globals.css с --accent-color, эту часть можно не дублировать */
-:root {
-  --accent-color: #F97316; /* Оранжевый акцентный цвет по умолчанию */
-}
+/*
+  УДАЛЕНО: Блок :root с определением --accent-color.
+  Эту переменную следует определять в глобальном файле CSS (например, src/app/globals.css).
+*/
 
 .header {
   position: sticky;
@@ -71,7 +70,7 @@
   bottom: 0; /* Линия прямо под текстом */
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--accent-color);
+  background-color: var(--accent-color); /* Используем глобальную переменную */
   transition: width 0.3s ease-in-out;
 }
 
@@ -117,7 +116,6 @@
   padding-bottom: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   border-top: 1px solid #374151; /* Разделитель (gray-700) */
-  /* Стили для анимации Framer Motion будут применены инлайн или через variants */
 }
 
 .mobileNavLink {
@@ -152,8 +150,6 @@
   .mobileMenuButton {
     display: block;
   }
-  /* Если мобильное меню рендерится условно, дополнительных стилей для его показа здесь не нужно */
-  /* .mobileNav будет отображаться, когда isMobileMenuOpen === true в React */
 }
 
 /* Опционально: стили для стрелочки в кнопке EquipmentCard */
@@ -164,11 +160,3 @@
   vertical-align: middle; /* Выравнивание по центру текста */
   transition: transform 0.2s ease-in-out;
 }
-
-/* Опционально: если кнопка "Подробнее" должна как-то анимировать стрелку при наведении на карточку */
-/* Это потребует стилизации .cardLinkWrapper:hover .arrowIcon */
-/* Например:
-.cardLinkWrapper:hover .detailsButton .arrowIcon {
-  transform: translateX(3px);
-}
-*/
