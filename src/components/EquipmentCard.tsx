@@ -41,15 +41,13 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
         imageUrl = processedUrl;
       } else {
         console.warn("urlFor не смог сформировать валидный URL для imageAsset в EquipmentCard:", imageAsset);
-        // imageUrl остается плейсхолдером
       }
     } catch (error) {
       console.error("Ошибка при вызове urlFor в EquipmentCard:", error, "Элемент:", item);
-      // imageUrl остается плейсхолдером
     }
   }
 
-  const linkHref = item.link;
+  const linkHref = item.link || '#'; // Используем || '#' для безопасности, если link не придет
 
   let statusClass = styles.defaultStatus;
   if (item.status) {
@@ -66,21 +64,24 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
 
   return (
     <motion.div
-      className={styles.cardLinkWrapper}
+      className={styles.cardWrapper} // ИЗМЕНЕНО: просто обертка, не ссылка
       variants={cardVariants}
       whileHover="hover"
       layout
     >
-      <Link href={linkHref} className={styles.card}>
+      {/* <div className={styles.card}> УБРАЛИ Link отсюда, styles.card теперь для внутреннего div */}
+      <div className={styles.card}> {/* Этот div теперь не ссылка */}
         <div className={styles.imageWrapper}>
-          <Image
-            src={imageUrl}
-            alt={item.image?.alt || item.name || 'Фото техники'}
-            fill
-            style={{ objectFit: 'cover' }}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={styles.image}
-          />
+          <Link href={linkHref}> {/* ССЫЛКА НА ИЗОБРАЖЕНИИ */}
+            <Image
+              src={imageUrl}
+              alt={item.image?.alt || item.name || 'Фото техники'}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className={styles.image}
+            />
+          </Link>
           {item.status && (
             <span className={`${styles.statusBadge} ${statusClass}`}>
                 {item.status}
@@ -94,19 +95,23 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
           {(!item.category || item.category === 'Без категории') && item.brand !== 'Unknown' && (
              <p className={styles.type}>{item.brand}</p>
           )}
-          <h3 className={styles.title}>{item.name}</h3>
+          {/* ССЫЛКА НА ЗАГОЛОВКЕ */}
+          <Link href={linkHref} className={styles.titleLink}>
+            <h3 className={styles.title}>{item.name}</h3>
+          </Link>
           {item.excerpt && (
             <p className={styles.description}>
               {item.excerpt.length > 120 ? item.excerpt.substring(0, 117) + '...' : item.excerpt}
             </p>
           )}
           <div className={styles.cardFooter}>
-            <div className={styles.detailsButton}>
-                Подробнее <ArrowRightIcon className={styles.arrowIcon} />
-            </div>
+            {/* ССЫЛКА-КНОПКА "ПОДРОБНЕЕ" */}
+            <Link href={linkHref} className={styles.detailsButton}>
+                Подробнее <ArrowRightIcon className={styles.arrowIcon} /> {/* Добавил класс для иконки */}
+            </Link>
           </div>
         </div>
-      </Link>
+      </div>
     </motion.div>
   );
 }

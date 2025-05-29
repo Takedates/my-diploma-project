@@ -3,7 +3,7 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import styles from './catalog.module.css';
+import styles from './catalog.module.css'; // Убедись, что этот файл существует и содержит ВАШИ стили для каталога
 import EquipmentCard from '@/components/EquipmentCard';
 import { sanityClient } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
@@ -46,11 +46,11 @@ export default function CatalogPage() {
     if (typeFromUrl) {
       setSelectedType(typeFromUrl);
     }
-    // Если при изменении searchParams мы не хотим сбрасывать фильтр на 'all',
-    // а только устанавливать его, если он есть в URL, то else не нужен.
-    // Если же при отсутствии 'type' в URL всегда должен быть 'all', то:
-    // else { setSelectedType('all'); }
-  }, [searchParams]);
+    // Если нужно сбрасывать на 'all' при отсутствии параметра в URL
+    // else if (!initialTypeFromUrl) { // Чтобы не сбрасывать при каждом ререндере без параметра
+    //   setSelectedType('all');
+    // }
+  }, [searchParams, initialTypeFromUrl]); // Добавил initialTypeFromUrl для более точной реакции
 
   const fetchEquipment = useCallback(async () => {
     if (!sanityClient) {
@@ -60,7 +60,7 @@ export default function CatalogPage() {
     }
     setIsLoading(true);
     setFetchError(null);
-    setAllEquipmentSanityItems([]);
+    // setAllEquipmentSanityItems([]); // Можно не очищать, чтобы не было "моргания", если данные уже есть
     try {
       const sanityData: EquipmentItemSanity[] = await sanityClient.fetch(equipmentQuery);
       setAllEquipmentSanityItems(sanityData);
@@ -71,7 +71,7 @@ export default function CatalogPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [equipmentQuery]); // Добавил equipmentQuery в зависимости, т.к. он используется
+  }, [equipmentQuery]); // sanityClient обычно стабилен, equipmentQuery тоже
 
   useEffect(() => {
     fetchEquipment();
@@ -97,10 +97,10 @@ export default function CatalogPage() {
   }, [allItemsForCard]);
 
   const availableTypes = useMemo(() => {
-    const typesSet = new Set(allItemsForCard.map(item => item.categoryValue).filter((v): v is string => !!v));
+    const typesSet = new Set(allItemsForCard.map(item => item.categoryValue).filter((v): v is string => !!v && v !== ''));
     const typesArray = Array.from(typesSet);
     const displayTypes = typesArray
-      .filter(value => value !== 'all' && value !== '')
+      .filter(value => value !== 'all')
       .map(value => ({ value: value, title: categoryDisplayNames[value] ?? value }))
       .sort((a, b) => a.title.localeCompare(b.title));
     return [{ value: 'all', title: 'Все типы' }, ...displayTypes];
@@ -120,8 +120,7 @@ export default function CatalogPage() {
 
   const areFiltersActive = selectedType !== 'all' || selectedBrand !== 'all';
 
-  // Стили для иконок (инлайн), если Tailwind не используется или для быстрой проверки
-  const iconStyle = {
+  const iconStyle = { // Инлайн стили для иконок, если CSS-модули или Tailwind не справляются
     width: '20px',
     height: '20px',
     marginRight: '8px',
@@ -129,16 +128,14 @@ export default function CatalogPage() {
     verticalAlign: 'middle',
   };
 
-
-  if (isLoading) {
+  if (isLoading && allEquipmentSanityItems.length === 0) { // Показываем лоадер только при первой загрузке
     return (
       <div className={styles.catalogPageContainer}>
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Каталог <span className={styles.titleHighlight}>спецтехники</span></h1>
           <p className={styles.pageSubtitle}>Выберите необходимую технику из нашего широкого ассортимента.</p>
         </div>
-        {/* Убран тестовый текст ЗАГРУЗКА ДАННЫХ... (ТЕСТ) */}
-        <div className={styles.loadingIndicator}></div> 
+        <div className={styles.loadingIndicator}></div>
       </div>
     );
   }
@@ -150,23 +147,19 @@ export default function CatalogPage() {
           <h1 className={styles.pageTitle}>Каталог <span className={styles.titleHighlight}>спецтехники</span></h1>
           <p className={styles.pageSubtitle}>Выберите необходимую технику из нашего широкого ассортимента.</p>
         </div>
-        {/* Убран тестовый текст ОШИБКА: ... (ТЕСТ) */}
         <p className={styles.errorIndicator}>{fetchError}</p>
       </div>
     );
   }
-  
+
   return (
-    // Убрана тестовая рамка style={{border: '3px solid blue'}}
-    <div className={styles.catalogPageContainer}> 
+    <div className={styles.catalogPageContainer}>
       <div className={styles.pageHeader}>
         <h1 className={styles.pageTitle}>Каталог <span className={styles.titleHighlight}>спецтехники</span></h1>
-        {/* Убрано отображение количества элементов (Элементов: {filteredItems.length}) */}
-        <p className={styles.pageSubtitle}>Выберите необходимую технику из нашего широкого ассортимента.</p> 
+        <p className={styles.pageSubtitle}>Выберите необходимую технику из нашего широкого ассортимента.</p>
       </div>
 
-      {/* Убрана тестовая рамка style={{border: '1px solid orange'}} */}
-      <div className={styles.filtersContainer}> 
+      <div className={styles.filtersContainer}>
           <div className={styles.filterGroup}>
               <label className={styles.filterLabel}><FunnelIcon style={iconStyle} /> Тип техники:</label>
               <div className={styles.filterButtons}>
@@ -202,18 +195,24 @@ export default function CatalogPage() {
           )}
       </div>
 
-      {/* Убрана тестовая рамка style={{border: '1px solid green'}} */}
-      <div className={styles.equipmentGrid}> 
-        {filteredItems.length > 0 ? (
-            filteredItems.map((itemData) => (
-              <EquipmentCard key={itemData.id} item={itemData} />
-            ))
-          ) : (
-             <div className={styles.noResults}>
-                <p>По вашему запросу техника не найдена.</p>
-                <p>Попробуйте изменить фильтры или сбросить их.</p>
-             </div>
-          )
+      {isLoading && allEquipmentSanityItems.length > 0 && ( // Показываем полупрозрачный лоадер поверх контента при перезагрузке/фильтрации
+        <div className={styles.overlayLoadingIndicator}>Обновление...</div>
+      )}
+
+      <div className={styles.equipmentGrid}>
+        {/* Даже если filteredItems пуст, но нет isLoading и fetchError, показываем сообщение "нет результатов" */}
+        {(filteredItems.length > 0 || (!isLoading && !fetchError)) ? (
+            filteredItems.length > 0 ? (
+                filteredItems.map((itemData) => (
+                <EquipmentCard key={itemData.id} item={itemData} />
+                ))
+            ) : (
+                <div className={styles.noResults}>
+                    <p>По вашему запросу техника не найдена.</p>
+                    <p>Попробуйте изменить фильтры или сбросить их.</p>
+                </div>
+            )
+          ) : null // Если isLoading или fetchError, то эти состояния уже обработаны выше
         }
       </div>
     </div>
