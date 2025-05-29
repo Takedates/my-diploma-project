@@ -16,15 +16,32 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Закрывать мобильное меню при изменении URL (переходе на другую страницу)
-  // ИСПРАВЛЕНО: isMobileMenuOpen убран из массива зависимостей, чтобы избежать двойного срабатывания
-  useEffect(() => {
-    // Этот эффект должен срабатывать только когда изменяется pathname,
-    // и если меню в этот момент открыто, он его закрывает.
+  const closeMobileMenu = () => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
-  }, [pathname]); // isMobileMenuOpen УБРАН отсюда
+  };
+
+  // Эффект для закрытия меню при изменении pathname (навигация)
+  useEffect(() => {
+    closeMobileMenu(); // Вызываем функцию закрытия
+    // Мы хотим, чтобы этот эффект срабатывал только при изменении pathname.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  // Эффект для управления прокруткой body, когда мобильное меню открыто/закрыто
+  // Это предотвращает скролл страницы под открытым меню
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset'; // или 'auto'
+    }
+    // Функция очистки для восстановления прокрутки при размонтировании компонента
+    return () => {
+      document.body.style.overflow = 'unset'; // или 'auto'
+    };
+  }, [isMobileMenuOpen]); // <--- ДОБАВЛЕНО isMobileMenuOpen в зависимости, как и требовал ESLint
 
   const mobileMenuVariants = {
     hidden: {
@@ -50,13 +67,18 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.nav}>
-        <Link href="/" className={styles.logoLink} onClick={() => { if (isMobileMenuOpen) setIsMobileMenuOpen(false); }}>
+        {/* При клике на логотип также закрываем меню, если оно открыто */}
+        <Link href="/" className={styles.logoLink} onClick={closeMobileMenu}>
           {'ООО "Бизнес-Партнер"'}
         </Link>
 
         <nav className={styles.desktopNavLinks}>
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className={`${styles.navLink} ${pathname === link.href ? styles.navLinkActive : ''}`}>
+            <Link 
+              key={link.href} 
+              href={link.href} 
+              className={`${styles.navLink} ${pathname === link.href ? styles.navLinkActive : ''}`}
+            >
               {link.label}
             </Link>
           ))}
@@ -64,7 +86,7 @@ const Header = () => {
 
         <button
           className={styles.mobileMenuButton}
-          onClick={toggleMobileMenu} // Используем toggleMobileMenu для самой кнопки
+          onClick={toggleMobileMenu}
           aria-expanded={isMobileMenuOpen}
           aria-label={isMobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
           aria-controls="mobile-menu-list"
@@ -92,7 +114,7 @@ const Header = () => {
                 key={link.href}
                 href={link.href}
                 className={`${styles.mobileNavLink} ${pathname === link.href ? styles.navLinkActiveMobile : ''}`}
-                onClick={() => setIsMobileMenuOpen(false)} // ИСПРАВЛЕНО: Прямое закрытие меню при клике на ссылку
+                onClick={closeMobileMenu} // Используем функцию закрытия
               >
                 {link.label}
               </Link>
