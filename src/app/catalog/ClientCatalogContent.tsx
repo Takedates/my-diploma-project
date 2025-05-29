@@ -3,7 +3,7 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import styles from './catalog.module.css'; // Убедитесь, что этот файл существует и стили корректны
+import styles from './catalog.module.css';
 import EquipmentCard from '@/components/EquipmentCard';
 import { sanityClient } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
@@ -29,64 +29,58 @@ interface ClientCatalogContentProps {
 }
 
 export default function ClientCatalogContent({ categoryDisplayNames }: ClientCatalogContentProps) {
-  const searchParams = useSearchParams();
-  const initialTypeFromUrl = searchParams.get('type');
-  console.log('ClientCatalogContent MOUNTED. Initial type from URL:', initialTypeFromUrl); // <-- ЛОГ 1
+  const searchParams = useSearchParams(); // Вызываем хук один раз
 
   const [allEquipmentSanityItems, setAllEquipmentSanityItems] = useState<EquipmentItemSanity[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Изначально true
   const [fetchError, setFetchError] = useState<string | null>(null);
   
-  // Начинаем с 'all', потом useEffect обновит на основе URL
+  // selectedType будет инициализирован на основе URL в useEffect ниже
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
 
+  // Эффект для установки selectedType из URL при монтировании или изменении searchParams
   useEffect(() => {
     const typeFromUrl = searchParams.get('type');
-    console.log('CATALOG: useEffect [searchParams] triggered. typeFromUrl:', typeFromUrl, 'Current selectedType:', selectedType); // <-- ЛОГ 2
-    if (typeFromUrl) {
-      if (selectedType !== typeFromUrl) { // Обновляем, только если значение действительно изменилось
-        console.log('CATALOG: Setting selectedType from URL in useEffect:', typeFromUrl); // <-- ЛОГ 3
-        setSelectedType(typeFromUrl);
-      }
-    } else {
-      if (selectedType !== 'all') { // Если параметра нет, и текущий фильтр не 'all', сбрасываем
-        console.log('CATALOG: No type in URL, resetting selectedType to "all"'); // <-- ЛОГ 4
-        setSelectedType('all');
-      }
-    }
-  }, [searchParams, selectedType]); // Добавил selectedType в зависимости, чтобы избежать лишних ререндеров, если значение уже то же самое
+    console.log('CATALOG: useEffect [searchParams] triggered. typeFromUrl:', typeFromUrl);
+    setSelectedType(typeFromUrl || 'all'); // Устанавливаем или сбрасываем на 'all'
+  }, [searchParams]); // Зависит ТОЛЬКО от searchParams
 
+  // Эффект для загрузки данных
   const fetchEquipment = useCallback(async () => {
     if (!sanityClient) {
       setFetchError("Клиент Sanity не инициализирован.");
-      setIsLoading(false);
+      setIsLoading(false); // Убедимся, что isLoading сбрасывается
       return;
     }
-    setIsLoading(true);
+    // Не устанавливаем isLoading(true) здесь, если хотим, чтобы он был true только при первой загрузке
+    // setIsLoading(true); // Если нужен индикатор при каждой перезагрузке данных
     setFetchError(null);
-    console.log("CATALOG: Fetching equipment data START..."); // <-- ЛОГ 5
+    console.log("CATALOG: Fetching equipment data START...");
     try {
       const sanityData: EquipmentItemSanity[] = await sanityClient.fetch(equipmentQuery);
-      console.log("CATALOG: Equipment data FETCHED:", sanityData.length, "items", sanityData); // <-- ЛОГ 6 (показываем сами данные)
+      console.log("CATALOG: Equipment data FETCHED:", sanityData.length, "items");
       setAllEquipmentSanityItems(sanityData);
     } catch (errFromCatch: unknown) {
       console.error("CATALOG: Ошибка загрузки техники из Sanity:", errFromCatch);
       const message = errFromCatch instanceof Error ? errFromCatch.message : "Неизвестная ошибка.";
       setFetchError(`Не удалось загрузить каталог техники: ${message}`);
     } finally {
-      setIsLoading(false);
-      console.log("CATALOG: Fetching equipment FINISHED, isLoading:", false); // <-- ЛОГ 7
+      setIsLoading(false); // Устанавливаем isLoading в false ЗДЕСЬ, после всех операций
+      console.log("CATALOG: Fetching equipment FINISHED, isLoading:", false);
     }
-  }, []); // equipmentQuery - константа, можно убрать из зависимостей
+  }, []); // Зависимостей нет, т.к. query и sanityClient стабильны
 
   useEffect(() => {
-    console.log("CATALOG: useEffect [fetchEquipment] triggered to call fetchEquipment"); // <-- ЛОГ 8
+    console.log("CATALOG: useEffect to call fetchEquipment (initial load)");
+    setIsLoading(true); // Устанавливаем isLoading в true ПЕРЕД вызовом fetchEquipment
     fetchEquipment();
-  }, [fetchEquipment]);
+  }, [fetchEquipment]); // Этот эффект запустит загрузку данных один раз при монтировании
+
+  // ... (useMemo для allItemsForCard, availableBrands, availableTypes, filteredItems остаются такими же)
+  // ... (resetFilters, areFiltersActive, iconStyle остаются такими же)
 
   const allItemsForCard: EquipmentCardData[] = useMemo(() => {
-    console.log("CATALOG: Recalculating allItemsForCard. Sanity items count:", allEquipmentSanityItems.length); // <-- ЛОГ 9
     return allEquipmentSanityItems.map(item => ({
       id: item._id,
       name: item.name ?? 'Без названия',
@@ -100,12 +94,12 @@ export default function ClientCatalogContent({ categoryDisplayNames }: ClientCat
     }));
   }, [allEquipmentSanityItems, categoryDisplayNames]);
 
-  const availableBrands = useMemo(() => { /* ... без изменений ... */
+  const availableBrands = useMemo(() => {
     const brands = new Set(allItemsForCard.map(item => item.brand).filter((b): b is string => !!b && b !== 'Unknown'));
     return ['all', ...Array.from(brands).sort()];
   }, [allItemsForCard]);
 
-  const availableTypes = useMemo(() => { /* ... без изменений ... */
+  const availableTypes = useMemo(() => {
     const typesSet = new Set(allItemsForCard.map(item => item.categoryValue).filter((v): v is string => !!v && v !== ''));
     const typesArray = Array.from(typesSet);
     const displayTypes = typesArray
@@ -116,13 +110,10 @@ export default function ClientCatalogContent({ categoryDisplayNames }: ClientCat
   }, [allItemsForCard, categoryDisplayNames]);
 
   const filteredItems = useMemo(() => {
-    console.log("CATALOG: Recalculating filteredItems. SelectedType:", selectedType, "SelectedBrand:", selectedBrand, "allItemsForCard count:", allItemsForCard.length); // <-- ЛОГ 10
-    const result = allItemsForCard.filter(item =>
+    return allItemsForCard.filter(item =>
       (selectedType === 'all' || item.categoryValue === selectedType) &&
       (selectedBrand === 'all' || item.brand === selectedBrand)
     );
-    console.log("CATALOG: Filtered items count:", result.length); // <-- ЛОГ 11
-    return result;
   }, [selectedType, selectedBrand, allItemsForCard]);
 
   const resetFilters = () => {
@@ -139,71 +130,58 @@ export default function ClientCatalogContent({ categoryDisplayNames }: ClientCat
     display: 'inline-block',
     verticalAlign: 'middle',
   };
-  
-  console.log("CATALOG: Rendering. isLoading:", isLoading, "fetchError:", fetchError, "filteredItems.length:", filteredItems.length); // <-- ЛОГ 12 (перед return)
 
-  if (isLoading && allEquipmentSanityItems.length === 0) {
-    // Этот блок будет показан только при самой первой загрузке, когда данных еще нет
-    // Если Suspense fallback отрабатывает, этот блок может не понадобиться,
-    // но оставим его как дополнительную защиту от "белого экрана" во время первичной загрузки данных внутри ClientCatalogContent
-    console.log("CATALOG: Rendering loading indicator (initial load)"); // <-- ЛОГ 13
+  console.log("CATALOG: Rendering component. isLoading:", isLoading, "fetchError:", fetchError, "filteredItems.length:", filteredItems.length, "selectedType:", selectedType);
+
+  if (isLoading) { // Показываем индикатор, пока isLoading === true
+    console.log("CATALOG: Rendering loading indicator because isLoading is true.");
     return <div className={styles.loadingIndicator}></div>;
   }
 
   if (fetchError) {
-    console.log("CATALOG: Rendering fetch error:", fetchError); // <-- ЛОГ 14
+    console.log("CATALOG: Rendering fetch error:", fetchError);
     return <p className={styles.errorIndicator}>{fetchError}</p>;
   }
 
-  // Если не загрузка и нет ошибки, рендерим основной контент
+  // Если не isLoading и нет fetchError, показываем контент или "нет результатов"
   return (
     <>
       <div className={styles.filtersContainer}>
-          <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}><FunnelIcon style={iconStyle} /> Тип техники:</label>
-              <div className={styles.filterButtons}>
-                  {availableTypes.map(type => (
-                    <button
-                      key={type.value}
-                      onClick={() => {
-                        console.log("CATALOG: Type filter clicked:", type.value); // <-- ЛОГ 15
-                        setSelectedType(type.value);
-                      }}
-                      className={`${styles.filterButton} ${selectedType === type.value ? styles.activeFilter : ''}`}
-                    >
-                      {type.title}
-                    </button>
-                  ))}
-              </div>
-          </div>
-          <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}><FunnelIcon style={iconStyle} /> Производитель:</label>
-              <div className={styles.filterButtons}>
-                  {availableBrands.map(brand => (
-                    <button
-                      key={brand}
-                      onClick={() => {
-                        console.log("CATALOG: Brand filter clicked:", brand); // <-- ЛОГ 16
-                        setSelectedBrand(brand);
-                      }}
-                      className={`${styles.filterButton} ${selectedBrand === brand ? styles.activeFilter : ''}`}
-                    >
-                      {brand === 'all' ? 'Все бренды' : brand}
-                    </button>
-                  ))}
-              </div>
-          </div>
-          {areFiltersActive && (
-            <button onClick={resetFilters} className={styles.resetButton}>
-              <ArrowPathIcon style={{...iconStyle, marginRight: '4px'}} /> Сбросить фильтры
-            </button>
-          )}
+        {/* ... (твой JSX для фильтров остается здесь, он должен работать с обновленным selectedType) ... */}
+        <div className={styles.filterGroup}>
+            <label className={styles.filterLabel}><FunnelIcon style={iconStyle} /> Тип техники:</label>
+            <div className={styles.filterButtons}>
+                {availableTypes.map(type => (
+                  <button
+                    key={type.value}
+                    onClick={() => setSelectedType(type.value)}
+                    className={`${styles.filterButton} ${selectedType === type.value ? styles.activeFilter : ''}`}
+                  >
+                    {type.title}
+                  </button>
+                ))}
+            </div>
+        </div>
+        <div className={styles.filterGroup}>
+            <label className={styles.filterLabel}><FunnelIcon style={iconStyle} /> Производитель:</label>
+            <div className={styles.filterButtons}>
+                {availableBrands.map(brand => (
+                  <button
+                    key={brand}
+                    onClick={() => setSelectedBrand(brand)}
+                    className={`${styles.filterButton} ${selectedBrand === brand ? styles.activeFilter : ''}`}
+                  >
+                    {brand === 'all' ? 'Все бренды' : brand}
+                  </button>
+                ))}
+            </div>
+        </div>
+        {areFiltersActive && (
+          <button onClick={resetFilters} className={styles.resetButton}>
+            <ArrowPathIcon style={{...iconStyle, marginRight: '4px'}} /> Сбросить фильтры
+          </button>
+        )}
       </div>
-
-      {/* Показываем индикатор загрузки поверх, если isLoading === true, но данные уже есть (т.е. идет перезагрузка/фильтрация) */}
-      {isLoading && allEquipmentSanityItems.length > 0 && (
-        <div className={styles.overlayLoadingIndicator}>Обновление...</div>
-      )}
 
       <div className={styles.equipmentGrid}>
         {filteredItems.length > 0 ? (
@@ -211,13 +189,10 @@ export default function ClientCatalogContent({ categoryDisplayNames }: ClientCat
               <EquipmentCard key={itemData.id} item={itemData} />
             ))
           ) : (
-            // Показываем "нет результатов" только если НЕ идет загрузка И нет ошибки
-             !isLoading && !fetchError && (
-                <div className={styles.noResults}>
-                    <p>По вашему запросу техника не найдена.</p>
-                    <p>Попробуйте изменить фильтры или сбросить их.</p>
-                </div>
-             )
+            <div className={styles.noResults}>
+                <p>По вашему запросу техника не найдена.</p>
+                <p>Попробуйте изменить фильтры или сбросить их.</p>
+            </div>
           )
         }
       </div>
