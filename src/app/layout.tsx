@@ -1,13 +1,15 @@
 // src/app/layout.tsx
-'use client'; // Необходимо для usePathname и анимаций на клиенте
+'use client'; // Необходимо для usePathname и анимаций на клиенте (хотя сейчас анимации отключены)
 
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Montserrat, Roboto } from "next/font/google";
 import "./globals.css"; // Глобальные стили (включая Tailwind, если используется)
-import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+
+// --- Закомментируем или удалим импорты Framer Motion и usePathname, пока они не нужны для main ---
+// import { motion, AnimatePresence } from 'framer-motion';
+// import { usePathname } from 'next/navigation';
 
 // Настройка шрифтов
 const montserrat = Montserrat({
@@ -23,31 +25,31 @@ const roboto = Roboto({
   variable: '--font-roboto',
 });
 
-// Варианты анимации для смены страниц
-const pageVariants = {
-  initial: { // Перед появлением
-    opacity: 0,
-    y: 15, // Сдвиг снизу
-  },
-  in: { // Активное состояние
-    opacity: 1,
-    y: 0,
-  },
-  out: { // Перед уходом
-    opacity: 0,
-    y: -15, // Сдвиг вверх
-  }
-};
+// --- Закомментируем или удалим переменные для анимации, пока они не используются ---
+// const pageVariants = {
+//   initial: { // Перед появлением
+//     opacity: 0,
+//     y: 15, // Сдвиг снизу
+//   },
+//   in: { // Активное состояние
+//     opacity: 1,
+//     y: 0,
+//   },
+//   out: { // Перед уходом
+//     opacity: 0,
+//     y: -15, // Сдвиг вверх
+//   }
+// };
 
-// Настройки перехода
-const pageTransition = {
-  type: "tween",
-  ease: "anticipate", // Эффект можно поменять на "easeInOut" или другой
-  duration: 0.5
-};
+// // Настройки перехода
+// const pageTransition = {
+//   type: "tween",
+//   ease: "anticipate", // Эффект можно поменять на "easeInOut" или другой
+//   duration: 0.5
+// };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  // const pathname = usePathname(); // Закомментируем, так как key={pathname} больше не используется
 
   return (
     <html lang="ru" className={`${montserrat.variable} ${roboto.variable}`}>
@@ -68,24 +70,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <Header /> {/* Хедер вне зоны анимации */}
 
-        <AnimatePresence
+        {/* --- Закомментируем AnimatePresence и motion.main, используем обычный main --- */}
+        {/* <AnimatePresence
             mode="wait" // Ждем завершения анимации ухода
             initial={false} // Не анимируем первую загрузку
             onExitComplete={() => window.scrollTo(0, 0)} // Скролл вверх после смены страницы
-        >
+        > */}
           {/* Анимируем основной контент */}
-          <motion.main
-            key={pathname} // Ключ для отслеживания смены компонента
+          <main
+            // key={pathname} // Ключ для отслеживания смены компонента - закомментируем
             className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8" // Контейнер и отступы
-            initial="initial"
-            animate="in"
-            exit="out"
-            variants={pageVariants} // Применяем варианты анимации
-            transition={pageTransition} // Применяем настройки перехода
+            // initial="initial" // Закомментируем
+            // animate="in"      // Закомментируем
+            // exit="out"        // Закомментируем
+            // variants={pageVariants} // Закомментируем
+            // transition={pageTransition} // Закомментируем
           >
             {children} {/* Содержимое текущей страницы */}
-          </motion.main>
-        </AnimatePresence>
+          </main>
+        {/* </AnimatePresence> */}
 
         <Footer /> {/* Футер вне зоны анимации */}
       </body>
