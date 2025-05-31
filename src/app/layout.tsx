@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-'use client'; // Необходимо для usePathname и анимаций на клиенте (хотя сейчас анимации отключены)
+'use client'; // Необходимо для usePathname и анимаций на клиенте
 
 import React from 'react';
 import Header from '@/components/Header';
@@ -7,9 +7,9 @@ import Footer from '@/components/Footer';
 import { Montserrat, Roboto } from "next/font/google";
 import "./globals.css"; // Глобальные стили (включая Tailwind, если используется)
 
-// --- Закомментируем или удалим импорты Framer Motion и usePathname, пока они не нужны для main ---
-// import { motion, AnimatePresence } from 'framer-motion';
-// import { usePathname } from 'next/navigation';
+// --- Раскомментируем импорты Framer Motion и usePathname ---
+import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 // Настройка шрифтов
 const montserrat = Montserrat({
@@ -25,31 +25,31 @@ const roboto = Roboto({
   variable: '--font-roboto',
 });
 
-// --- Закомментируем или удалим переменные для анимации, пока они не используются ---
-// const pageVariants = {
-//   initial: { // Перед появлением
-//     opacity: 0,
-//     y: 15, // Сдвиг снизу
-//   },
-//   in: { // Активное состояние
-//     opacity: 1,
-//     y: 0,
-//   },
-//   out: { // Перед уходом
-//     opacity: 0,
-//     y: -15, // Сдвиг вверх
-//   }
-// };
+// --- Новые, более простые варианты анимации для смены страниц ---
+const pageVariants = {
+  initial: { // Начальное состояние (при входе на страницу)
+    opacity: 0,
+    // y: 15, // Можно убрать сдвиг, чтобы сделать просто fade
+  },
+  animate: { // Конечное состояние (после появления)
+    opacity: 1,
+    // y: 0, // Убрать сдвиг
+  },
+  exit: { // Состояние при уходе со страницы
+    opacity: 0,
+    // y: -15, // Убрать сдвиг
+  }
+};
 
-// // Настройки перехода
-// const pageTransition = {
-//   type: "tween",
-//   ease: "anticipate", // Эффект можно поменять на "easeInOut" или другой
-//   duration: 0.5
-// };
+// Настройки перехода
+const pageTransition = {
+  type: "tween", // Можно попробовать "spring" для другого эффекта
+  ease: "easeInOut", // Плавное начало и конец
+  duration: 0.3 // Более быстрая анимация
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // const pathname = usePathname(); // Закомментируем, так как key={pathname} больше не используется
+  const pathname = usePathname(); // Снова используем pathname для key
 
   return (
     <html lang="ru" className={`${montserrat.variable} ${roboto.variable}`}>
@@ -70,25 +70,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <Header /> {/* Хедер вне зоны анимации */}
 
-        {/* --- Закомментируем AnimatePresence и motion.main, используем обычный main --- */}
-        {/* <AnimatePresence
+        <AnimatePresence
             mode="wait" // Ждем завершения анимации ухода
-            initial={false} // Не анимируем первую загрузку
+            // initial={false} // <-- Убираем это! motion.main будет сам управлять начальной анимацией
             onExitComplete={() => window.scrollTo(0, 0)} // Скролл вверх после смены страницы
-        > */}
+        >
           {/* Анимируем основной контент */}
-          <main
-            // key={pathname} // Ключ для отслеживания смены компонента - закомментируем
+          <motion.main
+            key={pathname} // Ключ для отслеживания смены компонента (ОБЯЗАТЕЛЬНО!)
             className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8" // Контейнер и отступы
-            // initial="initial" // Закомментируем
-            // animate="in"      // Закомментируем
-            // exit="out"        // Закомментируем
-            // variants={pageVariants} // Закомментируем
-            // transition={pageTransition} // Закомментируем
+            initial="initial" // Начальное состояние при появлении компонента
+            animate="animate" // Состояние, в которое анимируем при появлении
+            exit="exit"       // Состояние, в которое анимируем при уходе
+            variants={pageVariants} // Применяем варианты анимации
+            transition={pageTransition} // Применяем настройки перехода
           >
             {children} {/* Содержимое текущей страницы */}
-          </main>
-        {/* </AnimatePresence> */}
+          </motion.main>
+        </AnimatePresence>
 
         <Footer /> {/* Футер вне зоны анимации */}
       </body>
