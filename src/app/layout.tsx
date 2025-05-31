@@ -1,17 +1,15 @@
 // src/app/layout.tsx
-'use client'; // Необходимо для usePathname и анимаций на клиенте
+'use client'; 
 
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Montserrat, Roboto } from "next/font/google";
-import "./globals.css"; // Глобальные стили (включая Tailwind, если используется)
+import "./globals.css";
 
-// --- Раскомментируем импорты Framer Motion и usePathname ---
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
-// Настройка шрифтов
 const montserrat = Montserrat({
   subsets: ['cyrillic', 'latin'],
   variable: '--font-montserrat',
@@ -25,71 +23,60 @@ const roboto = Roboto({
   variable: '--font-roboto',
 });
 
-// --- Новые, более простые варианты анимации для смены страниц ---
+// Варианты анимации для смены страниц (оставляем те же, что и в предыдущем шаге)
 const pageVariants = {
-  initial: { // Начальное состояние (при входе на страницу)
+  initial: { 
     opacity: 0,
-    // y: 15, // Можно убрать сдвиг, чтобы сделать просто fade
+    // y: 15, // Пока оставляем без сдвига, чтобы упростить
   },
-  animate: { // Конечное состояние (после появления)
+  animate: { 
     opacity: 1,
-    // y: 0, // Убрать сдвиг
+    // y: 0, // Пока оставляем без сдвига
   },
-  exit: { // Состояние при уходе со страницы
+  exit: { 
     opacity: 0,
-    // y: -15, // Убрать сдвиг
+    // y: -15, // Пока оставляем без сдвига
   }
 };
 
 // Настройки перехода
 const pageTransition = {
-  type: "tween", // Можно попробовать "spring" для другого эффекта
-  ease: "easeInOut", // Плавное начало и конец
-  duration: 0.3 // Более быстрая анимация
+  type: "tween",
+  ease: "easeInOut",
+  duration: 0.3
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname(); // Снова используем pathname для key
+  const pathname = usePathname();
 
   return (
     <html lang="ru" className={`${montserrat.variable} ${roboto.variable}`}>
       <head>
-        {/* 
-          Добавляем метатег viewport для контроля масштабирования.
-          width=device-width: устанавливает ширину области просмотра равной ширине экрана устройства.
-          initial-scale=1: устанавливает начальный масштаб.
-          maximum-scale=1: запрещает пользователю увеличивать масштаб сверх начального.
-          user-scalable=no: дополнительно запрещает масштабирование пользователем (более строгий вариант).
-        */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        {/* Вы можете добавить сюда и другие метатеги, например, для SEO, если они не генерируются Next.js metadata API */}
-        {/* <title>ООО "Бизнес-Партнер"</title> */}
-        {/* <meta name="description" content="Продажа качественной спецтехники от ООО Бизнес-Партнер" /> */}
       </head>
       <body className="font-sans flex flex-col min-h-screen bg-gray-100 text-gray-800">
 
-        <Header /> {/* Хедер вне зоны анимации */}
+        <Header />
 
         <AnimatePresence
-            mode="wait" // Ждем завершения анимации ухода
-            // initial={false} // <-- Убираем это! motion.main будет сам управлять начальной анимацией
-            onExitComplete={() => window.scrollTo(0, 0)} // Скролл вверх после смены страницы
+            // mode="wait" // <-- УДАЛИЛИ ЭТУ СТРОКУ! Теперь новый компонент будет появляться сразу.
+            // initial={false} // <-- УБРАЛИ это ещё на прошлом шаге. Так и должно быть.
+            onExitComplete={() => window.scrollTo(0, 0)}
         >
-          {/* Анимируем основной контент */}
           <motion.main
-            key={pathname} // Ключ для отслеживания смены компонента (ОБЯЗАТЕЛЬНО!)
-            className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8" // Контейнер и отступы
-            initial="initial" // Начальное состояние при появлении компонента
-            animate="animate" // Состояние, в которое анимируем при появлении
-            exit="exit"       // Состояние, в которое анимируем при уходе
-            variants={pageVariants} // Применяем варианты анимации
-            transition={pageTransition} // Применяем настройки перехода
+            key={pathname}
+            className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8"
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
           >
-            {children} {/* Содержимое текущей страницы */}
+            {children}
           </motion.main>
         </AnimatePresence>
 
-        <Footer /> {/* Футер вне зоны анимации */}
+        <Footer />
       </body>
     </html>
   );
