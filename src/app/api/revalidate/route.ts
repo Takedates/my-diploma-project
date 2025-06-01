@@ -1,10 +1,12 @@
+// src/app/api/revalidate/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 
-export async function GET(request: NextRequest) {
+// Измени GET на POST
+export async function POST(request: NextRequest) { 
   const secret = request.nextUrl.searchParams.get('secret');
 
-  // Проверка секрета
+  // Проверка секрета (остается та же)
   if (secret !== process.env.REVALIDATION_SECRET) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 });
   }
