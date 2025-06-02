@@ -1,0 +1,35 @@
+# netlify.toml
+
+# Эти заголовки принудительно отключают кеширование на уровне CDN Netlify
+# для страниц, которые должны мгновенно обновляться после изменений в Sanity.
+# Это гарантирует, что пользователи всегда будут видеть свежий контент.
+
+# Правила для страницы списка новостей и всех динамических страниц новостей
+[[headers]]
+for = "/news"
+[headers.values]
+Cache-Control = "no-store, no-cache, must-revalidate, proxy-revalidate"
+Pragma = "no-cache"
+Expires = "0"
+
+[[headers]]
+for = "/news/*" # Для страниц типа /news/my-news-slug
+[headers.values]
+Cache-Control = "no-store, no-cache, must-revalidate, proxy-revalidate"
+Pragma = "no-cache"
+Expires = "0"
+
+# Правила для страницы списка каталога и всех динамических страниц товаров
+[[headers]]
+for = "/catalog"
+[headers.values]
+Cache-Control = "no-store, no-cache, must-revalidate, proxy-revalidate"
+Pragma = "no-cache"
+Expires = "0"
+
+[[headers]]
+for = "/catalog/*" # Для страниц типа /catalog/my-product-slug
+[headers.values]
+Cache-Control = "no-store, no-cache, must-revalidate, proxy-revalidate"
+Pragma = "no-cache"
+Expires = "0"
