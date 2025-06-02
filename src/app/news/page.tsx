@@ -1,5 +1,8 @@
 // src/app/news/page.tsx (Серверный компонент - только загрузка данных)
 
+// --- Добавлено для принудительного динамического рендеринга (отключение кеширования) ---
+export const dynamic = 'force-dynamic'; 
+
 import React from 'react';
 import { sanityClient } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
