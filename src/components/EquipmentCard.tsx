@@ -1,4 +1,4 @@
-// src/components/EquipmentCard.tsx
+// src/components/EquipmentCard/EquipmentCard.tsx
 'use client';
 
 import React from 'react';
@@ -6,7 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './EquipmentCard.module.css';
 import { urlFor } from '@/lib/sanityClient';
-import { motion } from 'framer-motion';
+// --- УДАЛЯЕМ ИМПОРТ FRAMER MOTION ---
+// import { motion } from 'framer-motion'; 
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import type { EquipmentCardData } from '@/types/equipment';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
@@ -15,14 +16,15 @@ interface EquipmentCardProps {
   item: EquipmentCardData;
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  hover: {
-    y: -6,
-    boxShadow: "0 10px 20px -5px rgb(0 0 0 / 0.1), 0 6px 10px -6px rgb(0 0 0 / 0.1)",
-    transition: { duration: 0.25, ease: 'easeOut' }
-  }
-};
+// --- УДАЛЯЕМ ОПРЕДЕЛЕНИЕ ВАРИАНТОВ АНИМАЦИИ ---
+// const cardVariants = {
+//   hidden: { opacity: 0, y: 20 },
+//   hover: {
+//     y: -6,
+//     boxShadow: "0 10px 20px -5px rgb(0 0 0 / 0.1), 0 6px 10px -6px rgb(0 0 0 / 0.1)",
+//     transition: { duration: 0.25, ease: 'easeOut' }
+//   }
+// };
 
 export default function EquipmentCard({ item }: EquipmentCardProps) {
   const imageAsset = item.image?.asset;
@@ -47,7 +49,7 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
     }
   }
 
-  const linkHref = item.link || '#'; // Используем || '#' для безопасности, если link не придет
+  const linkHref = item.link || '#'; 
 
   let statusClass = styles.defaultStatus;
   if (item.status) {
@@ -63,16 +65,16 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
   }
 
   return (
-    <motion.div
-      className={styles.cardWrapper} // ИЗМЕНЕНО: просто обертка, не ссылка
-      variants={cardVariants}
-      whileHover="hover"
-      layout
+    // --- ЗАМЕНЯЕМ motion.div НА ОБЫЧНЫЙ div И УДАЛЯЕМ АНИМАЦИОННЫЕ ПРОПСЫ ---
+    <div
+      className={styles.cardWrapper} 
+      // variants={cardVariants} // Удалено
+      // whileHover="hover"     // Удалено
+      // layout                 // Удалено
     >
-      {/* <div className={styles.card}> УБРАЛИ Link отсюда, styles.card теперь для внутреннего div */}
-      <div className={styles.card}> {/* Этот div теперь не ссылка */}
+      <div className={styles.card}> 
         <div className={styles.imageWrapper}>
-          <Link href={linkHref}> {/* ССЫЛКА НА ИЗОБРАЖЕНИИ */}
+          <Link href={linkHref}>
             <Image
               src={imageUrl}
               alt={item.image?.alt || item.name || 'Фото техники'}
@@ -95,7 +97,6 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
           {(!item.category || item.category === 'Без категории') && item.brand !== 'Unknown' && (
              <p className={styles.type}>{item.brand}</p>
           )}
-          {/* ССЫЛКА НА ЗАГОЛОВКЕ */}
           <Link href={linkHref} className={styles.titleLink}>
             <h3 className={styles.title}>{item.name}</h3>
           </Link>
@@ -105,13 +106,12 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
             </p>
           )}
           <div className={styles.cardFooter}>
-            {/* ССЫЛКА-КНОПКА "ПОДРОБНЕЕ" */}
             <Link href={linkHref} className={styles.detailsButton}>
-                Подробнее <ArrowRightIcon className={styles.arrowIcon} /> {/* Добавил класс для иконки */}
+                Подробнее <ArrowRightIcon className={styles.arrowIcon} />
             </Link>
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
