@@ -1,4 +1,4 @@
-// src/components/Footer.tsx (Обновленный)
+// src/components/Footer.tsx
 import React from 'react';
 import Link from 'next/link';
 import styles from './Footer.module.css';
@@ -26,7 +26,6 @@ const Footer = () => {
           >
             Кузьмин В.С.
           </a>
-          {/* ИЗМЕНЕНИЕ ЗДЕСЬ: Убран год 2025 или {currentYear} из этой строки */}
         </p>
       </div>
     </footer>

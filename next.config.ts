@@ -1,9 +1,9 @@
 // next.config.ts
 
-import type { NextConfig } from 'next'; // Импортируем тип
+import type { NextConfig } from 'next'; 
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true, // Пример другой настройки (можно оставить или убрать)
+  reactStrictMode: true, 
   // Добавляем секцию images:
   images: {
     remotePatterns: [
@@ -11,13 +11,9 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'cdn.sanity.io',
         port: '',
-        // pathname: '/images/**', // Оставляем закомментированным пока
       },
     ],
-    // Если вдруг remotePatterns не сработает (маловероятно с TS):
-    // domains: ['cdn.sanity.io'],
   },
-  // Здесь могут быть другие твои настройки
 };
 
 // Используем export default для TS файлов

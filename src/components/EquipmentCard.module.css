@@ -1,11 +1,9 @@
 /* src/components/EquipmentCard/EquipmentCard.module.css */
 
-/* ... (ваши переменные и существующие стили .statusBadge, .inStock и т.д. остаются) ... */
-
-.cardWrapper { /* Раньше был cardLinkWrapper, теперь это просто обертка для анимации */
+.cardWrapper { 
   display: block;
-  text-decoration: none; /* Это больше не нужно здесь, т.к. это не ссылка */
-  color: inherit; /* Можно оставить, если нужно наследование */
+  text-decoration: none; 
+  color: inherit; 
   height: 100%;
   border-radius: 10px;
   overflow: hidden;
@@ -13,12 +11,12 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
   transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
 }
-.cardWrapper:hover { /* hover эффект для всей карточки (подъем, тень) */
+.cardWrapper:hover { 
   transform: translateY(-6px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.card { /* Внутренний контейнер карточки, уже не ссылка */
+.card { 
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -38,12 +36,12 @@
   height: 100%;
   transition: transform 0.35s ease;
 }
-/* Эффект зума для image при наведении на .cardWrapper (или на .imageWrapper, если хотите) */
+/* Эффект зума для image при наведении на .cardWrapper */
 .cardWrapper:hover .image {
   transform: scale(1.08);
 }
 
-/* ... (стили statusBadge остаются) ... */
+/* стили statusBadge остаются */
 .statusBadge {
     position: absolute;
     top: 0.85rem;
@@ -88,13 +86,13 @@
   color: #6b7280;
   margin-bottom: 0.35rem;
   text-transform: uppercase;
-  text-decoration: none; /* Убедимся, что здесь нет подчеркивания */
+  text-decoration: none; 
 }
 
-.titleLink { /* Стили для контейнера Link вокруг заголовка */
-  text-decoration: none; /* Убираем стандартное подчеркивание ссылки */
-  color: var(--text-color-dark, #111827); /* Цвет для заголовка */
-  display: block; /* Чтобы занимал всю ширину и можно было кликнуть */
+.titleLink { 
+  text-decoration: none; 
+  color: var(--text-color-dark, #111827); 
+  display: block; 
   margin-bottom: 0.6rem;
 }
 
@@ -110,13 +108,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   min-height: calc(1.4em * 2);
-  text-decoration: underline; /* ЯВНО ПОДЧЕРКИВАЕМ ЗАГОЛОВОК */
+  text-decoration: underline; 
   transition: color 0.2s ease;
 }
 
-.titleLink:hover .title { /* Изменение цвета заголовка при наведении на ссылку */
+.titleLink:hover .title { 
   color: var(--accent-color, #f97316);
-  text-decoration: underline; /* Оставляем подчеркивание или убираем по желанию */
+  text-decoration: underline; 
 }
 
 
@@ -133,7 +131,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-decoration: none; /* Убедимся, что здесь нет подчеркивания */
+  text-decoration: none;
 }
 
 .cardFooter {
@@ -145,7 +143,7 @@
     border-top: 1px solid var(--border-color, #e5e7eb);
 }
 
-.detailsButton { /* Это теперь Link, стилизуем его как кнопку */
+.detailsButton { 
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -154,7 +152,7 @@
   font-weight: 600;
   color: white;
   background-color: var(--accent-color, #f97316);
-  text-decoration: none; /* Убираем подчеркивание со ссылки-кнопки */
+  text-decoration: none; 
   padding: 0.5rem 1rem;
   border: 1px solid transparent;
   border-radius: 6px;
@@ -162,15 +160,13 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.arrowIcon { /* Стили для иконки внутри кнопки "Подробнее" */
+.arrowIcon { 
     width: 1rem;
     height: 1rem;
 }
 
-/* Убрали :hover для .cardLinkWrapper .detailsButton, так как cardLinkWrapper больше не существует как ссылка */
-/* Делаем hover эффект непосредственно для .detailsButton */
 .detailsButton:hover {
     background-color: var(--accent-color-dark, #ea580c);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    transform: scale(1.03); /* или translateY(-2px) */
+    transform: scale(1.03); 
 }

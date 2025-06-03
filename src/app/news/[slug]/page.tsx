@@ -1,7 +1,4 @@
 // src/app/news/[slug]/page.tsx
-// 'use client'; // УБИРАЕМ ЭТО, ТАК КАК КОМПОНЕНТ СТАНОВИТСЯ СЕРВЕРНЫМ ИЗ-ЗА ASYNC
-// Если какая-то часть этой страницы требует КЛИЕНТСКОЙ интерактивности
-// (useState, useEffect, onClick), ее нужно будет вынести в отдельный компонент с 'use client';
 
 import React from 'react';
 import { sanityClient, urlFor } from '@/lib/sanityClient';
@@ -25,14 +22,12 @@ interface FullNewsPost {
   body?: PortableTextBlock[] | null;
 }
 
-// Тип для РАЗРЕШЕННЫХ параметров
 interface ResolvedPageParams {
   slug: string;
 }
 
-// Тип для пропсов, params теперь Promise
 interface PageProps {
-  params: Promise<ResolvedPageParams>; // Next.js для async RSC передает params как Promise
+  params: Promise<ResolvedPageParams>; 
 }
 
 const singleNewsQuery = groq`*[_type == "newsPost" && slug.current == $slug][0] {
@@ -40,9 +35,9 @@ const singleNewsQuery = groq`*[_type == "newsPost" && slug.current == $slug][0] 
 }`;
 
 export default async function SingleNewsPage({ params }: PageProps) {
-  // РАЗВОРАЧИВАЕМ ПРОМИС PARAMS
+
   const resolvedParams = await params;
-  const { slug } = resolvedParams; // Теперь slug точно string
+  const { slug } = resolvedParams; 
 
   let post: FullNewsPost | null = null;
   let fetchError: string | null = null;
@@ -55,7 +50,7 @@ export default async function SingleNewsPage({ params }: PageProps) {
   } else {
     try {
       post = await sanityClient.fetch<FullNewsPost | null>(singleNewsQuery, { slug });
-      if (!post) { // Явная проверка, если fetch вернул null (новость не найдена)
+      if (!post) { // Явная проверка
         fetchError = `К сожалению, новость с адресом "${slug}" не существует.`;
       }
     } catch (error: unknown) {
@@ -66,7 +61,7 @@ export default async function SingleNewsPage({ params }: PageProps) {
   }
 
   if (fetchError || !post) {
-     const errorTitle = fetchError && post === null ? 'Ошибка загрузки' : 'Новость не найдена'; // Уточняем заголовок
+     const errorTitle = fetchError && post === null ? 'Ошибка загрузки' : 'Новость не найдена'; 
      const errorMessage = fetchError ?? `К сожалению, новость с адресом "${slug}" не существует.`;
      return (
        <div className={singlePostStyles.messageContainer}>

@@ -12,16 +12,16 @@ type RequestStatus = 'new' | 'in_progress' | 'closed';
 type SortOrder = 'asc' | 'desc';
 type ContactSortColumn = 'created_at' | 'name' | 'status';
 
-// ИСПРАВЛЕНО: EquipmentSortColumn теперь использует 'name' вместо 'customer_name' для сортировки по имени
+
 type EquipmentSortColumn = 'created_at' | 'name' | 'equipment_name' | 'status'; 
 
 interface ContactRequest { id: number; created_at: string; name: string; contact_info: string; message: string; status: RequestStatus | string | null; }
 
-// ИСПРАВЛЕНО: Интерфейс EquipmentRequest теперь использует 'name'
+
 interface EquipmentRequest {
     id: number;
     created_at: string;
-    name: string; // ИСПРАВЛЕНО: Это реальное поле из БД, которое содержит имя клиента
+    name: string; 
     contact_info: string;
     equipment_name?: string | null;
     equipment_link?: string | null;
@@ -74,7 +74,6 @@ export default function DashboardPage() {
     // Состояния для сортировки
     const [contactSortBy, setContactSortBy] = useState<ContactSortColumn>('created_at');
     const [contactSortOrder, setContactSortOrder] = useState<SortOrder>('desc');
-    // ИСПРАВЛЕНО: Начальная сортировка для equipmentRequests по 'name'
     const [equipmentSortBy, setEquipmentSortBy] = useState<EquipmentSortColumn>('created_at');
     const [equipmentSortOrder, setEquipmentSortOrder] = useState<SortOrder>('desc');
 
@@ -138,10 +137,10 @@ export default function DashboardPage() {
                 if (contactSearchTerm.trim()) cQuery = cQuery.or(`name.ilike.%${contactSearchTerm.trim()}%,contact_info.ilike.%${contactSearchTerm.trim()}%`);
                 cQuery = cQuery.order(contactSortBy, { ascending: contactSortOrder === 'asc' }).range(cFrom, cTo);
 
-                // ИСПРАВЛЕНО: Убрал foreignTable из eqQuery, так как столбец 'name' прямо в equipment_requests
+
                 let eqQuery = supabase.from('equipment_requests').select('*', { count: 'exact' });
                 if (equipmentFilterStatus !== 'all') eqQuery = eqQuery.eq('status', equipmentFilterStatus);
-                // ИСПРАВЛЕНО: Поиск по 'name' вместо 'customer_name'
+
                 if (equipmentSearchTerm.trim()) eqQuery = eqQuery.or(`name.ilike.%${equipmentSearchTerm.trim()}%,contact_info.ilike.%${equipmentSearchTerm.trim()}%`, { foreignTable: 'equipment_requests' }); 
                 eqQuery = eqQuery.order(equipmentSortBy, { ascending: equipmentSortOrder === 'asc' }).range(eqFrom, eqTo);
 
@@ -149,7 +148,7 @@ export default function DashboardPage() {
                 const { data: cData, error: cErr, count: cCount } = cRes;
                 const { data: rawEqData, error: eqErr, count: eqCount } = eqRes;
                 
-                // ИСПРАВЛЕНО: Нет необходимости в маппинге, так как интерфейс теперь соответствует БД
+
                 const eqData = rawEqData as EquipmentRequest[] || [];
 
 
@@ -281,7 +280,7 @@ export default function DashboardPage() {
     };
     const handleEquipmentSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => { setEquipmentSearchInput(e.target.value); };
 
-    // --- Обновленная логика сортировки, чтобы быть уверенным в столбце ---
+
     const handleSort = ( tableType: 'contact' | 'equipment', column: ContactSortColumn | EquipmentSortColumn ) => {
         if (tableType === 'contact') {
             const typedColumn = column as ContactSortColumn;
@@ -292,7 +291,7 @@ export default function DashboardPage() {
         } else {
             // ИСПРАВЛЕНО: Сортировка по 'name'
             const newSortOrder = equipmentSortBy === column && equipmentSortOrder === 'asc' ? 'desc' : 'asc';
-            setEquipmentSortBy(column as EquipmentSortColumn); // Убеждаемся, что column соответствует EquipmentSortColumn
+            setEquipmentSortBy(column as EquipmentSortColumn); 
             setEquipmentSortOrder(newSortOrder);
             setEquipmentCurrentPage(1);
         }
@@ -390,7 +389,7 @@ export default function DashboardPage() {
                                 <thead>
                                     <tr>
                                         <th onClick={() => handleSort('equipment', 'created_at')} className={styles.sortableHeader}>Дата <SortIndicator order={equipmentSortBy === 'created_at' ? equipmentSortOrder : undefined} /></th>
-                                        {/* ИСПРАВЛЕНО: Заголовок столбца для имени клиента */}
+                                        {/* Заголовок столбца для имени клиента */}
                                         <th onClick={() => handleSort('equipment', 'name')} className={styles.sortableHeader}>Имя клиента <SortIndicator order={equipmentSortBy === 'name' ? equipmentSortOrder : undefined} /></th>
                                         <th>Контакт</th>
                                         <th onClick={() => handleSort('equipment', 'equipment_name')} className={styles.sortableHeader}>Техника <SortIndicator order={equipmentSortBy === 'equipment_name' ? equipmentSortOrder : undefined} /></th>
@@ -408,7 +407,7 @@ export default function DashboardPage() {
                                         return (
                                             <tr key={req.id} className={`${rowStatusClass} ${updatingStatusId === req.id ? styles.rowLoading : ''}`}>
                                                 <td>{new Date(req.created_at).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short'})}</td>
-                                                {/* ИСПРАВЛЕНО: Теперь выводим req.name напрямую, с запасным вариантом */}
+                                                {/* выводим req.name напрямую, с запасным вариантом */}
                                                 <td>{req.name || '-'}</td> 
                                                 <td>{req.contact_info}</td>
                                                 <td>{req.equipment_name || '-'}</td>

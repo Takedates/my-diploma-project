@@ -18,10 +18,6 @@
   color: var(--text-color-dark, #111827);
   margin-bottom: 1rem;
   line-height: 1.2;
-  /* ИСПРАВЛЕНО: УБРАНЫ СТИЛИ ПОДЧЕРКИВАНИЯ ОТСЮДА */
-  /* display: inline-block; */
-  /* padding-bottom: 0.75rem; */
-  /* border-bottom: 2px solid var(--accent-color, #f97316); */
 }
 @media (min-width: 768px) {
   .pageTitle { font-size: 3.25rem; }
@@ -84,8 +80,6 @@
   height: 1.5rem;
   color: var(--accent-color, #f97316);
   flex-shrink: 0;
-  /* ИСПРАВЛЕНО: Убрана или изменена margin-top для лучшего выравнивания */
-  /* margin-top: 0.2rem; */ /* ЗАКОММЕНТИРОВАНО или УДАЛЕНО */
 }
 
 .infoItem a {
@@ -113,10 +107,9 @@
   font-weight: 700;
   color: var(--text-color-dark, #111827);
   margin-bottom: 2.5rem;
-  /* НОВЫЕ СТИЛИ для оранжевого подчеркивания здесь */
-  display: inline-block; /* Чтобы border-bottom оборачивал только контент */
-  padding-bottom: 0.75rem; /* Отступ между текстом и подчеркиванием */
-  border-bottom: 2px solid var(--accent-color, #f97316); /* Само подчеркивание */
+  display: inline-block; 
+  padding-bottom: 0.75rem; 
+  border-bottom: 2px solid var(--accent-color, #f97316);
 }
 
 .contactForm {
@@ -165,7 +158,6 @@
   min-height: 130px;
 }
 
-/* --- НОВЫЕ И ДОПОЛНЕННЫЕ СТИЛИ --- */
 
 .formHint {
     font-size: 0.8rem;
@@ -276,4 +268,3 @@
   font-size: 0.8rem;
   color: var(--text-secondary, #666);
 }
-/* --- Конец новых и дополненных стилей --- */

@@ -9,7 +9,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  title?: string; // Необязательный заголовок модалки
+  title?: string; 
 }
 
 const backdropVariants = {
@@ -33,7 +33,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     }
   };
 
-  // Закрытие по нажатию Escape
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -51,7 +50,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      // Убедимся, что прокрутка возвращается при размонтировании, если окно было открыто
       document.body.style.overflow = 'auto';
     };
   }, [isOpen, onClose]);

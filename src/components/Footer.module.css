@@ -1,9 +1,9 @@
 /* src/components/Footer.module.css */
 
 .footer {
-  background-color: var(--footer-bg, #1f2937); /* Темно-серый фон (gray-800) - Используем переменную, если есть */
-  color: #9ca3af; /* Светло-серый текст (gray-400) */
-  padding: 2rem 1.5rem; /* Сделаем отступы чуть больше */
+  background-color: var(--footer-bg, #1f2937); 
+  color: #9ca3af; 
+  padding: 2rem 1.5rem; 
   margin-top: auto; /* Прижимает футер к низу */
   font-family: var(--font-roboto, 'Roboto', sans-serif);
   font-size: 0.875rem; /* text-sm */
@@ -11,60 +11,52 @@
 
 /* Используем этот класс как основной контейнер */
 .footerContent {
-  max-width: 1140px; /* Или ваша стандартная ширина контейнера */
+  max-width: 1140px; 
   margin: 0 auto;
-  text-align: center; /* Центрируем текст */
+  text-align: center; 
 }
 
 .footerContent p {
-  margin-bottom: 0.5rem; /* Базовый отступ для параграфов в футере */
+  margin-bottom: 0.5rem; 
 }
 .footerContent p:last-child {
   margin-bottom: 0;
 }
 
 .copyrightAndTerms {
-  font-size: 0.875rem; /* text-sm */
+  font-size: 0.875rem; 
 }
 
 /* СТИЛЬ ДЛЯ ССЫЛКИ "Все права защищены" */
 .footerLink {
-  color: #d1d5db; /* Чуть светлее основного текста (gray-300) */
+  color: #d1d5db; 
   text-decoration: underline;
-  text-decoration-color: #4b5563; /* Серое подчеркивание (gray-600) */
-  text-underline-offset: 2px; /* Небольшой отступ подчеркивания */
+  text-decoration-color: #4b5563; 
+  text-underline-offset: 2px; 
   transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
 .footerLink:hover {
-  color: #ffffff; /* Белый при наведении */
-  text-decoration-color: var(--accent-orange, #f97316); /* Акцентное подчеркивание */
+  color: #ffffff; 
+  text-decoration-color: var(--accent-orange, #f97316); 
 }
 
 /* СТИЛИ ДЛЯ СТРОКИ РАЗРАБОТЧИКА */
 .developerCredit {
-    margin-top: 0.75rem; /* Немного увеличим отступ сверху */
+    margin-top: 0.75rem; 
     font-size: 0.8rem;
-    opacity: 0.8; /* Чуть заметнее */
+    opacity: 0.8; 
 }
 
-/* СТИЛИ ДЛЯ ССЫЛКИ РАЗРАБОТЧИКА (ваши стили) */
+/* СТИЛИ ДЛЯ ССЫЛКИ РАЗРАБОТЧИКА */
 .developerLink {
-  /* display: inline-block; */ /* Убрал, так как <a> по умолчанию inline */
-  font-size: inherit; /* Наследует размер от .developerCredit */
-  color: #6b7280; /* Тусклый цвет (gray-500) */
+  font-size: inherit; 
+  color: #6b7280; 
   text-decoration: none;
-  transition: color 0.3s ease-in-out, text-decoration 0.2s ease-in-out; /* Добавил text-decoration в transition */
+  transition: color 0.3s ease-in-out, text-decoration 0.2s ease-in-out; 
 }
 
 .developerLink:hover {
-  color: var(--accent-orange, #f97316); /* Становится оранжевой при наведении */
-  text-decoration: underline; /* Добавляем подчеркивание при наведении */
+  color: var(--accent-orange, #f97316); 
+  text-decoration: underline; 
 }
-/* --- КОНЕЦ СТИЛЕЙ ДЛЯ ССЫЛКИ РАЗРАБОТЧИКА --- */
-
-/* Убрал старый .container и .copyright, так как используем .footerContent и .copyrightAndTerms */
-/*
-.container { ... }
-.copyright { ... }
-*/

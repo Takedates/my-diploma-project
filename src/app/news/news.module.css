@@ -3,7 +3,7 @@
 .newsPageContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 5rem 1.5rem; /* Увеличены отступы */
+  padding: 2rem 1.5rem 5rem 1.5rem;
 }
 
 .pageHeader {
@@ -15,9 +15,9 @@
 
 .pageTitle {
   font-family: var(--font-montserrat, 'Montserrat', sans-serif);
-  font-size: 2.8rem; /* Чуть больше */
+  font-size: 2.8rem; 
   font-weight: 800;
-  margin-bottom: 0.75rem; /* Уменьшен отступ до подзаголовка */
+  margin-bottom: 0.75rem; 
   color: var(--text-color-dark, #111827);
   line-height: 1.2;
 }
@@ -30,25 +30,15 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* --- ИСПРАВЛЕНИЕ ШРИФТА: Добавлен класс .introText для подзаголовка --- */
-/* Ранее ты использовал styles.pageSubtitle для этого текста, 
-   но чтобы не нарушать другие места, где, возможно, используется pageSubtitle, 
-   используем новый класс introText. 
-   ВАЖНО: В файле NewsListClient.tsx у <p> тега должно быть className={styles.introText} */
-.introText { /* Это новый класс для подзаголовка на странице новостей */
+.introText { 
   font-family: var(--font-roboto), sans-serif; /* Явно устанавливаем Roboto */
-  font-size: 1.1rem; /* Размер шрифта, который был у pageSubtitle */
+  font-size: 1.1rem; 
   color: var(--text-color-base, #4b5563);
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.6;
-  /* Если в NewsListClient.tsx ты добавил class="font-sans" к pageSubtitle,
-     то достаточно, чтобы globals.css определял font-sans правильно.
-     Но этот явный стиль гарантирует Roboto. */
 }
 
-/* Старый .pageSubtitle, если он используется где-то еще, останется без изменений шрифта */
-/* Если .pageSubtitle использовался только для этого текста, можно удалить его или объединить с introText */
 .pageSubtitle {
   font-size: 1.1rem;
   color: var(--text-color-base, #4b5563);
@@ -74,7 +64,7 @@
 
 .featuredCard {
   display: grid;
-  grid-template-columns: 1fr; /* По умолчанию одна колонка */
+  grid-template-columns: 1fr; 
   gap: 0; 
   background-color: #ffffff;
   border-radius: 12px;
@@ -178,18 +168,18 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: #6b7280; /* gray-500 */
+  color: #6b7280; 
 }
 
 .metaIcon { 
   width: 1rem;
   height: 1rem;
-  color: #9ca3af; /* gray-400 */
+  color: #9ca3af; 
 }
 .metaIconSmall {
   width: 0.9rem;
   height: 0.9rem;
-  color: #9ca3af; /* gray-400 */
+  color: #9ca3af;
 }
 
 .featuredReadMore {
@@ -314,7 +304,7 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  color: #6B7280; /* gray-500 */
+  color: #6B7280; 
 }
 
 .latestReadArrow { 

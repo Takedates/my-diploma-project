@@ -17,10 +17,8 @@ const staggerContainer = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } }
 };
-// -----------------
 
 export default function ContactsPage() {
-  // --- РЕАЛЬНЫЕ ДАННЫЕ КОМПАНИИ ---
   const companyDetails = {
     name: 'ООО «Бизнес-Партнер»',
     address: '650000, Кемеровская область – Кузбасс, г. Кемерово, ул. Красноармейская, д. 140',
@@ -82,8 +80,6 @@ export default function ContactsPage() {
     if (!name) { setFormError('Пожалуйста, укажите ваше ФИО.'); setFormStatus('error'); return; }
     if (name.length < 2) { setFormError('ФИО должно содержать не менее 2 символов.'); setFormStatus('error'); return; }
 
-    // НОВОЕ: Валидация ФИО на отсутствие цифр и латинских букв
-    // Регулярное выражение, которое ищет цифры (0-9) или латинские буквы (a-zA-Z)
     const forbiddenCharsRegex = /[0-9a-zA-Z]/;
     if (forbiddenCharsRegex.test(name)) {
         setFormError('ФИО может содержать только русские буквы, пробелы и дефисы.');
@@ -147,7 +143,7 @@ export default function ContactsPage() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
          >
-          {/* Левая колонка: Контактная информация */}
+          {/* Контактная информация */}
           <motion.div className={styles.leftColumn} variants={fadeInUp}>
              <div className={styles.contactInfo}>
                 <h2 className={styles.infoTitle}>Контактная информация</h2>
@@ -158,21 +154,21 @@ export default function ContactsPage() {
              </div>
           </motion.div>
 
-          {/* Правая колонка: Форма */}
+          {/* Форма */}
           <motion.div className={styles.rightColumn} variants={fadeInUp}>
              <h2 className={styles.formTitle}>Отправить сообщение</h2>
              <form onSubmit={handleSubmit} className={styles.contactForm}>
-                {/* Имя -> ФИО */}
+                {/*ФИО */}
                 <div className={styles.formGroup}>
                   <label htmlFor="name" className={styles.formLabel}>Ваше ФИО*</label>
                   <input type="text" id="name" name="name" required className={styles.formInput} disabled={formStatus === 'submitting'} placeholder="Иванов Иван Иванович" />
                 </div>
-                {/* Email (НЕОБЯЗАТЕЛЬНЫЙ) */}
+                {/* Email */}
                 <div className={styles.formGroup}>
                   <label htmlFor="email" className={styles.formLabel}>Email</label>
                   <input type="email" id="email" name="email" className={styles.formInput} disabled={formStatus === 'submitting'} placeholder="example@mail.ru" />
                 </div>
-                {/* Телефон (ОБЯЗАТЕЛЬНЫЙ) */}
+                {/* Телефон  */}
                  <div className={styles.formGroup}>
                   <label htmlFor="phone" className={styles.formLabel}>Контактный телефон*</label>
                   <input type="tel" id="phone" name="phone" value={phoneValue} onChange={handlePhoneChange} className={styles.formInput} disabled={formStatus === 'submitting'} placeholder="+7 (XXX) XXX-XX-XX" maxLength={18} />

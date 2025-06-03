@@ -6,8 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './EquipmentCard.module.css';
 import { urlFor } from '@/lib/sanityClient';
-// --- УДАЛЯЕМ ИМПОРТ FRAMER MOTION ---
-// import { motion } from 'framer-motion'; 
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import type { EquipmentCardData } from '@/types/equipment';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
@@ -16,15 +14,6 @@ interface EquipmentCardProps {
   item: EquipmentCardData;
 }
 
-// --- УДАЛЯЕМ ОПРЕДЕЛЕНИЕ ВАРИАНТОВ АНИМАЦИИ ---
-// const cardVariants = {
-//   hidden: { opacity: 0, y: 20 },
-//   hover: {
-//     y: -6,
-//     boxShadow: "0 10px 20px -5px rgb(0 0 0 / 0.1), 0 6px 10px -6px rgb(0 0 0 / 0.1)",
-//     transition: { duration: 0.25, ease: 'easeOut' }
-//   }
-// };
 
 export default function EquipmentCard({ item }: EquipmentCardProps) {
   const imageAsset = item.image?.asset;
@@ -65,12 +54,9 @@ export default function EquipmentCard({ item }: EquipmentCardProps) {
   }
 
   return (
-    // --- ЗАМЕНЯЕМ motion.div НА ОБЫЧНЫЙ div И УДАЛЯЕМ АНИМАЦИОННЫЕ ПРОПСЫ ---
+
     <div
       className={styles.cardWrapper} 
-      // variants={cardVariants} // Удалено
-      // whileHover="hover"     // Удалено
-      // layout                 // Удалено
     >
       <div className={styles.card}> 
         <div className={styles.imageWrapper}>

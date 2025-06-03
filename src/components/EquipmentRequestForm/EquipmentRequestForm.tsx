@@ -19,7 +19,7 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
 }) => {
   // Состояния для полей формы
   const [customerName, setCustomerName] = useState('');
-  const [phone, setPhone] = useState('+7'); // Начинаем с +7
+  const [phone, setPhone] = useState('+7'); 
   const [email, setEmail] = useState('');
   const [comment, setComment] = useState('');
   const [isPrivacyPolicyAccepted, setIsPrivacyPolicyAccepted] = useState(false);
@@ -30,19 +30,17 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
   const [isPending, startTransition] = useTransition();
 
   // Регулярные выражения для валидации
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@.]+$/; // Требуем точку в домене
-  const phoneRegex = /^\+7\d{10}$/; // Строго +7 и 10 цифр
-
-  // Обработчик для поля телефона (контролирует +7 и длину)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@.]+$/; 
+  const phoneRegex = /^\+7\d{10}$/; 
+  // Обработчик для поля телефона
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     // Убедимся, что ввод начинается с '+7'
     if (!value.startsWith('+7')) {
-      value = '+7' + value.replace(/\D/g, ''); // Добавляем +7 и убираем нецифровые
+      value = '+7' + value.replace(/\D/g, ''); 
     } else {
-      value = '+7' + value.substring(2).replace(/\D/g, ''); // Оставляем +7 и убираем нецифровые
+      value = '+7' + value.substring(2).replace(/\D/g, ''); 
     }
-    // Ограничиваем до 12 символов (+7 и 10 цифр)
     setPhone(value.substring(0, 12));
   };
 
@@ -71,7 +69,6 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
         setError('Некорректный формат Email. Пожалуйста, проверьте правильность ввода.');
         return;
     }
-    // Если телефон был введен (не только "+7") и при этом он невалиден
     if (phoneValue !== '+7' && phoneValue.length > 2 && !isValidPhoneFormat) {
         setError('Некорректный формат телефона. Ожидается +7 и 10 цифр (например, +79001234567).');
         return;
@@ -132,13 +129,13 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
              <input
                type="text"
                id="request-customer-name"
-               name="customerName" // Убедитесь, что name="customerName" для FormData
+               name="customerName" 
                value={customerName}
                onChange={(e) => setCustomerName(e.target.value)}
                required 
                disabled={isPending}
                className={styles.input}
-               placeholder="Иванов Иван Иванович" // ИСПРАВЛЕНО: более подходящий плейсхолдер
+               placeholder="Иванов Иван Иванович" 
              />
            </div>
 
@@ -148,7 +145,7 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
              <input
                type="email"
                id="request-email"
-               name="email" // Убедитесь, что name="email" для FormData
+               name="email" 
                value={email}
                onChange={(e) => setEmail(e.target.value)}
                disabled={isPending}
@@ -163,7 +160,7 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
              <input
                type="tel"
                id="request-phone"
-               name="phone" // Убедитесь, что name="phone" для FormData
+               name="phone"
                value={phone}
                onChange={handlePhoneChange} 
                disabled={isPending}
@@ -179,7 +176,7 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
              <label htmlFor="request-comment" className={styles.label}>Комментарий</label>
              <textarea
                id="request-comment"
-               name="comment" // Убедитесь, что name="comment" для FormData
+               name="comment" 
                value={comment}
                onChange={(e) => setComment(e.target.value)}
                rows={4}
@@ -194,7 +191,7 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
             <input
               type="checkbox"
               id="privacyPolicyEqForm"
-              name="isPrivacyPolicyAccepted" // ИСПРАВЛЕНО: name должно соответствовать formData.append
+              name="isPrivacyPolicyAccepted" 
               checked={isPrivacyPolicyAccepted}
               onChange={(e) => setIsPrivacyPolicyAccepted(e.target.checked)}
               required 

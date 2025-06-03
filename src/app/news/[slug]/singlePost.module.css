@@ -1,6 +1,5 @@
-/* src/app/news/[slug]/singlePost.module.css (Удалены пустые правила) */
+/* src/app/news/[slug]/singlePost.module.css  */
 
-/* УДАЛЕН пустой/закомментированный блок :root */
 
 /* --- Общий контейнер статьи --- */
 .articleContainer {
@@ -166,5 +165,3 @@
 .backLink:hover {
   color: var(--accent-color, #F97316);
 }
-
-/* УБЕДИТЕСЬ, ЧТО НЕТ ДРУГИХ ПУСТЫХ ПРАВИЛ В КОНЦЕ ФАЙЛА */

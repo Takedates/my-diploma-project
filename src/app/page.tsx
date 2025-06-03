@@ -5,7 +5,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import styles from './HomePage.module.css'; // Убедитесь, что этот импорт правильный
+import styles from './HomePage.module.css'; 
 
 // --- Иконки ---
 import {
@@ -14,8 +14,6 @@ import {
   WrenchScrewdriverIcon,
   UserGroupIcon,
   ArrowRightIcon
-  // Если вы использовали ChevronDownIcon, раскомментируйте:
-  // ChevronDownIcon 
 } from '@heroicons/react/24/outline';
 // --------------------------
 
@@ -57,7 +55,6 @@ const staggerContainer = {
     }
   }
 };
-// -----------------
 
 export default function HomePage() {
   return (
@@ -96,16 +93,6 @@ export default function HomePage() {
             </Link>
           </motion.div>
         </div>
-        {/* Если вы хотите вернуть индикатор скролла:
-        <motion.div 
-            className={styles.scrollIndicator}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.5, repeat: Infinity, repeatType: "reverse", ease:"easeInOut" }}
-        >
-          <ChevronDownIcon className="h-8 w-8" />
-        </motion.div>
-        */}
       </section>
       {/* ==================== End Hero Section ==================== */}
 
@@ -116,7 +103,6 @@ export default function HomePage() {
               <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31.74,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className={styles.shapeFill}></path>
           </svg>
       </div>
-      {/* =============================== */}
 
 
       {/* ==================== Секция Преимущества ==================== */}
@@ -195,8 +181,8 @@ export default function HomePage() {
                     key={category.type}
                     className={styles.equipmentCard}
                     variants={fadeInUp}
-                    whileHover="hover" // Убедитесь, что у вас есть анимация "hover" в variants или стилях
-                    initial="rest"    // И "rest"
+                    whileHover="hover" 
+                    initial="rest"   
                  >
                     <div className={styles.equipmentImageWrapper}>
                         <Image
@@ -210,9 +196,6 @@ export default function HomePage() {
                          <div className={styles.equipmentImageOverlay}></div>
                           <motion.h3
                             className={styles.equipmentTitleOverImage}
-                            // Если у вас есть variants для hover/rest для этого элемента, они должны быть здесь
-                            // variants={{ rest: { y: 0 }, hover: { y: -5 } }}
-                            // transition={{ duration: 0.2, ease: "easeOut" }}
                           >
                             {category.name}
                           </motion.h3>
@@ -224,7 +207,7 @@ export default function HomePage() {
                             className={styles.equipmentButton}
                         >
                             Смотреть модели
-                            <ArrowRightIcon /> {/* Убедитесь, что у этой иконки есть стили или она очень маленькая */}
+                            <ArrowRightIcon /> 
                         </Link>
                     </div>
                 </motion.div>

@@ -29,22 +29,22 @@ interface ClientCatalogContentProps {
 }
 
 export default function ClientCatalogContent({ categoryDisplayNames }: ClientCatalogContentProps) {
-  const searchParams = useSearchParams(); // Вызываем хук один раз
+  const searchParams = useSearchParams(); // Вызываем хук 
 
   const [allEquipmentSanityItems, setAllEquipmentSanityItems] = useState<EquipmentItemSanity[]>([]);
   const [isLoading, setIsLoading] = useState(true); // Изначально true
   const [fetchError, setFetchError] = useState<string | null>(null);
   
-  // selectedType будет инициализирован на основе URL в useEffect ниже
+  // selectedType будет инициализирован на основе URL в useEffect 
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
 
-  // Эффект для установки selectedType из URL при монтировании или изменении searchParams
+  // Эффект для установки selectedType из URL 
   useEffect(() => {
     const typeFromUrl = searchParams.get('type');
     console.log('CATALOG: useEffect [searchParams] triggered. typeFromUrl:', typeFromUrl);
     setSelectedType(typeFromUrl || 'all'); // Устанавливаем или сбрасываем на 'all'
-  }, [searchParams]); // Зависит ТОЛЬКО от searchParams
+  }, [searchParams]); 
 
   // Эффект для загрузки данных
   const fetchEquipment = useCallback(async () => {
@@ -53,8 +53,6 @@ export default function ClientCatalogContent({ categoryDisplayNames }: ClientCat
       setIsLoading(false); // Убедимся, что isLoading сбрасывается
       return;
     }
-    // Не устанавливаем isLoading(true) здесь, если хотим, чтобы он был true только при первой загрузке
-    // setIsLoading(true); // Если нужен индикатор при каждой перезагрузке данных
     setFetchError(null);
     console.log("CATALOG: Fetching equipment data START...");
     try {
@@ -66,19 +64,17 @@ export default function ClientCatalogContent({ categoryDisplayNames }: ClientCat
       const message = errFromCatch instanceof Error ? errFromCatch.message : "Неизвестная ошибка.";
       setFetchError(`Не удалось загрузить каталог техники: ${message}`);
     } finally {
-      setIsLoading(false); // Устанавливаем isLoading в false ЗДЕСЬ, после всех операций
+      setIsLoading(false); // Устанавливаем isLoading в false 
       console.log("CATALOG: Fetching equipment FINISHED, isLoading:", false);
     }
-  }, []); // Зависимостей нет, т.к. query и sanityClient стабильны
+  }, []); // Зависимостей нет
 
   useEffect(() => {
     console.log("CATALOG: useEffect to call fetchEquipment (initial load)");
     setIsLoading(true); // Устанавливаем isLoading в true ПЕРЕД вызовом fetchEquipment
     fetchEquipment();
-  }, [fetchEquipment]); // Этот эффект запустит загрузку данных один раз при монтировании
+  }, [fetchEquipment]); // Этот эффект запустит загрузку данных 
 
-  // ... (useMemo для allItemsForCard, availableBrands, availableTypes, filteredItems остаются такими же)
-  // ... (resetFilters, areFiltersActive, iconStyle остаются такими же)
 
   const allItemsForCard: EquipmentCardData[] = useMemo(() => {
     return allEquipmentSanityItems.map(item => ({
@@ -147,7 +143,7 @@ export default function ClientCatalogContent({ categoryDisplayNames }: ClientCat
   return (
     <>
       <div className={styles.filtersContainer}>
-        {/* ... (твой JSX для фильтров остается здесь, он должен работать с обновленным selectedType) ... */}
+        {/* (JSX для фильтров остается здесь, он должен работать с обновленным selectedType) */}
         <div className={styles.filterGroup}>
             <label className={styles.filterLabel}><FunnelIcon style={iconStyle} /> Тип техники:</label>
             <div className={styles.filterButtons}>

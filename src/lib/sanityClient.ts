@@ -1,7 +1,6 @@
 // src/lib/sanityClient.ts
 import { createClient, type ClientConfig } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
-// Удаляем SanityImageObject из этого импорта, так как он не используется
 import type { SanityImageSource as OriginalSanityImageSource, SanityAsset, SanityReference } from '@sanity/image-url/lib/types/types';
 
 export type SanityImageSource = OriginalSanityImageSource;
@@ -46,11 +45,11 @@ export function urlFor(source: SanityImageSource | undefined | null) {
     const hasTypeField = '_type' in source && typeof source._type === 'string';
 
     if (!isSanityReference && !isSanityAsset && !isValidAssetLinkInObject && !hasTypeField) {
-        // console.warn("urlFor called with an object that doesn't appear to be a valid Sanity image source:", source);
+
         return null;
     }
   } else if (typeof source !== 'string') {
-    // console.warn("urlFor called with invalid source type:", source);
+
     return null;
   }
 

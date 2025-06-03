@@ -1,16 +1,13 @@
-// tailwind.config.ts (с упрощенным путем content)
+// tailwind.config.ts 
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  // --- ИЗМЕНЕН ПУТЬ НА БОЛЕЕ ШИРОКИЙ ---
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}", // Сканировать ВСЁ внутри папки src
   ],
-  // --- КОНЕЦ ИЗМЕНЕНИЯ ---
   theme: {
     extend: {
       colors: {
-        // Синий цвет пока убран, но можно вернуть, если нужен
         'brand-orange': {
           light: '#FB923C',
           DEFAULT: '#F97316',

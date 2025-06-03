@@ -1,7 +1,7 @@
 // src/components/Header.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Header.module.css';
@@ -16,32 +16,28 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const closeMobileMenu = () => {
+  const closeMobileMenu = useCallback(() => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
-  };
+  }, [isMobileMenuOpen]); 
 
-  // Эффект для закрытия меню при изменении pathname (навигация)
   useEffect(() => {
-    closeMobileMenu(); // Вызываем функцию закрытия
-    // Мы хотим, чтобы этот эффект срабатывал только при изменении pathname.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+    closeMobileMenu(); 
 
-  // Эффект для управления прокруткой body, когда мобильное меню открыто/закрыто
-  // Это предотвращает скролл страницы под открытым меню
+  }, [pathname, closeMobileMenu]); 
+
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset'; // или 'auto'
+      document.body.style.overflow = 'unset'; 
     }
-    // Функция очистки для восстановления прокрутки при размонтировании компонента
+    // Функция очистки для восстановления
     return () => {
-      document.body.style.overflow = 'unset'; // или 'auto'
+      document.body.style.overflow = 'unset'; 
     };
-  }, [isMobileMenuOpen]); // <--- ДОБАВЛЕНО isMobileMenuOpen в зависимости, как и требовал ESLint
+  }, [isMobileMenuOpen]); 
 
   const mobileMenuVariants = {
     hidden: {
@@ -67,7 +63,6 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.nav}>
-        {/* При клике на логотип также закрываем меню, если оно открыто */}
         <Link href="/" className={styles.logoLink} onClick={closeMobileMenu}>
           {'ООО "Бизнес-Партнер"'}
         </Link>
@@ -78,6 +73,7 @@ const Header = () => {
               key={link.href} 
               href={link.href} 
               className={`${styles.navLink} ${pathname === link.href ? styles.navLinkActive : ''}`}
+              onClick={closeMobileMenu} 
             >
               {link.label}
             </Link>
@@ -114,7 +110,7 @@ const Header = () => {
                 key={link.href}
                 href={link.href}
                 className={`${styles.mobileNavLink} ${pathname === link.href ? styles.navLinkActiveMobile : ''}`}
-                onClick={closeMobileMenu} // Используем функцию закрытия
+                onClick={closeMobileMenu} 
               >
                 {link.label}
               </Link>

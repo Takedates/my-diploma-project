@@ -1,12 +1,12 @@
-/* src/app/catalog/[slug]/equipmentDetail.module.css (ПОЛНЫЙ КОД С ДОП. УЛУЧШЕНИЯМИ) */
+/* src/app/catalog/[slug]/equipmentDetail.module.css */
 
 .detailContainer {
-  padding: 1rem 0 3rem 0; /* Увеличили нижний отступ */
+  padding: 1rem 0 3rem 0; 
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  margin-top: 1.5rem; /* Увеличили отступ сверху */
-  padding: 2.5rem; /* Увеличили внутренние отступы */
+  margin-top: 1.5rem; 
+  padding: 2.5rem; 
 }
 @media (max-width: 768px) {
   .detailContainer { padding: 1.5rem; }
@@ -26,20 +26,20 @@
 
 .title {
   font-family: var(--font-montserrat);
-  font-size: 2.25rem; /* Чуть больше */
+  font-size: 2.25rem; 
   font-weight: 800;
   margin-bottom: 2rem;
   color: #111827;
   line-height: 1.3;
 }
-@media (min-width: 768px) { .title { font-size: 2.75rem; } } /* Еще больше на десктопе */
+@media (min-width: 768px) { .title { font-size: 2.75rem; } } 
 
 
 .mainContent {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem; /* Увеличиваем отступ */
-  margin-bottom: 3.5rem; /* Увеличиваем отступ */
+  gap: 3rem; 
+  margin-bottom: 3.5rem; 
 }
 @media (min-width: 768px) { .mainContent { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .mainContent { grid-template-columns: 3fr 2fr; gap: 4rem;} }
@@ -54,17 +54,17 @@
     aspect-ratio: 16 / 10;
     margin-bottom: 1rem;
     overflow: hidden;
-    border-radius: 0.5rem; /* Более заметное скругление */
-    border: 1px solid #e5e7eb; /* Рамка */
+    border-radius: 0.5rem; 
+    border: 1px solid #e5e7eb; 
 }
 
 .mainImage {
    display: block;
    width: 100%;
    height: 100%;
-   max-height: 600px; /* Ограничение высоты */
-   object-fit: contain; /* Вписываем фото */
-   background-color: #ffffff; /* Белый фон на случай contain */
+   max-height: 600px; 
+   object-fit: contain; 
+   background-color: #ffffff; 
 }
 
 .mainImagePlaceholder {
@@ -78,21 +78,21 @@
 }
 .thumbnailGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Делаем миниатюры чуть меньше */
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); 
   gap: 0.75rem;
 }
 .thumbnailWrapper {
-  border: 2px solid #e5e7eb; /* Серая рамка по умолчанию */
-  border-radius: 0.375rem; /* Мягче скругление */
+  border: 2px solid #e5e7eb; 
+  border-radius: 0.375rem; 
   overflow: hidden;
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; /* Добавили transform в transition */
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; 
   aspect-ratio: 3 / 2;
-  background-color: white; /* Фон для миниатюр */
+  background-color: white; 
 }
 .thumbnailWrapper:hover {
-   border-color: #fbbf24; /* Желтая рамка при наведении */
-   transform: scale(1.05); /* --- НОВОЕ: легкое увеличение при наведении --- */
+   border-color: #fbbf24; 
+   transform: scale(1.05); 
 }
 .thumbnailImage {
    display: block; width: 100%; height: 100%; object-fit: cover;
@@ -106,7 +106,7 @@
 /* --- Основная Информация --- */
 .mainInfo {
   background-color: #F9FAFB;
-  padding: 2rem; /* Увеличиваем паддинг */
+  padding: 2rem; 
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
 }
@@ -127,19 +127,19 @@
 }
 .specsTable th, .specsTable td { padding: 0.8rem 0; text-align: left; border-bottom: 1px dashed #e5e7eb; vertical-align: top; }
 .specsTable tr:last-child th, .specsTable tr:last-child td { border-bottom: none; }
-.specsTable th { font-weight: 600; color: #374151; width: 45%; padding-right: 1rem; } /* Добавляем отступ справа */
+.specsTable th { font-weight: 600; color: #374151; width: 45%; padding-right: 1rem; }
 .specsTable td { color: #1f2937; font-weight: 500; }
-/* --- НОВОЕ: Чередующийся фон для строк таблицы --- */
+
 .specsTable tbody tr:nth-child(odd) {
-    background-color: rgba(243, 244, 246, 0.5); /* Очень легкий серый фон для нечетных строк */
+    background-color: rgba(243, 244, 246, 0.5); 
 }
 
 
 /* --- Статус наличия --- */
 .statusAvailable, .statusUnavailable {
-   font-family: var(--font-roboto); font-weight: 600; margin-bottom: 2rem; /* Увеличиваем отступ */
+   font-family: var(--font-roboto); font-weight: 600; margin-bottom: 2rem; 
    padding: 0.35rem 0.85rem; border-radius: 0.25rem; display: inline-flex;
-   align-items: center; gap: 0.35rem; font-size: 0.95rem; /* Увеличиваем шрифт */
+   align-items: center; gap: 0.35rem; font-size: 0.95rem; 
 }
 .statusAvailable { color: #15803d; background-color: #DCFCE7; }
 .statusUnavailable { color: #4B5563; background-color: #F3F4F6; }
@@ -147,9 +147,9 @@
 
 /* --- Кнопка запроса --- */
 .requestButton {
-  display: block; /* Делаем блочной */
-  width: 100%; /* На всю ширину */
-  text-align: center; /* Центрируем текст */
+  display: block; 
+  width: 100%;
+  text-align: center; 
   background-color: #F97316; color: white; font-family: var(--font-roboto);
   font-weight: 700; padding: 0.85rem 1.75rem; border-radius: 0.375rem;
   transition: background-color 0.3s, transform 0.1s; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -179,5 +179,4 @@
 .backLink:hover { color: #F97316; }
 
 /* Загрузка/Ошибка */
-/* Этот стиль больше не используется для основного контента, т.к. page.tsx возвращает null при загрузке, но может быть полезен для других индикаторов */
 .loading { padding: 3rem; text-align: center; color: #6B7280; font-family: var(--font-roboto); font-style: italic;}

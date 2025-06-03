@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import styles from './login.module.css';
-import { AuthError } from '@supabase/supabase-js'; // <-- Импортируем AuthError
+import { AuthError } from '@supabase/supabase-js'; 
 
 export default function LoginPage() {
   const router = useRouter();

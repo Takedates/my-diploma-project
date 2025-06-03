@@ -1,6 +1,6 @@
 /* src/app/globals.css */
 
-/* Tailwind директивы В САМОМ НАЧАЛЕ */
+/* Tailwind директивы */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,7 +12,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  /* Убираем стандартные рамки */
   border-width: 0;
   border-style: solid;
   border-color: theme('borderColor.DEFAULT', currentColor);
@@ -26,15 +25,12 @@ html {
 
 body {
   min-height: 100%;
-  line-height: 1.6; /* Базовая высота строки */
-  /* Шрифты и цвета применяются через Tailwind классы в layout.tsx или напрямую через CSS переменные */
+  line-height: 1.6; 
+
 }
 
 /* --- Пользовательские переменные --- */
 :root {
-  /* Переменные шрифтов (если не управляются исключительно через Tailwind классы в layout.tsx) */
-  /* --font-montserrat: 'Montserrat', sans-serif; */ /* Пример */
-  /* --font-roboto: 'Roboto', sans-serif; */       /* Пример */
 
   /* Основные цвета для использования в CSS и CSS Modules */
   --header-bg: theme('colors.gray.800', #1f2937);
@@ -55,9 +51,7 @@ body {
   --accent-color-light: theme('colors.orange.500/20', rgba(249, 115, 22, 0.2));
 
   /* Акцентный цвет, используемый в Header.module.css и других местах */
-  --accent-color: var(--accent-orange); /* Ссылаемся на уже определенный --accent-orange */
-  /* Или, если хотите жестко задать: */
-  /* --accent-color: #F97316; */
+  --accent-color: var(--accent-orange); 
 }
 
 /* --- Другие глобальные стили --- */
@@ -65,25 +59,3 @@ img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
 }
-
-/* Можно добавить стили для плавного скролла к якорям, если html:focus-within не используется */
-/* html {
-  scroll-behavior: smooth;
-} */
-
-/* Стили для кастомного скроллбара (опционально) */
-/* 
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
-*/

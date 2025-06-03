@@ -24,7 +24,7 @@ interface NewsListClientProps {
   fetchError: string | null;
 }
 
-// Анимации (ОСТАВЛЕНЫ КАК ЕСТЬ, НЕ ТРОГАЕМ)
+// Анимации
 const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
@@ -67,7 +67,6 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
     return <div className={styles.errorMessage}>{fetchError}</div>;
   }
 
-  // Если нет новостей и нет ошибки
   if (newsItems.length === 0 && !fetchError) {
       return <p className={styles.noNewsMessage}>Новостей пока нет. Следите за обновлениями!</p>;
   }
@@ -83,7 +82,6 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
         <h1 className={styles.pageTitle}>
           Новости <span className={styles.titleHighlight}>Компании</span>
         </h1>
-        {/* --- ИСПРАВЛЕНИЕ ШРИФТА: ДОБАВЛЕН 'styles.introText' --- */}
         <p className={styles.introText}>
           Самые свежие события, аналитика рынка и полезная информация из мира спецтехники.
         </p>
@@ -142,7 +140,6 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
            >
              {featuredNews ? 'Другие Новости' : 'Последние Новости'}
            </motion.h2>
-           {/* ИСПОЛЬЗУЕМ staggerContainer ЗДЕСЬ */}
            <motion.div
              className={styles.latestGrid}
              variants={staggerContainer}
@@ -161,7 +158,6 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
 
                  return (
                    <Link key={post._id} href={`/news/${postSlug}`} className={styles.latestCardLink}>
-                     {/* Добавляем variants={fadeInUp} к каждой карточке для stagger эффекта */}
                      <motion.article className={styles.latestCard} variants={fadeInUp}>
                        <div className={styles.latestImageWrapper}>
                          <Image
@@ -177,7 +173,7 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
                          <div className={styles.latestCardMeta}>
                              <span className={styles.latestDate}>
                                <CalendarDaysIcon className={styles.metaIconSmall} />
-                               {/* ИСПОЛЬЗУЕМ formatCardDate */}
+                               {/* formatCardDate */}
                                {formatCardDate(post.publishedAt)}
                              </span>
                              <span className={styles.latestReadArrow}>

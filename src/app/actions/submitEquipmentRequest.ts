@@ -13,7 +13,7 @@ export async function submitEquipmentRequest(formData: FormData): Promise<Action
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // Логи для проверки ключей (оставьте на время отладки, потом можно удалить или сделать условными)
+  // Логи для проверки ключей 
   console.log('--- [Server Action] Verifying Supabase Keys ---');
   console.log(`[Server Action] SUPABASE_URL: ${supabaseUrl ? 'Loaded' : 'MISSING!'}`);
   console.log(`[Server Action] SUPABASE_ANON_KEY: ${supabaseAnonKey ? 'Loaded' : 'MISSING!'}`);
@@ -65,8 +65,7 @@ export async function submitEquipmentRequest(formData: FormData): Promise<Action
     isPrivacyPolicyAccepted: formData.get('isPrivacyPolicyAccepted') === 'true',
   };
 
-  // --- Валидация на сервере (ОЧЕНЬ ВАЖНА!) ---
-  // Имя обязательно для заполнения и не менее 2 символов
+
   if (!rawFormData.customerName) {
     return { error: 'Пожалуйста, укажите ваше имя.' };
   }
@@ -74,7 +73,7 @@ export async function submitEquipmentRequest(formData: FormData): Promise<Action
       return { error: 'Имя должно содержать не менее 2 символов.' };
   }
 
-  // Необходимо указать телефон ИЛИ Email (хотя бы одно поле)
+ 
   const hasPhone = !!rawFormData.phone;
   const hasEmail = !!rawFormData.email;
 
@@ -82,16 +81,13 @@ export async function submitEquipmentRequest(formData: FormData): Promise<Action
     return { error: 'Необходимо указать номер телефона или Email для связи.' };
   }
 
-  // Проверка формата Email, если он указан
   if (hasEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawFormData.email)) {
     return { error: 'Некорректный формат Email. Пожалуйста, проверьте правильность ввода.' };
   }
 
-  // Проверка формата телефона, если он указан
-  // Удаляем все нецифровые символы для валидации
+
   const phoneDigits = rawFormData.phone.replace(/\D/g, '');
-  // Регулярное выражение для 10-11 цифр, начинающихся с 7 или 8 (для России)
-  // или просто 10 цифр (если 7/8 не обязательны)
+
   if (hasPhone && !/^(7|8)?\d{10}$/.test(phoneDigits)) {
       return { error: 'Некорректный формат телефона. Пожалуйста, введите 10 цифр после кода страны.' };
   }
@@ -132,7 +128,7 @@ export async function submitEquipmentRequest(formData: FormData): Promise<Action
 
   try {
     const { data: rpcData, error: rpcError } = await supabase.rpc(
-      'insert_equipment_request_untrusted', // Точное имя вашей функции в PostgreSQL
+      'insert_equipment_request_untrusted', 
       functionArgs 
     );
 

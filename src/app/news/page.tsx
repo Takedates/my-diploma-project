@@ -1,16 +1,14 @@
-// src/app/news/page.tsx (Серверный компонент - только загрузка данных)
+// src/app/news/page.tsx 
 
-// --- Добавлено для принудительного динамического рендеринга (отключение кеширования) ---
 export const dynamic = 'force-dynamic'; 
 
 import React from 'react';
 import { sanityClient } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
-// Импортируем наш новый клиентский компонент
 import NewsListClient from './NewsListClient';
 
-// Тип данных (можно вынести в types)
+// Тип данных 
 interface NewsPostSanity {
   _id: string;
   title?: string | null;
@@ -36,7 +34,7 @@ export default async function NewsListPage() {
      fetchError = "Ошибка конфигурации Sanity.";
   } else {
       try {
-         newsItems = await sanityClient.fetch<NewsPostSanity[]>(newsQuery); // Указываем тип для fetch
+         newsItems = await sanityClient.fetch<NewsPostSanity[]>(newsQuery); 
       } catch (error: unknown) {
          console.error("Ошибка загрузки новостей из Sanity:", error);
          const message = error instanceof Error ? error.message : 'Неизвестная ошибка';

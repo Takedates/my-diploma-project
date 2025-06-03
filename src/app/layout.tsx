@@ -7,9 +7,6 @@ import Footer from '@/components/Footer';
 import { Montserrat, Roboto } from "next/font/google";
 import "./globals.css";
 
-// --- Закомментируем импорты Framer Motion и usePathname, они больше не нужны для main ---
-// import { motion, AnimatePresence } from 'framer-motion';
-// import { usePathname } from 'next/navigation';
 
 // Настройка шрифтов
 const montserrat = Montserrat({
@@ -25,12 +22,7 @@ const roboto = Roboto({
   variable: '--font-roboto',
 });
 
-// --- Переменные для анимации закомментированы/удалены ---
-// const pageVariants = { ... };
-// const pageTransition = { ... };
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // const pathname = usePathname(); // Закомментируем, так как key={pathname} больше не используется
 
   return (
     <html lang="ru" className={`${montserrat.variable} ${roboto.variable}`}>
@@ -48,17 +40,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             onExitComplete={() => window.scrollTo(0, 0)}
         > */}
           <main
-            // key={pathname} 
+
             className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8"
-            // initial="initial" 
-            // animate="in"      
-            // exit="out"        
-            // variants={pageVariants} 
-            // transition={pageTransition} 
+
           >
             {children} 
           </main>
-        {/* </AnimatePresence> */}
 
         <Footer />
       </body>

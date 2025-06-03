@@ -1,6 +1,6 @@
 // src/app/terms-of-use/page.tsx
 import React from 'react';
-import styles from '../privacy-policy/privacy-policy.module.css'; // Используем те же стили
+import styles from '../privacy-policy/privacy-policy.module.css'; 
 
 export default function TermsOfUsePage() {
   // --- ДАННЫЕ КОМПАНИИ И САЙТА ---
@@ -10,14 +10,11 @@ export default function TermsOfUsePage() {
   const companyInn = "6321247265"; 
   const companyOgrn = "1106320011192";
   const companyEmail = "busibess-partner-ru@mail.ru";
-  // ИСПРАВЛЕНО: Формат номера телефона
   const companyPhone = "+7 (950) 591-18-38"; 
-  // ИСПРАВЛЕНО: Полный и правильный URL сайта
   const siteUrl = "https://business-partner-site.netlify.app"; 
   const currentYear = new Date().getFullYear();
-  const lastUpdatedDate = "08 мая 2025 г."; // Оставляем фиксированной, если это дата последнего обновления документа
+  const lastUpdatedDate = "08 мая 2025 г."; 
   const lawName = "Федеральным законом от 27.07.2006 г. № 152-ФЗ «О персональных данных»";
-  // --- КОНЕЦ ДАННЫХ ---
 
   return (
     <div className={styles.container}>
@@ -33,7 +30,6 @@ export default function TermsOfUsePage() {
           Пожалуйста, внимательно ознакомьтесь с настоящими Условиями перед использованием Сайта. Используя Сайт для получения информации или отправки запроса, Пользователь подтверждает свое полное и безоговорочное согласие с настоящими Условиями. Если Пользователь не согласен с какими-либо положениями Условий, он должен немедленно прекратить использование Сайта.
         </p>
 
-        {/* ... остальной код страницы без изменений ... */}
         
         <h2>1. Термины и определения</h2>
         <p><strong>Сайт</strong> – совокупность размещенных в сети Интернет веб-страниц, объединенных единой темой, дизайном и единым адресным пространством домена {siteUrl}, содержащий сведения о товарах и услугах Компании.</p>

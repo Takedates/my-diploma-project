@@ -2,9 +2,9 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image'; // Импорт для изображения
-import styles from './about.module.css'; // Подключаем CSS модуль
-import { motion } from 'framer-motion'; // Импорт для анимации
+import Image from 'next/image'; 
+import styles from './about.module.css'; 
+import { motion } from 'framer-motion'; 
 
 // Импортируем иконки из Heroicons (outline стиль)
 import {
@@ -22,7 +22,7 @@ const sectionVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      delay: i * 0.1, // Небольшая задержка на основе индекса или значения
+      delay: i * 0.1, 
       ease: 'easeOut',
       staggerChildren: 0.1
     }
@@ -43,15 +43,15 @@ const cardVariants = {
 // Основной компонент страницы
 export default function AboutPage() {
   return (
-    // Используем корневой div для применения стилей страницы, если необходимо
+    
     <div className={styles.aboutPage}> 
 
       {/* --- Верхний блок с заголовком, интро и изображением --- */}
       <motion.section
         className={`${styles.section} ${styles.introSection}`}
         initial="hidden"
-        animate="visible" // Запускаем анимацию сразу при загрузке
-        custom={1} // Передаем кастомный параметр для задержки (не обязательно)
+        animate="visible" 
+        custom={1} 
         variants={sectionVariants}
       >
         <div className={styles.container}> {/* Общий контейнер */}
@@ -71,18 +71,18 @@ export default function AboutPage() {
             {/* Правая часть - ИЗОБРАЖЕНИЕ ОФИСА */}
             <motion.div 
                className={styles.introImageContainer} 
-               variants={sectionVariants} // Анимация для контейнера изображения
-               initial="hidden" // Чтобы анимация сработала при прокрутке или вместе с остальным блоком
+               variants={sectionVariants} 
+               initial="hidden" 
                animate="visible" 
-               custom={1.5} // Небольшая задержка относительно текста
+               custom={1.5} 
              >
               <Image
-                src="/images/office-photo.jpg" // УКАЖИТЕ ПРАВИЛЬНОЕ РАСШИРЕНИЕ!
-                alt="Офис или команда компании Бизнес-Партнер" // ЗАМЕНИТЕ ALT!
-                fill // Растягивает изображение на родительский контейнер
+                src="/images/office-photo.jpg" 
+                alt="Офис или команда компании Бизнес-Партнер" 
+                fill 
                 className={styles.introImage} // Класс для стилизации изображения
-                sizes="(max-width: 768px) 90vw, 45vw" // Адаптируйте под ваш дизайн
-                priority // Можно оставить для быстрой загрузки
+                sizes="(max-width: 768px) 90vw, 45vw" 
+                priority 
               />
             </motion.div>
 
@@ -92,12 +92,12 @@ export default function AboutPage() {
 
       {/* --- Секция Миссия --- */}
       <motion.section
-        className={`${styles.section} ${styles.missionSection} ${styles.sectionGray}`} // Добавлен класс для фона и отступов
+        className={`${styles.section} ${styles.missionSection} ${styles.sectionGray}`} 
         initial="hidden"
-        whileInView="visible" // Анимация при появлении в области видимости
-        viewport={{ once: true, amount: 0.3 }} // Настройки триггера анимации
-        variants={sectionVariants} // Используем общие варианты для секции
-        custom={1} // Можно задать задержку
+        whileInView="visible" 
+        viewport={{ once: true, amount: 0.3 }} 
+        variants={sectionVariants} 
+        custom={1} 
       >
         <div className={styles.container}>
           <h2 className={`${styles.sectionTitle} ${styles.missionTitle}`}>
@@ -120,8 +120,8 @@ export default function AboutPage() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.5 }}
-              variants={sectionVariants} // Анимация заголовка
-              custom={1} // Можно задать задержку
+              variants={sectionVariants} 
+              custom={1} 
             >
                 Почему нам доверяют?
             </motion.h2>
@@ -133,7 +133,7 @@ export default function AboutPage() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
               variants={{
-                visible: { transition: { staggerChildren: 0.15 } } // Только stagger для контейнера
+                visible: { transition: { staggerChildren: 0.15 } } 
               }}
             >
               {/* Карточка 1 */}
@@ -170,6 +170,6 @@ export default function AboutPage() {
 
         {/* --- Место для возможных будущих секций --- */}
 
-    </div> // Конец корневого div .aboutPage
+    </div> 
   );
 }

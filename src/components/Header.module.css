@@ -1,44 +1,39 @@
 /* src/components/Header.module.css */
 
-/*
-  УДАЛЕНО: Блок :root с определением --accent-color.
-  Эту переменную следует определять в глобальном файле CSS (например, src/app/globals.css).
-*/
-
 .header {
   position: sticky;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* Высокий z-index, чтобы хедер был поверх всего */
-  background-color: #1F2937; /* Темно-серый (Tailwind gray-800) */
+  z-index: 1000; 
+  background-color: #1F2937; 
   color: white;
-  padding: 0.75rem 0; /* Немного уменьшил вертикальный padding для компактности */
+  padding: 0.75rem 0; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease; /* Плавный переход для возможных будущих эффектов */
+  transition: background-color 0.3s ease; 
 }
 
 .nav {
-  max-width: 1280px; /* Tailwind: xl */
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;  /* Tailwind: px-4 */
-  padding-right: 1rem; /* Tailwind: px-4 */
+  padding-left: 1rem;  
+  padding-right: 1rem; 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 4rem; /* Фиксированная высота для хедера, можно настроить */
+  height: 4rem; 
 }
 
 .logoLink {
   font-family: var(--font-montserrat, 'Montserrat', sans-serif);
-  font-size: 1.375rem; /* Чуть меньше для баланса (между text-xl и text-2xl) */
-  font-weight: 700; /* Жирный */
+  font-size: 1.375rem; 
+  font-weight: 700; 
   color: white;
   text-decoration: none;
   transition: opacity 0.3s ease;
   white-space: nowrap;
-  padding: 0.5rem 0; /* Добавим немного padding для кликабельной области */
+  padding: 0.5rem 0; 
 }
 .logoLink:hover {
   opacity: 0.85;
@@ -47,17 +42,17 @@
 .desktopNavLinks {
   display: flex;
   align-items: center;
-  gap: 1.5rem; /* Tailwind: space-x-6. Можно 2rem, если нужно больше */
+  gap: 1.5rem; 
 }
 
 .navLink {
   font-family: var(--font-roboto, 'Roboto', sans-serif);
-  font-size: 0.95rem; /* Немного меньше для компактности (близко к text-sm/text-base) */
+  font-size: 0.95rem; 
   font-weight: 500;
-  color: #D1D5DB; /* Tailwind: gray-300 */
+  color: #D1D5DB; 
   text-decoration: none;
   position: relative;
-  padding: 0.5rem 0.25rem; /* Добавим немного padding для кликабельной области */
+  padding: 0.5rem 0.25rem; 
   transition: color 0.2s ease-in-out;
   white-space: nowrap;
 }
@@ -67,10 +62,10 @@
   position: absolute;
   width: 0%;
   height: 2px;
-  bottom: 0; /* Линия прямо под текстом */
+  bottom: 0; 
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--accent-color); /* Используем глобальную переменную */
+  background-color: var(--accent-color); 
   transition: width 0.3s ease-in-out;
 }
 
@@ -79,23 +74,23 @@
 }
 
 .navLink:hover::after,
-.navLinkActive::after { /* Для активной ссылки */
-  width: calc(100% - 0.5rem); /* Чтобы линия была чуть короче самого текста */
+.navLinkActive::after { 
+  width: calc(100% - 0.5rem); 
 }
 
-.navLinkActive { /* Класс для активной ссылки */
+.navLinkActive { 
   color: white;
 }
 
 /* --- Стили для мобильного меню --- */
 .mobileMenuButton {
-  display: none; /* Скрыт на десктопах по умолчанию */
+  display: none; 
   background: transparent;
   border: none;
   color: white;
   cursor: pointer;
-  padding: 0.5rem; /* Увеличим область нажатия */
-  z-index: 1051; /* Выше, чем мобильное меню, чтобы всегда был кликабельным */
+  padding: 0.5rem; 
+  z-index: 1051; 
 }
 
 .icon {
@@ -105,29 +100,29 @@
 }
 
 .mobileNav {
-  display: flex; /* Будет в DOM только когда isMobileMenuOpen === true */
+  display: flex; 
   flex-direction: column;
   position: absolute;
-  top: 100%; /* Сразу под высотой хедера */
+  top: 100%; 
   left: 0;
   right: 0;
-  background-color: #111827; /* Еще темнее (gray-900) для контраста */
+  background-color: #111827; 
   padding-top: 0.5rem;
   padding-bottom: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  border-top: 1px solid #374151; /* Разделитель (gray-700) */
+  border-top: 1px solid #374151; 
 }
 
 .mobileNavLink {
   font-family: var(--font-roboto, 'Roboto', sans-serif);
-  font-size: 1.125rem; /* text-lg */
+  font-size: 1.125rem; 
   font-weight: 500;
-  color: #D1D5DB; /* gray-300 */
+  color: #D1D5DB; 
   text-decoration: none;
-  padding: 1rem 1.5rem; /* Увеличенные отступы */
+  padding: 1rem 1.5rem; 
   text-align: left;
   width: 100%;
-  border-bottom: 1px solid #374151; /* gray-700 */
+  border-bottom: 1px solid #374151;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
@@ -136,13 +131,12 @@
 }
 
 .mobileNavLink:hover,
-.navLinkActiveMobile { /* Для активной мобильной ссылки */
-  background-color: #374151; /* gray-700 */
+.navLinkActiveMobile { 
+  background-color: #374151; 
   color: white;
 }
 
-/* --- Медиа-запрос для мобильных устройств --- */
-/* Точка останова 768px (Tailwind: md) */
+/*Медиа-запрос для мобильных устройств*/
 @media (max-width: 768px) {
   .desktopNavLinks {
     display: none;
@@ -152,11 +146,11 @@
   }
 }
 
-/* Опционально: стили для стрелочки в кнопке EquipmentCard */
+/* стили для стрелочки в кнопке EquipmentCard */
 .arrowIcon {
-  width: 1em; /* Размер относительно шрифта родителя */
+  width: 1em; 
   height: 1em;
   margin-left: 0.25em;
-  vertical-align: middle; /* Выравнивание по центру текста */
+  vertical-align: middle; 
   transition: transform 0.2s ease-in-out;
 }

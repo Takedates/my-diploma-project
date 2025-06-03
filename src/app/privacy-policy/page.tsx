@@ -9,12 +9,10 @@ export default function PrivacyPolicyPage() {
   const companyInn = "6321247265";
   const companyKpp = "420501001";
   const companyOgrn = "1106320011192";
-  // ИСПРАВЛЕНО: Формат номера телефона
   const companyPhone = "+7 (950) 591-18-38"; 
   const companyPrivacyEmail = "busibess-partner-ru@mail.ru";
-  // ИСПРАВЛЕНО: Полный и правильный URL сайта
   const siteUrl = "https://business-partner-site.netlify.app"; 
-  const effectiveDate = "08 мая 2025 г."; // Оставляем фиксированной, если это дата вступления в силу документа
+  const effectiveDate = "08 мая 2025 г."; 
   const lawName = "Федеральным законом от 27.07.2006 г. № 152-ФЗ «О персональных данных»";
 
   return (

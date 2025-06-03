@@ -16,15 +16,15 @@
   align-items: center;
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e5e7eb; /* gray-200 */
+  border-bottom: 1px solid #e5e7eb; 
   gap: 1rem;
 }
 
 .title {
   font-family: var(--font-montserrat);
-  font-size: 1.75rem; /* text-2xl */
+  font-size: 1.75rem; 
   font-weight: 700;
-  color: #111827; /* gray-900 */
+  color: #111827;
   margin: 0;
 }
 
@@ -33,7 +33,7 @@
   align-items: center;
   gap: 1rem;
   font-size: 0.9rem;
-  color: #4B5563; /* gray-600 */
+  color: #4B5563; 
   flex-shrink: 0;
 }
 .userInfo span {
@@ -175,8 +175,8 @@
 .rowLoading {
     opacity: 0.6;
     pointer-events: none;
-    /* Используем более нейтральный фон для загрузки, чтобы он перекрывал любой цвет статуса */
-    background-color: #f3f4f6 !important; /* Светло-серый */
+
+    background-color: #f3f4f6 !important;
 }
 
 /* --- Стиль для селекта статуса --- */
@@ -202,49 +202,48 @@
   font-size: 0.75rem;
   font-weight: 600;
   border-radius: 9999px;
-  /* text-transform: capitalize; */ /* Убираем capitalize, т.к. текст русский */
+ 
   white-space: nowrap;
   min-width: 80px;
   text-align: center;
 }
-/* Новые классы для русских статусов */
+/* классы для русских статусов */
 .status_novaya {
-   background-color: #DBEAFE; /* blue-100 */
-   color: #1E40AF; /* blue-800 */
+   background-color: #DBEAFE; 
+   color: #1E40AF; 
 }
 .status_v_rabote {
-  background-color: #FEF3C7; /* yellow-100 */
-  color: #B45309; /* yellow-700 */
+  background-color: #FEF3C7; 
+  color: #B45309; 
 }
 .status_zaversheno {
-  background-color: #DCFCE7; /* green-100 */
-  color: #166534; /* green-800 */
-  /* Или серый: */
-  /* background-color: #f3f4f6; color: #4b5563; */
+  background-color: #DCFCE7; 
+  color: #166534; 
+
 }
 /* --- Конец стилей бейджей --- */
 
 
 /* --- Стили для подсветки строк таблицы по статусу (РУССКИЕ КЛАССЫ) --- */
 .rowStatus_novaya {
-  background-color: #EFF6FF; /* Очень светлый синий */
+  background-color: #EFF6FF; 
 }
-.rowStatus_novaya:not(.rowLoading):hover { /* Добавляем :not(.rowLoading) */
-   background-color: #DBEAFE; /* Чуть темнее при наведении (bg-blue-100) */
+.rowStatus_novaya:not(.rowLoading):hover { 
+   background-color: #DBEAFE; 
 }
 
 .rowStatus_v_rabote {
-  background-color: #FFFBEB; /* Очень светлый желтый */
+  background-color: #FFFBEB; 
 }
 .rowStatus_v_rabote:not(.rowLoading):hover {
-   background-color: #FEF9C3; /* Чуть темнее при наведении (bg-yellow-100) */
+   background-color: #FEF9C3; 
 }
 
 .rowStatus_zaversheno {
-  background-color: #F0FDF4; /* Очень светлый зеленый */
+  background-color: #F0FDF4; 
 }
 .rowStatus_zaversheno:not(.rowLoading):hover {
-   background-color: #DCFCE7; /* Чуть темнее при наведении (bg-green-100) */
+   background-color: #DCFCE7; 
 }
 /* --- Конец стилей подсветки строк --- */
 

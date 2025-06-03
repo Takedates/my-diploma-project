@@ -13,12 +13,12 @@ export async function POST(request: NextRequest) {
   try {
     // Обновляем страницу списка новостей
     revalidatePath('/news'); 
-    // Обновляем все динамические страницы новостей (перевалидирует паттерн)
+    // Обновляем все динамические страницы новостей 
     revalidatePath('/news/[slug]'); 
 
     // Обновляем страницу списка каталога
     revalidatePath('/catalog');
-    // Обновляем все динамические страницы каталога (перевалидирует паттерн)
+    // Обновляем все динамические страницы каталога
     revalidatePath('/catalog/[slug]'); 
 
     console.log('Revalidation initiated for /news and /catalog pages.');

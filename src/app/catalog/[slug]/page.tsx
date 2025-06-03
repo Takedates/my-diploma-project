@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { PortableText, PortableTextBlock } from '@portabletext/react';
 import { motion, AnimatePresence } from 'framer-motion';
-// import { useRouter } from 'next/navigation'; // УДАЛЕНО: useRouter больше не нужен, т.к. используем Link
+
 
 import { sanityClient, urlFor, SanityImageSource } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
@@ -70,7 +70,7 @@ function EquipmentContent({ slug }: { slug: string }) {
   const [error, setError] = useState<string | null>(null);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const router = useRouter(); // УДАЛЕНО: useRouter больше не используется
+
 
   useEffect(() => {
     const fetchEquipmentData = async () => {
@@ -160,13 +160,13 @@ function EquipmentContent({ slug }: { slug: string }) {
           <span>{equipment.name ?? 'Детали техники'}</span>
         </nav>
 
-        {/* ПЕРЕМЕЩЕНО и ИЗМЕНЕНО: Теперь это Link на /catalog */}
+
         <div className={styles.backLinkWrapper}>
           <Link href="/catalog" className={styles.backLink}>
             ← Назад в каталог
           </Link>
         </div>
-        {/* --- КОНЕЦ ИЗМЕНЕНИЯ --- */}
+
 
         <h1 className={styles.title}>{equipment.name ?? 'Название техники отсутствует'}</h1>
 

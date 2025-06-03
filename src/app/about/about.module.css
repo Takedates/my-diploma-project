@@ -15,7 +15,7 @@
   padding-top: 4rem;
   padding-bottom: 4rem;
   position: relative;
-  overflow: hidden; /* Скрываем вылетающие элементы анимации */
+  overflow: hidden; 
 }
 
 .sectionWhite {
@@ -58,7 +58,7 @@
 
 .introGrid {
   display: grid;
-  grid-template-columns: 1fr; /* Одна колонка по умолчанию */
+  grid-template-columns: 1fr; 
   gap: 2.5rem;
   align-items: center;
 }
@@ -115,10 +115,8 @@
   position: relative;
   width: 100%;
   /* --- ИЗМЕНЕННОЕ СООТНОШЕНИЕ СТОРОН --- */
-  aspect-ratio: 3 / 2; /* Пробуем 3:2 */
-  /* Или попробуйте 1 / 1 для квадратного */
-  /* aspect-ratio: 1 / 1; */
-  /* -------------------------------- */
+  aspect-ratio: 3 / 2; 
+
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
@@ -255,4 +253,3 @@
   flex-grow: 1;
 }
 
-/* --- Конец стилей Преимуществ --- */

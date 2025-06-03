@@ -1,7 +1,7 @@
 // src/lib/supabaseClient.ts
 import { createClient } from '@supabase/supabase-js';
 
-// Получаем URL и ключ из переменных окружения
+// Получаем URL и ключ 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -14,11 +14,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
      console.error("Supabase configuration missing.");
   }
 }
-
-// Создаем и экспортируем клиент Supabase
-// Если ключей нет, createClient выбросит ошибку, что предотвратит некорректную работу
-// Можно добавить `!` после переменных, если уверен, что они будут там при запуске
-// export const supabase = createClient(supabaseUrl!, supabaseAnonKey!);
 
 // Безопасный вариант: создаем клиент только если переменные есть
 let supabaseInstance = null;
