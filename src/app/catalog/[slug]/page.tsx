@@ -1,11 +1,11 @@
-// src/app/catalog/[slug]/page.tsx
-'use client'; // Оставляем, так как внутренняя логика клиентская
+'use client';
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PortableText, PortableTextBlock } from '@portabletext/react';
 import { motion, AnimatePresence } from 'framer-motion';
+// import { useRouter } from 'next/navigation'; // УДАЛЕНО: useRouter больше не нужен, т.к. используем Link
 
 import { sanityClient, urlFor, SanityImageSource } from '@/lib/sanityClient';
 import { groq } from 'next-sanity';
@@ -44,7 +44,6 @@ interface ResolvedPageParams {
   slug: string;
 }
 
-// Заставляем params быть промисом, чтобы угодить сборщику
 interface PageProps {
   params: Promise<ResolvedPageParams>;
 }
@@ -66,12 +65,12 @@ const equipmentDetailQuery = groq`*[_type == "equipment" && slug.current == $slu
 
 // Внутренний компонент для отображения, он всегда получает разрешенный slug
 function EquipmentContent({ slug }: { slug: string }) {
-  // ... (вся твоя логика useState, useEffect, JSX из предыдущего полного кода)
   const [equipment, setEquipment] = useState<FullEquipmentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // const router = useRouter(); // УДАЛЕНО: useRouter больше не используется
 
   useEffect(() => {
     const fetchEquipmentData = async () => {
@@ -160,6 +159,14 @@ function EquipmentContent({ slug }: { slug: string }) {
           )}
           <span>{equipment.name ?? 'Детали техники'}</span>
         </nav>
+
+        {/* ПЕРЕМЕЩЕНО и ИЗМЕНЕНО: Теперь это Link на /catalog */}
+        <div className={styles.backLinkWrapper}>
+          <Link href="/catalog" className={styles.backLink}>
+            ← Назад в каталог
+          </Link>
+        </div>
+        {/* --- КОНЕЦ ИЗМЕНЕНИЯ --- */}
 
         <h1 className={styles.title}>{equipment.name ?? 'Название техники отсутствует'}</h1>
 
@@ -257,12 +264,6 @@ function EquipmentContent({ slug }: { slug: string }) {
             </div>
           </section>
         )}
-
-        <div className={styles.backLinkWrapper}>
-          <Link href="/catalog" className={styles.backLink}>
-            ← Назад в каталог
-          </Link>
-        </div>
       </div>
 
       <Modal
@@ -285,7 +286,6 @@ function EquipmentContent({ slug }: { slug: string }) {
 
 // Компонент-обертка страницы, который ИСПОЛЬЗУЕТ React.use()
 export default function EquipmentDetailPageWrapper({ params }: PageProps) {
-  // Теперь params ОБЯЗАТЕЛЬНО Promise<ResolvedPageParams> согласно типу PageProps
   const resolvedParams = use(params);
 
   if (!resolvedParams?.slug) {

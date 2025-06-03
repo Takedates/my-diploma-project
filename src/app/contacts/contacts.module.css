@@ -18,6 +18,10 @@
   color: var(--text-color-dark, #111827);
   margin-bottom: 1rem;
   line-height: 1.2;
+  /* ИСПРАВЛЕНО: УБРАНЫ СТИЛИ ПОДЧЕРКИВАНИЯ ОТСЮДА */
+  /* display: inline-block; */
+  /* padding-bottom: 0.75rem; */
+  /* border-bottom: 2px solid var(--accent-color, #f97316); */
 }
 @media (min-width: 768px) {
   .pageTitle { font-size: 3.25rem; }
@@ -80,7 +84,8 @@
   height: 1.5rem;
   color: var(--accent-color, #f97316);
   flex-shrink: 0;
-  margin-top: 0.2rem;
+  /* ИСПРАВЛЕНО: Убрана или изменена margin-top для лучшего выравнивания */
+  /* margin-top: 0.2rem; */ /* ЗАКОММЕНТИРОВАНО или УДАЛЕНО */
 }
 
 .infoItem a {
@@ -108,6 +113,10 @@
   font-weight: 700;
   color: var(--text-color-dark, #111827);
   margin-bottom: 2.5rem;
+  /* НОВЫЕ СТИЛИ для оранжевого подчеркивания здесь */
+  display: inline-block; /* Чтобы border-bottom оборачивал только контент */
+  padding-bottom: 0.75rem; /* Отступ между текстом и подчеркиванием */
+  border-bottom: 2px solid var(--accent-color, #f97316); /* Само подчеркивание */
 }
 
 .contactForm {
@@ -167,16 +176,16 @@
 
 .formGroupCheckbox {
   display: flex;
-  align-items: flex-start; /* Выравнивание по верху */
-  margin-top: 0.5rem; /* Отступ сверху перед чекбоксом */
-  margin-bottom: 1.5rem; /* Отступ снизу */
-  gap: 0.5rem; /* Расстояние между чекбоксом и текстом */
+  align-items: flex-start;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
 }
 
 .formCheckbox {
-  margin-top: 0.2em; /* Небольшой сдвиг вниз для лучшего выравнивания с текстом */
-  flex-shrink: 0; /* Чтобы чекбокс не сжимался */
-  width: 1em; /* Примерный размер */
+  margin-top: 0.2em;
+  flex-shrink: 0;
+  width: 1em;
   height: 1em;
   cursor: pointer;
 }
@@ -188,17 +197,17 @@
   font-size: 0.9rem;
   color: var(--text-secondary, #555);
   line-height: 1.5;
-  cursor: pointer; /* Чтобы вся метка была кликабельна */
+  cursor: pointer;
 }
 
 .privacyLink {
-  color: var(--accent-color, #f97316); /* Используйте ваш акцентный цвет */
+  color: var(--accent-color, #f97316);
   text-decoration: underline;
   transition: color 0.2s ease;
 }
 
 .privacyLink:hover {
-  color: var(--accent-color-dark, #ea580c); /* Более темный оттенок при наведении */
+  color: var(--accent-color-dark, #ea580c);
 }
 
 
@@ -206,22 +215,22 @@
 .errorMessage,
 .successMessage {
   padding: 0.85rem 1.1rem;
-  margin-bottom: 1.5rem; /* Отступ снизу перед кнопкой/сноской */
-  border-radius: 8px; /* Сделаем как у инпутов */
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
   font-size: 0.95rem;
-  text-align: left; /* Выравнивание по левому краю */
+  text-align: left;
   border: 1px solid transparent;
 }
 
 .errorMessage {
-  background-color: #fee2e2; /* red-100 */
-  color: #991b1b; /* red-800 */
-  border-color: #fecaca; /* red-200 */
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #fecaca;
 }
 .successMessage {
-  background-color: #dcfce7; /* green-100 */
-  color: #166534; /* green-800 */
-  border-color: #bbf7d0; /* green-200 */
+  background-color: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
 }
 
 /* Обертка для кнопки и сноски */
@@ -230,7 +239,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0.75rem;
-  margin-top: 0.5rem; /* Уменьшим отступ, т.к. сообщение теперь выше */
+  margin-top: 0.5rem;
 }
 
 .submitButton {
@@ -245,7 +254,7 @@
   cursor: pointer;
   transition: background-color 0.3s, transform 0.1s, opacity 0.2s, box-shadow 0.2s;
   box-shadow: 0 4px 10px rgba(249, 115, 22, 0.25);
-  align-self: flex-start; /* Чтобы кнопка не растягивалась */
+  align-self: flex-start;
 }
 .submitButton:hover:not(:disabled) {
   background-color: var(--accent-color-dark, #ea580c);

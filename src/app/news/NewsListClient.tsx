@@ -1,4 +1,3 @@
-// src/app/news/NewsListClient.tsx
 'use client';
 
 import React from 'react';
@@ -7,7 +6,7 @@ import Image from 'next/image';
 import styles from './news.module.css';
 import { urlFor } from '@/lib/sanityClient';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'; 
 import { ArrowRightIcon, CalendarDaysIcon } from '@heroicons/react/24/outline';
 
 // Тип данных для пропсов
@@ -25,12 +24,12 @@ interface NewsListClientProps {
   fetchError: string | null;
 }
 
-// Анимации
+// Анимации (ОСТАВЛЕНЫ КАК ЕСТЬ, НЕ ТРОГАЕМ)
 const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
 };
-const staggerContainer = { // Эта переменная будет использоваться
+const staggerContainer = { 
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } }
 };
@@ -49,6 +48,30 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
     ? urlFor(featuredImageAsset)?.width(1000).height(625).fit('crop').url()
     : undefined;
 
+  // Функция formatDate теперь используется
+  const formatDate = (dateString?: string | null) => {
+    if (!dateString) return 'Дата не указана';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
+  // Более краткий формат даты для карточек "Другие новости"
+  const formatCardDate = (dateString?: string | null) => {
+    if (!dateString) return 'Дата не указана';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' });
+  };
+
+
+  if (fetchError) {
+    return <div className={styles.errorMessage}>{fetchError}</div>;
+  }
+
+  // Если нет новостей и нет ошибки
+  if (newsItems.length === 0 && !fetchError) {
+      return <p className={styles.noNewsMessage}>Новостей пока нет. Следите за обновлениями!</p>;
+  }
+
   return (
     <div className={styles.newsPageContainer}>
       <motion.div
@@ -60,15 +83,14 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
         <h1 className={styles.pageTitle}>
           Новости <span className={styles.titleHighlight}>Компании</span>
         </h1>
-        <p className={styles.pageSubtitle}>
+        {/* --- ИСПРАВЛЕНИЕ ШРИФТА: ДОБАВЛЕН 'styles.introText' --- */}
+        <p className={styles.introText}>
           Самые свежие события, аналитика рынка и полезная информация из мира спецтехники.
         </p>
       </motion.div>
 
-      {fetchError && <p className={styles.errorMessage}>{fetchError}</p>}
-
       {/* --- Секция Горячая новость (Featured) --- */}
-      {!fetchError && featuredNews && featuredSlug && (
+      {featuredNews && featuredSlug && (
         <motion.section
           className={styles.featuredNewsWrapper}
           initial="hidden" animate="visible" variants={fadeInUp} transition={{delay: 0.2}}
@@ -97,9 +119,8 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
               <div className={styles.featuredMeta}>
                 <div className={styles.featuredDate}>
                   <CalendarDaysIcon className={styles.metaIcon} />
-                  <span>
-                    {featuredNews.publishedAt ? new Date(featuredNews.publishedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Недавно'}
-                  </span>
+                  {/* ИСПОЛЬЗУЕМ formatDate */}
+                  <span>{formatDate(featuredNews.publishedAt)}</span>
                 </div>
                 <div className={styles.featuredReadMore}>
                   <span>Читать далее</span>
@@ -113,7 +134,7 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
       {/* --- Конец Featured --- */}
 
       {/* --- Секция Последние новости (Сетка) --- */}
-      {!fetchError && latestNews.length > 0 && (
+      {latestNews.length > 0 && (
         <section className={styles.latestNewsSection}>
            <motion.h2
              className={styles.sectionTitleAlt}
@@ -124,7 +145,7 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
            {/* ИСПОЛЬЗУЕМ staggerContainer ЗДЕСЬ */}
            <motion.div
              className={styles.latestGrid}
-             variants={staggerContainer} // <--- ПРИМЕНЕНА АНИМАЦИЯ
+             variants={staggerContainer}
              initial="hidden"
              whileInView="visible"
              viewport={{ once: true, amount: 0.1 }}
@@ -156,7 +177,8 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
                          <div className={styles.latestCardMeta}>
                              <span className={styles.latestDate}>
                                <CalendarDaysIcon className={styles.metaIconSmall} />
-                               {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}
+                               {/* ИСПОЛЬЗУЕМ formatCardDate */}
+                               {formatCardDate(post.publishedAt)}
                              </span>
                              <span className={styles.latestReadArrow}>
                                  <ArrowRightIcon className={styles.metaIconSmall}/>
@@ -169,11 +191,6 @@ export default function NewsListClient({ newsItems, fetchError }: NewsListClient
              })}
            </motion.div>
         </section>
-      )}
-      {/* --- Конец Последние новости --- */}
-
-      {!fetchError && newsItems.length === 0 && (
-          <p className={styles.noNewsMessage}>Новостей пока нет. Следите за обновлениями!</p>
       )}
     </div>
   );

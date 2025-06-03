@@ -1,9 +1,8 @@
-// src/app/admin/dashboard/page.tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient'; // Убедитесь, что этот путь правильный и supabaseClient.ts корректно экспортирует инициализированный клиент
+import { supabase } from '@/lib/supabaseClient';
 import styles from './dashboard.module.css';
 import Link from 'next/link';
 
@@ -174,12 +173,7 @@ export default function DashboardPage() {
         equipmentFilterStatus, equipmentSearchTerm,
         contactSortBy, contactSortOrder,
         equipmentSortBy, equipmentSortOrder,
-        loading // Добавлена зависимость loading
-        // supabase также является зависимостью, если он может измениться (хотя обычно нет)
-        // Для строгости можно добавить `supabase` в массив зависимостей, если `eslint-plugin-react-hooks` этого требует
-        // или если есть сценарий, где экземпляр supabase может измениться во время жизни компонента.
-        // В данном случае, так как supabase импортируется и скорее всего инициализируется один раз,
-        // его можно опустить, но добавление не повредит.
+        loading
     ]);
 
 
@@ -352,7 +346,8 @@ export default function DashboardPage() {
                                             <td>{new Date(req.created_at).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short'})}</td>
                                             <td>{req.name}</td>
                                             <td>{req.contact_info}</td>
-                                            <td title={req.message}>{req.message.length > 100 ? req.message.substring(0, 100) + '...' : req.message}</td>
+                                            {/* ИСПРАВЛЕНО: Теперь отображается полное сообщение */}
+                                            <td title={req.message}>{req.message}</td>
                                             <td><span className={`${styles.statusBadge} ${statusClass}`}>{statusText}</span></td>
                                             <td><select value={req.status ?? ''} onChange={(e) => handleStatusChange(req.id, e.target.value, 'contact')} disabled={updatingStatusId === req.id} className={styles.statusSelect}>
                                                 {STATUS_OPTIONS.map(status => (<option key={status} value={status}>{statusDisplayNames[status]}</option> ))}
@@ -410,7 +405,8 @@ export default function DashboardPage() {
                                                 <td>{req.contact_info}</td>
                                                 <td>{req.equipment_name || '-'}</td>
                                                 <td>{req.request_type}</td>
-                                                <td title={req.message || ''}>{(req.message && req.message.length > 50) ? req.message.substring(0, 50) + '...' : (req.message || '-')}</td>
+                                                {/* ИСПРАВЛЕНО: Теперь отображается полное сообщение */}
+                                                <td title={req.message || ''}>{req.message || '-'}</td>
                                                 <td><span className={`${styles.statusBadge} ${statusClass}`}>{statusText}</span></td>
                                                 <td><select value={req.status ?? ''} onChange={(e) => handleStatusChange(req.id, e.target.value, 'equipment')} disabled={updatingStatusId === req.id} className={styles.statusSelect}>
                                                     {STATUS_OPTIONS.map(status => (<option key={status} value={status}>{statusDisplayNames[status]}</option> ))}

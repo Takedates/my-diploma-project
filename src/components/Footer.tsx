@@ -1,17 +1,16 @@
 // src/components/Footer.tsx (Обновленный)
 import React from 'react';
-import Link from 'next/link'; // Импортируем Link для внутренней ссылки
-import styles from './Footer.module.css'; // Импортируем стили
+import Link from 'next/link';
+import styles from './Footer.module.css';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className={styles.footer}>
-      {/* Используем ваш .container класс или стандартный .footerContent */}
-      <div className={styles.footerContent}> {/* Используем класс из вашего CSS */}
-        <p className={styles.copyrightAndTerms}> {/* Новый класс для стилизации, если нужно */}
-          © {currentYear}, ООО «Бизнес-Партнер».{' '} {/* Используем кавычки-ёлочки */}
+      <div className={styles.footerContent}>
+        <p className={styles.copyrightAndTerms}>
+          © {currentYear}, ООО «Бизнес-Партнер».{' '}
           <Link href="/terms-of-use" className={styles.footerLink}>
             Все права защищены
           </Link>
@@ -20,14 +19,14 @@ const Footer = () => {
         <p className={styles.developerCredit}>
           Разработка сайта –{' '}
           <a
-            href="https://cuteslippers.netlify.app/" // Твоя ссылка
-            target="_blank" // Открывать в новой вкладке
-            rel="noopener noreferrer" // Лучшие практики безопасности
-            className={styles.developerLink} // Отдельный стиль для ссылки разработчика
+            href="https://cuteslippers.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.developerLink}
           >
-            Кузьмин В.С. {/* Замени на свой ник/имя, если нужно */}
+            Кузьмин В.С.
           </a>
-          {' '}{currentYear}
+          {/* ИЗМЕНЕНИЕ ЗДЕСЬ: Убран год 2025 или {currentYear} из этой строки */}
         </p>
       </div>
     </footer>
