@@ -1,4 +1,3 @@
-// src/components/EquipmentRequestForm/EquipmentRequestForm.tsx
 'use client';
 
 import React, { useState, useTransition } from 'react';
@@ -37,15 +36,14 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
   // Обработчик для поля телефона (контролирует +7 и длину)
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
-    if (value.startsWith('+7')) {
-      const digits = value.substring(2).replace(/\D/g, '');
-      value = '+7' + digits.substring(0, 10);
-    } else if (value === '+' || value === '') {
-      value = '+';
+    // Убедимся, что ввод начинается с '+7'
+    if (!value.startsWith('+7')) {
+      value = '+7' + value.replace(/\D/g, ''); // Добавляем +7 и убираем нецифровые
     } else {
-      value = '+7' + value.replace(/\D/g, '').substring(0, 10);
+      value = '+7' + value.substring(2).replace(/\D/g, ''); // Оставляем +7 и убираем нецифровые
     }
-    setPhone(value);
+    // Ограничиваем до 12 символов (+7 и 10 цифр)
+    setPhone(value.substring(0, 12));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -53,24 +51,33 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
     setError(null);
     setSuccessMessage(null);
 
-    // Валидация данных из состояний
     const nameTrimmed = customerName.trim();
-    const phoneTrimmed = phone.trim(); // Телефон уже в нужном формате из handlePhoneChange
-    const emailTrimmed = email.trim();
+    const phoneValue = phone.trim(); 
+    const emailValue = email.trim();
 
-    if (!nameTrimmed) { setError('Пожалуйста, укажите ваше имя.'); return; }
-    if (nameTrimmed.length < 2) { setError('Имя должно содержать не менее 2 символов.'); return; }
+    // 1. Валидация ФИО
+    if (!nameTrimmed) { setError('Пожалуйста, укажите ваше ФИО.'); return; }
+    if (nameTrimmed.length < 2) { setError('ФИО должно содержать не менее 2 символов.'); return; }
 
-    const hasPhone = phoneTrimmed.length === 12 && phoneRegex.test(phoneTrimmed); // Проверяем полный формат +7...
-    const hasEmail = !!emailTrimmed;
+    // 2. Валидация Телефон ИЛИ Email
+    const isValidPhoneFormat = phoneValue.length === 12 && phoneRegex.test(phoneValue);
+    const isValidEmailFormat = emailValue && emailRegex.test(emailValue);
 
-    if (!hasPhone && !hasEmail) { setError('Пожалуйста, укажите корректный телефон или Email.'); return; }
-    if (emailTrimmed && !emailRegex.test(emailTrimmed)) { setError('Пожалуйста, введите корректный Email адрес.'); return; }
-    // Дополнительная проверка телефона, если Email не указан
-    if (!hasEmail && !hasPhone) { setError('Пожалуйста, введите корректный номер телефона (формат +7XXXXXXXXXX).'); return; }
-    // Проверка телефона, если он введен (даже если email тоже есть)
-    if (phoneTrimmed !== '+7' && phoneTrimmed.length > 2 && !hasPhone) { setError('Пожалуйста, введите корректный номер телефона (формат +7XXXXXXXXXX).'); return; }
+    if (!isValidPhoneFormat && !isValidEmailFormat) {
+        setError('Необходимо указать корректный контактный телефон или Email.');
+        return;
+    }
+    if (emailValue && !isValidEmailFormat) {
+        setError('Некорректный формат Email. Пожалуйста, проверьте правильность ввода.');
+        return;
+    }
+    // Если телефон был введен (не только "+7") и при этом он невалиден
+    if (phoneValue !== '+7' && phoneValue.length > 2 && !isValidPhoneFormat) {
+        setError('Некорректный формат телефона. Ожидается +7 и 10 цифр (например, +79001234567).');
+        return;
+    }
 
+    // 3. Валидация согласия на обработку персональных данных
     if (!isPrivacyPolicyAccepted) { setError('Необходимо принять условия обработки персональных данных.'); return; }
 
     startTransition(async () => {
@@ -78,9 +85,10 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
       formData.append('equipmentId', equipmentId);
       formData.append('equipmentName', equipmentName);
       formData.append('customerName', nameTrimmed);
-      // Передаем корректный телефон или пустую строку, если он не введен/невалиден
-      formData.append('phone', hasPhone ? phoneTrimmed : '');
-      formData.append('email', hasEmail ? emailTrimmed : '');
+      // Передаем валидный телефон или пустую строку
+      formData.append('phone', isValidPhoneFormat ? phoneValue : '');
+      // Передаем валидный Email или пустую строку
+      formData.append('email', isValidEmailFormat ? emailValue : '');
       formData.append('comment', comment.trim());
       formData.append('isPrivacyPolicyAccepted', String(isPrivacyPolicyAccepted));
 
@@ -94,14 +102,14 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
           setSuccessMessage('Ваш запрос успешно отправлен! Мы свяжемся с вами в ближайшее время.');
           // Сброс состояний формы
           setCustomerName('');
-          setPhone('+7'); // Сброс телефона к +7
+          setPhone('+7'); 
           setEmail('');
           setComment('');
           setIsPrivacyPolicyAccepted(false);
           // Вызов onSuccess с задержкой
           setTimeout(() => {
              if (onSuccess) onSuccess();
-          }, 2000); // Уменьшил задержку до 2 сек
+          }, 2000); 
         }
       } catch (err) {
          console.error('Неожиданная ошибка при вызове Server Action:', err);
@@ -118,18 +126,19 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
       {/* Скрываем поля формы после успешной отправки */}
       {!successMessage && (
          <>
-           {/* Имя */}
+           {/* ФИО */}
            <div className={styles.formGroup}>
-             <label htmlFor="request-customer-name" className={styles.label}>Ваше имя<span className={styles.requiredStar}>*</span></label>
+             <label htmlFor="request-customer-name" className={styles.label}>Ваше ФИО<span className={styles.requiredStar}>*</span></label> {/* ИСПРАВЛЕНО: на "Ваше ФИО" */}
              <input
                type="text"
                id="request-customer-name"
+               name="customerName" // Убедитесь, что name="customerName" для FormData
                value={customerName}
                onChange={(e) => setCustomerName(e.target.value)}
-               required // Оставляем required для нативной валидации браузера
+               required 
                disabled={isPending}
                className={styles.input}
-               placeholder="Иван Иванов" // Добавлен плейсхолдер
+               placeholder="Иванов Иван Иванович" // ИСПРАВЛЕНО: более подходящий плейсхолдер
              />
            </div>
 
@@ -139,10 +148,11 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
              <input
                type="email"
                id="request-email"
+               name="email" // Убедитесь, что name="email" для FormData
                value={email}
                onChange={(e) => setEmail(e.target.value)}
                disabled={isPending}
-               placeholder="example@mail.com" // Добавлен плейсхолдер
+               placeholder="example@mail.com" 
                className={styles.input}
              />
            </div>
@@ -153,14 +163,15 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
              <input
                type="tel"
                id="request-phone"
+               name="phone" // Убедитесь, что name="phone" для FormData
                value={phone}
-               onChange={handlePhoneChange} // Используем новый обработчик
+               onChange={handlePhoneChange} 
                disabled={isPending}
-               placeholder="+7(___)___-__-__" // Изменен плейсхолдер
-               maxLength={12} // Ограничение длины
+               placeholder="+7(___)___-__-__" 
+               maxLength={12} 
                className={styles.input}
              />
-             <p className={styles.fieldSubText}>Укажите Email или телефон<span className={styles.requiredStar}>*</span></p> {/* Добавлена звездочка */}
+             <p className={styles.fieldSubText}>Укажите Email или телефон<span className={styles.requiredStar}>*</span></p>
            </div>
 
            {/* Комментарий */}
@@ -168,11 +179,12 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
              <label htmlFor="request-comment" className={styles.label}>Комментарий</label>
              <textarea
                id="request-comment"
+               name="comment" // Убедитесь, что name="comment" для FormData
                value={comment}
                onChange={(e) => setComment(e.target.value)}
                rows={4}
                disabled={isPending}
-               placeholder="Например: интересует актуальная стоимость, условия доставки..." // Уточнен плейсхолдер
+               placeholder="Например: интересует актуальная стоимость, условия доставки..." 
                className={styles.textarea}
              />
            </div>
@@ -182,10 +194,10 @@ const EquipmentRequestForm: React.FC<EquipmentRequestFormProps> = ({
             <input
               type="checkbox"
               id="privacyPolicyEqForm"
-              name="privacyPolicy" // Атрибут name нужен для FormData, если бы мы его использовали напрямую
+              name="isPrivacyPolicyAccepted" // ИСПРАВЛЕНО: name должно соответствовать formData.append
               checked={isPrivacyPolicyAccepted}
               onChange={(e) => setIsPrivacyPolicyAccepted(e.target.checked)}
-              required // Оставляем required
+              required 
               className={styles.checkboxInput}
               disabled={isPending}
             />
