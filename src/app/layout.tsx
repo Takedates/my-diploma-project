@@ -7,9 +7,11 @@ import Footer from '@/components/Footer';
 import { Montserrat, Roboto } from "next/font/google";
 import "./globals.css";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+// --- Закомментируем импорты Framer Motion и usePathname, они больше не нужны для main ---
+// import { motion, AnimatePresence } from 'framer-motion';
+// import { usePathname } from 'next/navigation';
 
+// Настройка шрифтов
 const montserrat = Montserrat({
   subsets: ['cyrillic', 'latin'],
   variable: '--font-montserrat',
@@ -23,31 +25,12 @@ const roboto = Roboto({
   variable: '--font-roboto',
 });
 
-// Варианты анимации для смены страниц (оставляем те же, что и в предыдущем шаге)
-const pageVariants = {
-  initial: { 
-    opacity: 0,
-    // y: 15, // Пока оставляем без сдвига, чтобы упростить
-  },
-  animate: { 
-    opacity: 1,
-    // y: 0, // Пока оставляем без сдвига
-  },
-  exit: { 
-    opacity: 0,
-    // y: -15, // Пока оставляем без сдвига
-  }
-};
-
-// Настройки перехода
-const pageTransition = {
-  type: "tween",
-  ease: "easeInOut",
-  duration: 0.3
-};
+// --- Переменные для анимации закомментированы/удалены ---
+// const pageVariants = { ... };
+// const pageTransition = { ... };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  // const pathname = usePathname(); // Закомментируем, так как key={pathname} больше не используется
 
   return (
     <html lang="ru" className={`${montserrat.variable} ${roboto.variable}`}>
@@ -56,25 +39,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="font-sans flex flex-col min-h-screen bg-gray-100 text-gray-800">
 
-        <Header />
+        <Header /> 
 
-        <AnimatePresence
-            // mode="wait" // <-- УДАЛИЛИ ЭТУ СТРОКУ! Теперь новый компонент будет появляться сразу.
-            // initial={false} // <-- УБРАЛИ это ещё на прошлом шаге. Так и должно быть.
+        {/* --- Заменили AnimatePresence и motion.main на обычный main --- */}
+        {/* <AnimatePresence
+            mode="wait"
+            initial={false}
             onExitComplete={() => window.scrollTo(0, 0)}
-        >
-          <motion.main
-            key={pathname}
+        > */}
+          <main
+            // key={pathname} 
             className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8"
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={pageVariants}
-            transition={pageTransition}
+            // initial="initial" 
+            // animate="in"      
+            // exit="out"        
+            // variants={pageVariants} 
+            // transition={pageTransition} 
           >
-            {children}
-          </motion.main>
-        </AnimatePresence>
+            {children} 
+          </main>
+        {/* </AnimatePresence> */}
 
         <Footer />
       </body>
