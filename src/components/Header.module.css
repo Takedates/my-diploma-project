@@ -99,11 +99,12 @@
   stroke-width: 2;
 }
 
+/* Изменения здесь: меню теперь просто отображается/скрывается CSS */
 .mobileNav {
   display: flex; 
   flex-direction: column;
-  position: absolute;
-  top: 100%; 
+  position: absolute; /* Или fixed, если оно должно покрывать весь экран */
+  top: 100%; /* Начинается прямо под хедером */
   left: 0;
   right: 0;
   background-color: #111827; 
@@ -111,7 +112,15 @@
   padding-bottom: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   border-top: 1px solid #374151; 
+  /* Добавлено для плавного появления/скрытия (без Framer Motion) */
+  opacity: 1; /* По умолчанию видимое, если есть */
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out; 
+  transform: translateY(0); /* По умолчанию без сдвига */
 }
+
+/* Если хочешь, чтобы оно изначально было скрыто за пределами экрана и выезжало,
+   нужно добавить стили для .mobileNav.hidden и .mobileNav.visible.
+   Но пока обойдемся простым display: none/block через React рендеринг. */
 
 .mobileNavLink {
   font-family: var(--font-roboto, 'Roboto', sans-serif);
@@ -136,7 +145,7 @@
   color: white;
 }
 
-/*Медиа-запрос для мобильных устройств*/
+/* Медиа-запрос для мобильных устройств */
 @media (max-width: 768px) {
   .desktopNavLinks {
     display: none;
@@ -146,7 +155,7 @@
   }
 }
 
-/* стили для стрелочки в кнопке EquipmentCard */
+/* стили для стрелочки в кнопке EquipmentCard (не относится к хедеру, но пусть будет) */
 .arrowIcon {
   width: 1em; 
   height: 1em;
