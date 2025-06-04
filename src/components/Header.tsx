@@ -13,27 +13,33 @@ const Header = () => {
   const pathname = usePathname();
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsMobileMenuOpen(prev => !prev); // Используем функциональное обновление
   };
 
   const closeMobileMenu = useCallback(() => {
-    if (isMobileMenuOpen) {
+    if (isMobileMenuOpen) { // Закрываем только если открыто
       setIsMobileMenuOpen(false);
     }
   }, [isMobileMenuOpen]); 
+  // УДАЛЕНО: closeMobileMenu() из useEffect [pathname, closeMobileMenu]
+  // Эта строка не нужна здесь. closeMobileMenu уже имеет isMobileMenuOpen в зависимостях,
+  // и закрытие при смене пути уже происходит через onClick на Link.
+  // Если у тебя была проблема, что меню само не закрывалось при навигации через ссылку,
+  // это обычно исправляется через onClick на Link, как у тебя уже есть.
+  // Если же проблема в том, что меню открыто и пользователь нажимает НАЗАД в браузере,
+  // а меню остается открытым, тогда можно добавить:
+  // useEffect(() => {
+  //   setIsMobileMenuOpen(false);
+  // }, [pathname]);
 
-  useEffect(() => {
-    closeMobileMenu(); 
-
-  }, [pathname, closeMobileMenu]); 
 
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; // Запрещаем скролл тела
     } else {
-      document.body.style.overflow = 'unset'; 
+      document.body.style.overflow = 'unset'; // Разрешаем скролл тела
     }
-    // Функция очистки для восстановления
+    // Функция очистки для восстановления (сработает при размонтировании компонента или изменении isMobileMenuOpen)
     return () => {
       document.body.style.overflow = 'unset'; 
     };
@@ -42,12 +48,12 @@ const Header = () => {
   const mobileMenuVariants = {
     hidden: {
       opacity: 0,
-      y: -20,
+      x: "100%", // Сдвиг за экран вправо (если меню появляется справа)
       transition: { duration: 0.2, ease: "easeOut" }
     },
     visible: {
       opacity: 1,
-      y: 0,
+      x: "0%", // Появление на экране
       transition: { duration: 0.2, ease: "easeIn" }
     }
   };
@@ -95,12 +101,14 @@ const Header = () => {
         </button>
       </div>
 
-      <AnimatePresence>
+      {/* Добавляем key={pathname} к AnimatePresence, чтобы он реагировал на смену URL */}
+      {/* А также, `initial` состояние для motion.nav берется из variants */}
+      <AnimatePresence mode="wait" initial={false} key={pathname}> 
         {isMobileMenuOpen && (
           <motion.nav
             id="mobile-menu-list"
             className={styles.mobileNav}
-            initial="hidden"
+            initial="hidden" // Явно указываем начальное состояние из variants
             animate="visible"
             exit="hidden"
             variants={mobileMenuVariants}
